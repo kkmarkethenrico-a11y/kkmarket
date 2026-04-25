@@ -1,0 +1,1 @@
+export default function Page() { return <div>Tarifas e Prazos</div>; }

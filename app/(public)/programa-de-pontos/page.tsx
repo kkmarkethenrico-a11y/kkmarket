@@ -1,0 +1,1 @@
+export default function Page() { return <div>Programa de Pontos</div>; }

@@ -1,0 +1,1 @@
+export default function Page() { return <div>Verificação KYC</div>; }

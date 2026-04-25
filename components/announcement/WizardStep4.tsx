@@ -1,0 +1,1 @@
+export const WizardStep4 = () => <div></div>;
