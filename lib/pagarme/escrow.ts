@@ -181,37 +181,43 @@ export async function decrementStock(
 }
 
 // ─── autoDeliver ──────────────────────────────────────────────────────────────
-/** Deliver auto-delivery payload if available. */
+/**
+ * Atomically reserve + decrypt 1 auto_delivery_item. Marks announcement
+ * as 'sold_out' if it was the last available unit.
+ *
+ * Returns the DECRYPTED plaintext payload, or null when no stock.
+ *
+ * IMPORTANT: caller is responsible for ensuring the order is paid.
+ */
 export async function autoDeliver(
   orderId: string,
   announcementId: string,
   itemId: string | null,
-): Promise<string | null> {
+): Promise<{ payload: string; soldOut: boolean } | null> {
+  const { decryptPayload } = await import('@/lib/auto-delivery/crypto')
   const admin = createAdminClient()
 
-  // Find an undelivered auto_delivery_item
-  let query = admin
-    .from('auto_delivery_items')
-    .select('id, payload')
-    .eq('announcement_id', announcementId)
-    .eq('is_delivered', false)
-    .limit(1)
+  const { data, error } = await admin.rpc('deliver_auto_delivery', {
+    p_order_id:        orderId,
+    p_announcement_id: announcementId,
+    p_item_id:         itemId ?? undefined,
+  })
 
-  if (itemId) {
-    query = query.eq('item_id', itemId)
+  if (error) {
+    console.error('[escrow] autoDeliver RPC failed:', error.message)
+    return null
   }
 
-  const { data: items } = await query
+  const row = Array.isArray(data) ? data[0] : data
+  if (!row || !row.encrypted_payload) return null
 
-  if (!items || items.length === 0) return null
+  let payload: string
+  try {
+    payload = decryptPayload(row.encrypted_payload as string)
+  } catch (e) {
+    console.error('[escrow] autoDeliver decrypt failed:', e)
+    return null
+  }
 
-  const item = items[0]
-
-  // Mark as delivered
-  await admin
-    .from('auto_delivery_items')
-    .update({ is_delivered: true, order_id: orderId })
-    .eq('id', item.id)
-
-  return item.payload
+  return { payload, soldOut: Boolean(row.sold_out) }
 }

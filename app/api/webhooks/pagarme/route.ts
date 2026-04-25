@@ -127,26 +127,52 @@ async function handleOrderPaid(
   await lockSellerBalance(orderId, order.seller_id, order.seller_amount)
 
   // d. Auto-delivery if applicable
-  let deliveryPayload: string | null = null
   if (ann.has_auto_delivery) {
-    deliveryPayload = await autoDeliver(
+    const result = await autoDeliver(
       orderId,
       order.announcement_id,
       order.announcement_item_id,
     )
 
-    if (deliveryPayload) {
-      // Update order to 'in_delivery' (auto-delivered)
+    if (result) {      // Update order to 'in_delivery' (auto-delivered)
       await admin
         .from('orders')
         .update({ status: 'in_delivery', updated_at: now.toISOString() })
         .eq('id', orderId)
 
-      // Send delivery payload as system message in chat
+      // 1) Mensagem do tipo auto_delivery — só o payload em texto puro
+      //    (a UI do chat tem renderização especial para esse type)
       await admin.from('order_messages').insert({
         order_id:  orderId,
         sender_id: null,
-        message:   `⚡ Entrega automática realizada!\n\n${deliveryPayload}`,
+        message:   result.payload,
+        type:      'auto_delivery',
+      })
+
+      // 2) Mensagem de sistema avisando a entrega
+      await admin.from('order_messages').insert({
+        order_id:  orderId,
+        sender_id: null,
+        message:   '⚡ Entrega automática realizada! Suas credenciais foram enviadas acima.',
+        type:      'system',
+      })
+
+      // 3) Se o anúncio ficou sem estoque, marca como sold_out
+      //    (a RPC já faz isso atomicamente; aqui é só log)
+      if (result.soldOut) {
+        console.log('[webhook] announcement sold out:', order.announcement_id)
+      }
+    } else {
+      // Sem estoque de auto-delivery: cai pra fluxo manual
+      await admin
+        .from('orders')
+        .update({ status: 'in_delivery', updated_at: now.toISOString() })
+        .eq('id', orderId)
+
+      await admin.from('order_messages').insert({
+        order_id:  orderId,
+        sender_id: null,
+        message:   '⚠️ Entrega automática indisponível no momento. O vendedor fará a entrega manualmente.',
         type:      'system',
       })
     }
