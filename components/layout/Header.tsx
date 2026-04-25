@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Plus } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { HeaderSearch } from '@/components/layout/HeaderSearch'
 import { CategoryMegaMenu } from '@/components/layout/CategoryMegaMenu'
 import { MobileNav } from '@/components/layout/MobileNav'
@@ -9,17 +10,33 @@ import { UserNav } from '@/components/auth/UserNav'
 export async function Header() {
   const supabase = await createClient()
   
-  // Buscar usuário para injetar no MobileNav (já que MobileNav não é compatível diretamente com o UI complexo do UserNav)
   const { data: { user } } = await supabase.auth.getUser()
   
-  let profile = null
+  let profile: { username: string; display_name?: string; avatar_url?: string; role?: string } | null = null
+  let pointsBalance = 0
   if (user) {
-    const { data } = await supabase
-      .from('profiles')
-      .select('username, display_name, avatar_url, role')
-      .eq('id', user.id)
-      .single()
-    profile = data
+    const [profileRes, statsRes] = await Promise.all([
+      supabase
+        .from('profiles')
+        .select('username, display_name, avatar_url, role')
+        .eq('id', user.id)
+        .single(),
+      createAdminClient()
+        .from('user_stats')
+        .select('points_balance')
+        .eq('user_id', user.id)
+        .single(),
+    ])
+    const raw = profileRes.data
+    profile = raw
+      ? {
+          username:     raw.username,
+          display_name: raw.display_name ?? undefined,
+          avatar_url:   raw.avatar_url   ?? undefined,
+          role:         raw.role         ?? undefined,
+        }
+      : null
+    pointsBalance = statsRes.data?.points_balance ?? 0
   }
 
   return (
@@ -31,7 +48,6 @@ export async function Header() {
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-90">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600 text-white">
-                {/* Ícone de logo simples (Gamepad/Store representativo) */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -69,9 +85,21 @@ export async function Header() {
 
           {/* Ações (Desktop & Mobile mistos) */}
           <div className="flex items-center gap-4">
+
+            {/* GG Points badge — only when logged in */}
+            {user && (
+              <Link
+                href="/gg-points"
+                className="hidden lg:flex items-center gap-1.5 rounded-full border border-violet-500/30 bg-violet-500/10 px-3 py-1.5 text-xs font-semibold text-violet-300 transition-colors hover:border-violet-500/60 hover:bg-violet-500/20"
+                title="Seus GG Points"
+              >
+                <span className="text-sm">🎮</span>
+                {pointsBalance.toLocaleString('pt-BR')} pts
+              </Link>
+            )}
             
             <Link
-              href="/painel/meus-anuncios/novo"
+              href="/novo-anuncio"
               className="hidden lg:flex items-center gap-1.5 rounded-full bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-violet-500 active:scale-[0.97]"
             >
               <Plus className="h-4 w-4" />

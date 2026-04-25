@@ -35,7 +35,12 @@ Deno.serve(async (req) => {
   // 1. Find orders with expired escrow
   const { data: orders, error } = await admin
     .from('orders')
-    .select('id, seller_id, seller_amount, announcement_id, announcements!announcement_id(title)')
+    .select(`
+      id, buyer_id, seller_id, amount, seller_amount, announcement_id,
+      announcements!announcement_id (
+        title, plan
+      )
+    `)
     .in('status', ['in_delivery', 'delivered'])
     .not('escrow_release_at', 'is', null)
     .lte('escrow_release_at', now)
@@ -62,7 +67,7 @@ Deno.serve(async (req) => {
 
   for (const order of orders) {
     try {
-      const ann = (order as any).announcements as { title: string }
+      const ann = (order as any).announcements as { title: string; plan: string }
 
       // a. Release seller balance via atomic RPC
       const { error: rpcErr } = await admin.rpc('release_seller_balance', {
@@ -96,11 +101,67 @@ Deno.serve(async (req) => {
       // d. Notify seller
       await admin.from('notifications').insert({
         user_id: order.seller_id,
-        type:    'balance_released',
+        type:    'payment_released',
         title:   'Saldo liberado!',
         message: `R$ ${order.seller_amount.toFixed(2)} da venda "${ann?.title ?? 'Produto'}" foi creditado na sua carteira.`,
         data:    { order_id: order.id, amount: order.seller_amount },
       })
+
+      // e. GG Points: buyer earns 1 point per R$ 1 spent (purchase_earn)
+      const buyerPts = Math.floor(order.amount)
+      if (buyerPts > 0) {
+        const buyerExpiry = new Date(now)
+        buyerExpiry.setDate(buyerExpiry.getDate() + 180)
+        await admin.rpc('credit_points', {
+          p_user_id:      order.buyer_id,
+          p_amount:       buyerPts,
+          p_type:         'purchase_earn',
+          p_expires_at:   buyerExpiry.toISOString(),
+          p_reference_id: order.id,
+          p_description:  `Compra de "${ann?.title ?? 'Produto'}" — +${buyerPts} pontos`,
+        })
+        await admin.from('notifications').insert({
+          user_id: order.buyer_id,
+          type:    'system',
+          title:   `+${buyerPts} GG Points! 🎮`,
+          message: `Você ganhou ${buyerPts} GG Points pela compra de "${ann?.title ?? 'Produto'}". Expiram em 180 dias.`,
+          data:    { order_id: order.id, points: buyerPts },
+        })
+      }
+
+      // f. GG Points: seller earns points IF plan Gold/Diamond AND buyer rated positively
+      if (ann?.plan === 'gold' || ann?.plan === 'diamond') {
+        const { data: review } = await admin
+          .from('order_reviews')
+          .select('type')
+          .eq('order_id', order.id)
+          .eq('role', 'buyer')
+          .eq('type', 'positive')
+          .maybeSingle()
+
+        if (review) {
+          const sellerPts = Math.floor(order.seller_amount * 0.5)
+          if (sellerPts > 0) {
+            const sellerExpiry = new Date(now)
+            sellerExpiry.setDate(sellerExpiry.getDate() + 180)
+            await admin.rpc('credit_points', {
+              p_user_id:      order.seller_id,
+              p_amount:       sellerPts,
+              p_type:         'sale_earn',
+              p_expires_at:   sellerExpiry.toISOString(),
+              p_reference_id: order.id,
+              p_description:  `Venda de "${ann?.title ?? 'Produto'}" com avaliação positiva — +${sellerPts} pontos`,
+            })
+            await admin.from('notifications').insert({
+              user_id: order.seller_id,
+              type:    'system',
+              title:   `+${sellerPts} GG Points! 🎮`,
+              message: `Você ganhou ${sellerPts} GG Points pela venda de "${ann?.title ?? 'Produto'}" com avaliação positiva.`,
+              data:    { order_id: order.id, points: sellerPts },
+            })
+          }
+        }
+      }
 
       released++
       console.log(`[release-escrow] Released order ${order.id}: R$ ${order.seller_amount}`)
