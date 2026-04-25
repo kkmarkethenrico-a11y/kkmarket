@@ -33,9 +33,9 @@ export async function generateMetadata(
   { params }: Props,
   _parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const { slug } = await params
-  const supabase  = await createClient()
-  const { data }  = await supabase
+  const { tipo, slug } = await params
+  const supabase        = await createClient()
+  const { data }        = await supabase
     .from('categories')
     .select('name, seo_title, seo_description')
     .eq('slug', slug)
@@ -43,12 +43,25 @@ export async function generateMetadata(
 
   if (!data) return { title: 'Categoria — GameMarket' }
 
+  const baseUrl     = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kkmarket.com.br'
+  const title       = `Comprar ${data.seo_title ?? data.name} — Contas, Itens e Gold | GameMarket`
+  const description = data.seo_description ?? `Compre ${data.name} com segurança e entrega garantida na GameMarket.`
+
   return {
-    title:       `${data.seo_title ?? data.name} — Anúncios | GameMarket`,
-    description: data.seo_description ?? `Compre ${data.name} com segurança e entrega garantida na GameMarket.`,
+    title,
+    description,
+    // Canonical strips ?page=N and other query params
+    alternates: { canonical: `${baseUrl}/categoria/${tipo}/${slug}` },
     openGraph: {
-      title:       `${data.name} | GameMarket`,
-      description: data.seo_description ?? `Produtos digitais de ${data.name} com garantia.`,
+      title,
+      description,
+      type:     'website',
+      siteName: 'GameMarket',
+    },
+    twitter: {
+      card:        'summary_large_image',
+      title,
+      description,
     },
   }
 }

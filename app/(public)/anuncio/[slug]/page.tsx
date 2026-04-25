@@ -31,18 +31,31 @@ export async function generateMetadata(
 
   if (!data) return { title: 'Anúncio não encontrado — GameMarket' }
 
-  const excerpt = data.description.slice(0, 160).replace(/\n/g, ' ')
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kkmarket.com.br'
+  const plain   = data.description.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()
+  const excerpt = plain.slice(0, 155)
   const images  = (data.announcement_images ?? []) as { url: string; is_cover: boolean }[]
   const cover   = images.find((i) => i.is_cover) ?? images[0]
+  const ogImages = cover
+    ? [{ url: cover.url, width: 1200, height: 630, alt: data.title }]
+    : []
 
   return {
-    title:       `${data.title} | GameMarket`,
+    title:       `${data.title} — GameMarket`,
     description: excerpt,
+    alternates:  { canonical: `${baseUrl}/anuncio/${slug}` },
     openGraph: {
       title:       data.title,
       description: excerpt,
       type:        'website',
-      images:      cover ? [{ url: cover.url, width: 1200, height: 630 }] : [],
+      images:      ogImages,
+      siteName:    'GameMarket',
+    },
+    twitter: {
+      card:        'summary_large_image',
+      title:       data.title,
+      description: excerpt,
+      images:      cover ? [cover.url] : [],
     },
   }
 }
@@ -155,23 +168,47 @@ export default async function AnnouncioPage({ params }: Props) {
   })
 
   // Schema.org Product JSON-LD
-  const jsonLd = {
-    '@context':    'https://schema.org',
-    '@type':       'Product',
-    name:          ann.title,
-    description:   ann.description.slice(0, 200),
-    image:         coverUrl ?? undefined,
-    url:           `${process.env.NEXT_PUBLIC_APP_URL}/anuncio/${ann.slug}`,
+  const siteUrl    = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kkmarket.com.br'
+  const inStock    = ann.model === 'normal'
+    ? ann.stock_quantity > 0
+    : items.some((i) => (i.stock_quantity ?? 0) > 0)
+  const ratingP    = stats?.reviews_positive  ?? 0
+  const ratingN    = stats?.reviews_neutral   ?? 0
+  const ratingNg   = stats?.reviews_negative  ?? 0
+  const ratingTotal = ratingP + ratingN + ratingNg
+  const ratingValue = ratingTotal > 0
+    ? ((ratingP * 5 + ratingN * 3 + ratingNg * 1) / ratingTotal).toFixed(1)
+    : null
+
+  const jsonLd: Record<string, unknown> = {
+    '@context':  'https://schema.org',
+    '@type':     'Product',
+    name:        ann.title,
+    description: ann.description.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().slice(0, 5000),
+    image:       images.map((i) => i.url),
+    url:         `${siteUrl}/anuncio/${ann.slug}`,
     offers: {
       '@type':        'Offer',
       priceCurrency:  'BRL',
-      price:          ann.unit_price ?? undefined,
-      availability:   'https://schema.org/InStock',
+      ...(ann.model === 'normal' && ann.unit_price != null ? { price: ann.unit_price } : {}),
+      availability:   inStock
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/OutOfStock',
       seller: {
         '@type': 'Person',
         name:    sellerName,
+        url:     `${siteUrl}/perfil/${seller.username}`,
       },
     },
+    ...(ratingValue && ratingTotal > 0 ? {
+      aggregateRating: {
+        '@type':      'AggregateRating',
+        ratingValue,
+        ratingCount:  ratingTotal,
+        bestRating:   5,
+        worstRating:  1,
+      },
+    } : {}),
   }
 
   return (
@@ -266,6 +303,8 @@ export default async function AnnouncioPage({ params }: Props) {
                         alt={sellerName}
                         width={48}
                         height={48}
+                        sizes="48px"
+                        loading="lazy"
                         className="h-12 w-12 rounded-full object-cover"
                       />
                     ) : (

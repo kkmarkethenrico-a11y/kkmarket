@@ -57,6 +57,8 @@ function SmallAvatar({ src, name }: { src: string | null; name: string }) {
         alt={name}
         width={32}
         height={32}
+        sizes="32px"
+        loading="lazy"
         className="h-8 w-8 rounded-full object-cover"
       />
     )

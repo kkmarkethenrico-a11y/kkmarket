@@ -97,6 +97,8 @@ export function AnnouncementCard({ ann }: { ann: AnnouncementWithRelations }) {
                 alt={sellerName}
                 width={24}
                 height={24}
+                sizes="24px"
+                loading="lazy"
                 className="rounded-full object-cover"
               />
             ) : (
