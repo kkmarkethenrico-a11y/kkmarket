@@ -154,33 +154,64 @@ function ItemVariations({
 // ─── Plan selector ───────────────────────────────────────────────────────────
 function PlanSelector({ value, onChange }: { value: Plan; onChange: (p: Plan) => void }) {
   const colors: Record<Plan, string> = {
-    silver:  'border-zinc-500 bg-zinc-500/10 text-zinc-300',
-    gold:    'border-yellow-500 bg-yellow-500/10 text-yellow-300',
-    diamond: 'border-cyan-400 bg-cyan-400/10 text-cyan-300',
+    silver:  'border-zinc-700 bg-zinc-900/40',
+    gold:    'border-amber-500/40 bg-amber-500/5',
+    diamond: 'border-violet-500/40 bg-violet-500/5',
   }
   const selected: Record<Plan, string> = {
     silver:  'ring-2 ring-zinc-400 shadow-lg shadow-zinc-500/10',
-    gold:    'ring-2 ring-yellow-400 shadow-lg shadow-yellow-500/20',
-    diamond: 'ring-2 ring-cyan-400 shadow-lg shadow-cyan-500/20',
+    gold:    'ring-2 ring-amber-400 shadow-lg shadow-amber-500/30',
+    diamond: 'ring-2 ring-violet-400 shadow-lg shadow-violet-500/30',
   }
+  const tagCls: Record<'amber' | 'violet', string> = {
+    amber:  'bg-amber-500 text-amber-950',
+    violet: 'bg-violet-600 text-white',
+  }
+
+  // Simulation: how much the seller receives on R$ 100 sale
+  const SIMULATION_AMOUNT = 100
 
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-      {(Object.entries(PLANS) as [Plan, typeof PLANS[Plan]][]).map(([key, plan]) => (
-        <button
-          key={key}
-          type="button"
-          onClick={() => onChange(key)}
-          className={`flex flex-col gap-2 rounded-2xl border p-4 text-left transition-all ${colors[key]} ${value === key ? selected[key] : 'opacity-70 hover:opacity-100'}`}
-        >
-          <div className="flex items-center gap-2 font-semibold">
-            <span className="text-xl">{plan.badge}</span>
-            <span>{plan.label}</span>
-          </div>
-          <p className="text-xs leading-relaxed opacity-80">{plan.description}</p>
-          <p className="mt-auto text-lg font-bold">{(plan.fee * 100).toFixed(0)}% taxa</p>
-        </button>
-      ))}
+      {(Object.entries(PLANS) as [Plan, typeof PLANS[Plan]][]).map(([key, plan]) => {
+        const sellerReceives = SIMULATION_AMOUNT - SIMULATION_AMOUNT * plan.fee
+        const tag = plan.tag
+        return (
+          <button
+            key={key}
+            type="button"
+            onClick={() => onChange(key)}
+            className={`relative flex flex-col gap-3 rounded-2xl border p-4 text-left transition-all ${colors[key]} ${value === key ? selected[key] : 'opacity-80 hover:opacity-100'}`}
+          >
+            {tag && (
+              <span
+                className={`absolute -top-2 right-3 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider shadow ${tagCls[tag.tone]}`}
+              >
+                {tag.text}
+              </span>
+            )}
+
+            <div className="flex items-center gap-2 font-semibold text-zinc-100">
+              <span className="text-xl">{plan.badge}</span>
+              <span>{plan.label}</span>
+            </div>
+
+            <p className="text-xs leading-relaxed text-zinc-400">{plan.description}</p>
+
+            <div className="mt-auto space-y-1 border-t border-zinc-800/60 pt-3">
+              <p className="text-sm font-bold text-zinc-100">
+                Taxa {(plan.fee * 100).toFixed(2).replace('.', ',')}%
+              </p>
+              <p className="text-[11px] text-zinc-500">
+                Em uma venda de <span className="font-semibold text-zinc-300">R$ 100,00</span>, você recebe{' '}
+                <span className="font-bold text-green-400">
+                  R$ {sellerReceives.toFixed(2).replace('.', ',')}
+                </span>
+              </p>
+            </div>
+          </button>
+        )
+      })}
     </div>
   )
 }

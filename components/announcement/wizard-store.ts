@@ -2,10 +2,11 @@ import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
 // ─── Plan config ─────────────────────────────────────────────────────────────
+// Fees aligned with lib/pagarme/escrow.ts (env: PLATFORM_FEE_*).
 export const PLANS = {
-  silver: { label: 'Prata', fee: 0.12, badge: '🥈', color: 'zinc', description: '12% de taxa por venda. Até 3 imagens.' },
-  gold:   { label: 'Ouro',  fee: 0.10, badge: '🥇', color: 'yellow', description: '10% de taxa por venda. Até 6 imagens. Destaque na busca.' },
-  diamond:{ label: 'Diamante', fee: 0.08, badge: '💎', color: 'cyan', description: '8% de taxa por venda. Até 8 imagens. Topo da busca + badge VIP.' },
+  silver:  { label: 'Prata',    fee: 0.0999, badge: '🥈', color: 'zinc',   tag: null,                      description: 'Anúncio básico. Posição orgânica por vendas.' },
+  gold:    { label: 'Ouro',     fee: 0.1199, badge: '🥇', color: 'amber',  tag: { text: 'POPULAR', tone: 'amber' as const },  description: 'Destaque na seção “Mais Vistos” da categoria.' },
+  diamond: { label: 'Diamante', fee: 0.1299, badge: '💎', color: 'violet', tag: { text: 'TOP',     tone: 'violet' as const }, description: 'Máxima visibilidade. Aparece em “Em Destaque” na home.' },
 } as const
 
 export type Plan = keyof typeof PLANS
