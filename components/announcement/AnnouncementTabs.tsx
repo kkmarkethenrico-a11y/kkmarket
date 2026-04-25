@@ -73,14 +73,23 @@ function ReviewCard({ review }: { review: Review }) {
 export function ReviewsTab({
   initial,
   sellerId,
+  reviewsPositive = 0,
+  reviewsNeutral = 0,
+  reviewsNegative = 0,
 }: {
   initial: Review[]
   sellerId: string
+  reviewsPositive?: number
+  reviewsNeutral?: number
+  reviewsNegative?: number
 }) {
   const [reviews, setReviews] = useState<Review[]>(initial)
   const [loading, setLoading] = useState(false)
   const [hasMore, setHasMore] = useState(initial.length >= 10)
   const PER_PAGE = 10
+
+  const total  = reviewsPositive + reviewsNeutral + reviewsNegative
+  const posPct = total > 0 ? Math.round((reviewsPositive / total) * 100) : null
 
   async function loadMore() {
     setLoading(true)
@@ -97,7 +106,7 @@ export function ReviewsTab({
     if (data) setReviews((prev) => [...prev, ...(data as unknown as Review[])])
   }
 
-  if (reviews.length === 0) {
+  if (reviews.length === 0 && total === 0) {
     return (
       <div className="flex flex-col items-center gap-3 py-12 text-center">
         <span className="text-4xl">⭐</span>
@@ -108,6 +117,21 @@ export function ReviewsTab({
 
   return (
     <div className="flex flex-col gap-3">
+      {/* Resumo */}
+      {total > 0 && (
+        <div className="flex flex-wrap items-center gap-3 rounded-lg bg-zinc-800/60 px-4 py-3 text-sm">
+          <span className="font-semibold text-emerald-400">
+            {reviewsPositive} avaliação{reviewsPositive !== 1 ? 'ões' : ''} positiva{reviewsPositive !== 1 ? 's' : ''}
+          </span>
+          <span className="text-zinc-600">de</span>
+          <span className="text-zinc-400">{total} vendas avaliadas</span>
+          {posPct !== null && (
+            <span className="ml-auto rounded-full bg-emerald-500/20 px-2 py-0.5 text-xs font-medium text-emerald-400">
+              {posPct}% positivas
+            </span>
+          )}
+        </div>
+      )}
       {reviews.map((r) => <ReviewCard key={r.id} review={r} />)}
       {hasMore && (
         <button

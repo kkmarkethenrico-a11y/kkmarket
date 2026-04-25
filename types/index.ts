@@ -130,3 +130,27 @@ export interface AnnouncementWithRelations extends Announcement {
   user_stats: AnnouncementStats | null;
   announcement_images: AnnouncementImage[];
 }
+
+// ─── Reviews ──────────────────────────────────────────────────────────────────
+export type ReviewType = 'positive' | 'neutral' | 'negative';
+export type ReviewRole = 'buyer' | 'seller';
+
+export interface OrderReview {
+  id: string;
+  order_id: string;
+  reviewer_id: string;
+  reviewed_id: string;
+  role: ReviewRole;
+  type: ReviewType;
+  message: string | null;
+  created_at: string;
+}
+
+export interface OrderReviewWithProfile extends OrderReview {
+  profiles: {
+    username: string;
+    display_name: string | null;
+    avatar_url: string | null;
+  } | null;
+}
+

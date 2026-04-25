@@ -11,6 +11,9 @@ interface AnnouncementTabsShellProps {
   currentUserId: string | null
   initialReviews: Parameters<typeof ReviewsTab>[0]['initial']
   initialComments: Parameters<typeof QuestionsTab>[0]['initial']
+  reviewsPositive?: number
+  reviewsNeutral?: number
+  reviewsNegative?: number
 }
 
 export function AnnouncementTabsShell({
@@ -21,6 +24,9 @@ export function AnnouncementTabsShell({
   currentUserId,
   initialReviews,
   initialComments,
+  reviewsPositive = 0,
+  reviewsNeutral = 0,
+  reviewsNegative = 0,
 }: AnnouncementTabsShellProps) {
   return (
     <Tabs defaultValue="description" className="w-full">
@@ -49,7 +55,13 @@ export function AnnouncementTabsShell({
 
       {/* Reviews */}
       <TabsContent value="reviews" className="mt-6">
-        <ReviewsTab initial={initialReviews} sellerId={sellerId} />
+        <ReviewsTab
+          initial={initialReviews}
+          sellerId={sellerId}
+          reviewsPositive={reviewsPositive}
+          reviewsNeutral={reviewsNeutral}
+          reviewsNegative={reviewsNegative}
+        />
       </TabsContent>
 
       {/* Questions */}

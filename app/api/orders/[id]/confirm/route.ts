@@ -177,14 +177,35 @@ export async function POST(
     }
   }
 
-  // 11. Notify seller
-  await admin.from('notifications').insert({
-    user_id: order.seller_id,
-    type:    'order_delivered',
-    title:   'Recebimento confirmado!',
-    message: `O comprador confirmou o recebimento de "${ann.title}". ${isPositive ? 'Liberação acelerada ativada! 🚀' : `Saldo será liberado em ${newReleaseAt.toLocaleDateString('pt-BR')}.`}`,
-    data:    { order_id: orderId },
-  })
+  // 11. Notify seller (confirmação) + prompt de avaliação para ambos
+  await admin.from('notifications').insert([
+    {
+      user_id:        order.seller_id,
+      type:           'order_delivered',
+      title:          'Recebimento confirmado!',
+      message:        `O comprador confirmou o recebimento de "${ann.title}". ${isPositive ? 'Liberação acelerada ativada! 🚀' : `Saldo será liberado em ${newReleaseAt.toLocaleDateString('pt-BR')}.`}`,
+      reference_id:   orderId,
+      reference_type: 'order',
+    },
+    // Prompt: seller avalia o buyer
+    {
+      user_id:        order.seller_id,
+      type:           'review_received',
+      title:          'Avalie o comprador',
+      message:        `Como foi sua experiência vendendo "${ann.title}"? Avalie o comprador agora.`,
+      reference_id:   orderId,
+      reference_type: 'order',
+    },
+    // Prompt: buyer avalia o seller
+    {
+      user_id:        order.buyer_id,
+      type:           'review_received',
+      title:          'Avalie sua compra',
+      message:        `Tudo certo com "${ann.title}"? Deixe sua avaliação para o vendedor.`,
+      reference_id:   orderId,
+      reference_type: 'order',
+    },
+  ])
 
   return NextResponse.json({
     ok: true,

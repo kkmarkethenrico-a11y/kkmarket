@@ -102,13 +102,13 @@ export default async function AnnouncioPage({ params }: Props) {
         .single()
     : { data: null }
 
-  // ─── Initial reviews (first 10) ─────────────────────────────────────────
+  // ─── Initial reviews (first 5 for announcement page) ────────────────────────
   const { data: reviews } = await supabase
     .from('order_reviews')
     .select('id, reviewer_id, type, message, created_at, profiles!reviewer_id(username, display_name, avatar_url)')
     .eq('reviewed_id', ann.user_id)
     .order('created_at', { ascending: false })
-    .limit(10)
+    .limit(5)
 
   // ─── Initial comments (top-level + first replies) ────────────────────────
   const { data: comments } = await supabase
@@ -230,6 +230,9 @@ export default async function AnnouncioPage({ params }: Props) {
                 announcementId={ann.id}
                 isAuthenticated={!!user}
                 currentUserId={user?.id ?? null}
+                reviewsPositive={stats?.reviews_positive ?? 0}
+                reviewsNeutral={stats?.reviews_neutral ?? 0}
+                reviewsNegative={stats?.reviews_negative ?? 0}
                 initialReviews={(reviews ?? []) as unknown as Parameters<typeof AnnouncementTabsShell>[0]['initialReviews']}
                 initialComments={(comments ?? []) as unknown as Parameters<typeof AnnouncementTabsShell>[0]['initialComments']}
               />
