@@ -12,13 +12,13 @@ export async function Header() {
   
   const { data: { user } } = await supabase.auth.getUser()
   
-  let profile: { username: string; display_name?: string; avatar_url?: string; role?: string } | null = null
+  let profile: { username: string; display_name?: string; avatar_url?: string; role?: string; seller_status?: string } | null = null
   let pointsBalance = 0
   if (user) {
     const [profileRes, statsRes] = await Promise.all([
       supabase
         .from('profiles')
-        .select('username, display_name, avatar_url, role')
+        .select('username, display_name, avatar_url, role, seller_status')
         .eq('id', user.id)
         .single(),
       createAdminClient()
@@ -34,6 +34,7 @@ export async function Header() {
           display_name: raw.display_name ?? undefined,
           avatar_url:   raw.avatar_url   ?? undefined,
           role:         raw.role         ?? undefined,
+          seller_status: (raw as { seller_status?: string }).seller_status ?? 'disabled',
         }
       : null
     pointsBalance = statsRes.data?.points_balance ?? 0
@@ -98,13 +99,16 @@ export async function Header() {
               </Link>
             )}
             
-            <Link
-              href="/meus-anuncios/novo"
-              className="hidden lg:flex items-center gap-1.5 rounded-full bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-violet-500 active:scale-[0.97]"
-            >
-              <Plus className="h-4 w-4" />
-              Anunciar
-            </Link>
+            {user && (
+              <Link
+                href={profile?.seller_status === 'approved' ? '/meus-anuncios/novo' : '/verificacao'}
+                className="hidden lg:flex items-center gap-1.5 rounded-full bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-violet-500 active:scale-[0.97]"
+                title={profile?.seller_status === 'approved' ? 'Criar novo anúncio' : 'Qualifique sua conta para vender'}
+              >
+                <Plus className="h-4 w-4" />
+                {profile?.seller_status === 'approved' ? 'Anunciar' : 'Vender'}
+              </Link>
+            )}
 
             {/* Desktop UserNav */}
             <div className="hidden lg:block border-l border-zinc-800 pl-4 ml-2">
@@ -112,7 +116,7 @@ export async function Header() {
             </div>
 
             {/* Mobile Navigation / Trigger */}
-            <MobileNav isAuthenticated={!!user} profile={profile} />
+            <MobileNav isAuthenticated={!!user} profile={profile} sellerStatus={profile?.seller_status ?? 'disabled'} />
             
           </div>
         </div>

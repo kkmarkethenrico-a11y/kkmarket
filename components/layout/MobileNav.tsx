@@ -16,9 +16,10 @@ interface MobileNavProps {
     avatar_url?: string
     role?: string
   } | null
+  sellerStatus?: string
 }
 
-export function MobileNav({ isAuthenticated, profile }: MobileNavProps) {
+export function MobileNav({ isAuthenticated, profile, sellerStatus = 'disabled' }: MobileNavProps) {
   const [open, setOpen] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -114,12 +115,12 @@ export function MobileNav({ isAuthenticated, profile }: MobileNavProps) {
                     <span className="text-xs font-medium">Painel</span>
                   </Link>
                   <Link 
-                    href="/meus-anuncios/novo" 
+                    href={sellerStatus === 'approved' ? '/meus-anuncios/novo' : '/verificacao'} 
                     onClick={() => setOpen(false)}
                     className="flex flex-col items-center justify-center gap-2 rounded-xl bg-zinc-900 border border-zinc-800 p-3 text-zinc-300 hover:bg-zinc-800 transition-colors"
                   >
                     <PlusCircle className="h-5 w-5 text-green-400" />
-                    <span className="text-xs font-medium">Anunciar</span>
+                    <span className="text-xs font-medium">{sellerStatus === 'approved' ? 'Anunciar' : 'Vender'}</span>
                   </Link>
                 </div>
               </div>
