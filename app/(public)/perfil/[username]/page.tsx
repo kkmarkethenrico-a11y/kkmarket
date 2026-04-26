@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
+import Link from 'next/link'
 import type { Metadata } from 'next'
+import { Settings } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { ReputationBadge } from '@/components/profile/ReputationBadge'
 import { ProfileReviewTabs } from '@/components/profile/ProfileReviewTabs'
@@ -26,6 +28,9 @@ export default async function PublicProfilePage({ params }: Props) {
   const { username } = await params
   const supabase = await createClient()
 
+  // Usuário logado (para mostrar engrenagem se for o dono)
+  const { data: { user: currentUser } } = await supabase.auth.getUser()
+
   const { data: profile } = await supabase
     .from('profiles')
     .select(`
@@ -42,6 +47,8 @@ export default async function PublicProfilePage({ params }: Props) {
     .single()
 
   if (!profile) notFound()
+
+  const isOwner = currentUser?.id === profile.id
 
   const stats = profile.user_stats as unknown as {
     total_sales: number
@@ -107,6 +114,15 @@ export default async function PublicProfilePage({ params }: Props) {
             <div className="flex flex-wrap items-center gap-2">
               <h1 className="text-2xl font-bold">{displayName}</h1>
               <span className="text-zinc-500">@{profile.username}</span>
+              {isOwner && (
+                <Link
+                  href="/configuracoes"
+                  title="Editar perfil"
+                  className="ml-1 flex items-center justify-center rounded-full p-1.5 text-zinc-500 hover:bg-zinc-800 hover:text-zinc-200 transition-colors"
+                >
+                  <Settings className="h-4 w-4" />
+                </Link>
+              )}
             </div>
 
             {/* Verificações */}
