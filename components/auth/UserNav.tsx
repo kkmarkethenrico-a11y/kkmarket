@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { LayoutDashboard, Store, PlusCircle, Settings, LogOut } from 'lucide-react'
+import { LayoutDashboard, Store, PlusCircle, Settings, LogOut, User } from 'lucide-react'
 
 export async function UserNav() {
   const supabase = await createClient()
@@ -84,6 +84,12 @@ export async function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          <DropdownMenuItem>
+            <Link href={`/perfil/${profile?.username ?? ''}`} className="cursor-pointer flex items-center w-full">
+              <User className="mr-2 h-4 w-4" />
+              <span>Meu Perfil</span>
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuItem>
             <Link href="/painel" className="cursor-pointer flex items-center w-full">
               <LayoutDashboard className="mr-2 h-4 w-4" />
