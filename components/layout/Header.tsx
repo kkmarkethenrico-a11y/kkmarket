@@ -6,6 +6,7 @@ import { HeaderSearch } from '@/components/layout/HeaderSearch'
 import { CategoryMegaMenu } from '@/components/layout/CategoryMegaMenu'
 import { MobileNav } from '@/components/layout/MobileNav'
 import { UserNav } from '@/components/auth/UserNav'
+import { CartButton } from '@/components/layout/CartButton'
 
 export async function Header() {
   const supabase = await createClient()
@@ -109,6 +110,9 @@ export async function Header() {
                 {profile?.seller_status === 'approved' ? 'Anunciar' : 'Vender'}
               </Link>
             )}
+
+            {/* Cart */}
+            <CartButton />
 
             {/* Desktop UserNav */}
             <div className="hidden lg:block border-l border-zinc-800 pl-4 ml-2">

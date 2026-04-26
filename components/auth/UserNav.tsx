@@ -93,26 +93,26 @@ export async function UserNav() {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem asChild>
-              <Link href="/painel" className="cursor-pointer flex items-center w-full">
+            <DropdownMenuItem className="cursor-pointer p-0">
+              <Link href="/painel" className="flex items-center w-full px-2 py-1.5">
                 <LayoutDashboard className="mr-2 h-4 w-4" />
                 <span>Painel</span>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/minhas-compras" className="cursor-pointer flex items-center w-full">
+            <DropdownMenuItem className="cursor-pointer p-0">
+              <Link href="/minhas-compras" className="flex items-center w-full px-2 py-1.5">
                 <Store className="mr-2 h-4 w-4" />
                 <span>Minhas Compras</span>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/meus-anuncios/novo" className="cursor-pointer flex items-center w-full">
+            <DropdownMenuItem className="cursor-pointer p-0">
+              <Link href="/meus-anuncios/novo" className="flex items-center w-full px-2 py-1.5">
                 <PlusCircle className="mr-2 h-4 w-4" />
                 <span>Criar Anúncio</span>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/configuracoes" className="cursor-pointer flex items-center w-full">
+            <DropdownMenuItem className="cursor-pointer p-0">
+              <Link href="/configuracoes" className="flex items-center w-full px-2 py-1.5">
                 <Settings className="mr-2 h-4 w-4" />
                 <span>Configurações</span>
               </Link>
@@ -122,8 +122,8 @@ export async function UserNav() {
           {(profile?.role === 'admin' || profile?.role === 'moderator') && (
             <>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href="/admin" className="cursor-pointer font-bold text-violet-400 focus:text-violet-300 w-full flex items-center">
+              <DropdownMenuItem className="cursor-pointer p-0">
+                <Link href="/admin" className="font-bold text-violet-400 w-full flex items-center px-2 py-1.5">
                   <LayoutDashboard className="mr-2 h-4 w-4" />
                   <span>Admin Area</span>
                 </Link>
