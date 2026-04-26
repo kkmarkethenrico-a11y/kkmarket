@@ -91,19 +91,19 @@ export async function UserNav() {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link href="/painel/minhas-compras" className="cursor-pointer flex items-center w-full">
+            <Link href="/minhas-compras" className="cursor-pointer flex items-center w-full">
               <Store className="mr-2 h-4 w-4" />
               <span>Minhas Compras</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link href="/painel/meus-anuncios/novo" className="cursor-pointer flex items-center w-full">
+            <Link href="/meus-anuncios/novo" className="cursor-pointer flex items-center w-full">
               <PlusCircle className="mr-2 h-4 w-4" />
               <span>Criar Anúncio</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link href="/painel/configuracoes" className="cursor-pointer flex items-center w-full">
+            <Link href="/configuracoes" className="cursor-pointer flex items-center w-full">
               <Settings className="mr-2 h-4 w-4" />
               <span>Configurações</span>
             </Link>
