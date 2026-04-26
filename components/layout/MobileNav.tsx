@@ -114,7 +114,7 @@ export function MobileNav({ isAuthenticated, profile }: MobileNavProps) {
                     <span className="text-xs font-medium">Painel</span>
                   </Link>
                   <Link 
-                    href="/painel/meus-anuncios/novo" 
+                    href="/meus-anuncios/novo" 
                     onClick={() => setOpen(false)}
                     className="flex flex-col items-center justify-center gap-2 rounded-xl bg-zinc-900 border border-zinc-800 p-3 text-zinc-300 hover:bg-zinc-800 transition-colors"
                   >
