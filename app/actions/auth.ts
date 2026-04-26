@@ -112,7 +112,7 @@ export async function registerAction(
     password: parsed.data.password,
     options: {
       data: { username: parsed.data.username.toLowerCase() },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/callback`,
     },
   })
 
@@ -141,7 +141,7 @@ export async function forgotPasswordAction(
 
   const supabase = await createClient()
   await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?next=/nova-senha`,
+    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/callback?next=/nova-senha`,
   })
 
   // Sempre retorna sucesso para não revelar se o e-mail existe
@@ -159,7 +159,7 @@ export async function signInWithOAuthAction(provider: 'google' | 'discord') {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/callback`,
     },
   })
 
