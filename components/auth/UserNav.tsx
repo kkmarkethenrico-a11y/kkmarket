@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { LayoutDashboard, Store, PlusCircle, Settings, LogOut, ChevronDown } from 'lucide-react'
+import { LayoutDashboard, Store, PlusCircle, Settings, LogOut, User } from 'lucide-react'
 
 export async function UserNav() {
   const supabase = await createClient()
@@ -51,12 +51,8 @@ export async function UserNav() {
     : true
 
   return (
-    <div className="flex items-center gap-1">
-      {/* Avatar + nome → link direto ao perfil */}
-      <Link
-        href={profileHref}
-        className="group relative flex items-center gap-2 rounded-full px-1 py-1 outline-none ring-offset-zinc-950 transition-all focus-visible:ring-2 focus-visible:ring-violet-500 hover:bg-zinc-800/60"
-      >
+    <DropdownMenu>
+      <DropdownMenuTrigger className="group relative flex items-center gap-2 rounded-full px-1 py-1 outline-none ring-offset-zinc-950 transition-all focus-visible:ring-2 focus-visible:ring-violet-500 hover:bg-zinc-800/60">
         <div className="relative">
           <Avatar className="h-9 w-9 border border-zinc-800 transition-colors group-hover:border-zinc-700">
             <AvatarImage src={profile?.avatar_url ?? ''} alt={displayName} />
@@ -76,70 +72,69 @@ export async function UserNav() {
             {profile?.role === 'admin' ? 'Admin' : profile?.role === 'moderator' ? 'Moderador' : 'Cliente'}
           </span>
         </div>
-      </Link>
+      </DropdownMenuTrigger>
 
-      {/* Dropdown de navegação — botão chevron separado */}
-      <DropdownMenu>
-        <DropdownMenuTrigger className="flex items-center justify-center h-8 w-8 rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-violet-500">
-          <ChevronDown className="h-4 w-4" />
-        </DropdownMenuTrigger>
-
-        <DropdownMenuContent className="w-56" align="end">
-          <DropdownMenuLabel className="font-normal">
-            <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">{displayName}</p>
-              <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
-            </div>
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem className="cursor-pointer p-0">
-              <Link href="/painel" className="flex items-center w-full px-2 py-1.5">
-                <LayoutDashboard className="mr-2 h-4 w-4" />
-                <span>Painel</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer p-0">
-              <Link href="/minhas-compras" className="flex items-center w-full px-2 py-1.5">
-                <Store className="mr-2 h-4 w-4" />
-                <span>Minhas Compras</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer p-0">
-              <Link href="/meus-anuncios/novo" className="flex items-center w-full px-2 py-1.5">
-                <PlusCircle className="mr-2 h-4 w-4" />
-                <span>Criar Anúncio</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer p-0">
-              <Link href="/configuracoes" className="flex items-center w-full px-2 py-1.5">
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Configurações</span>
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-
-          {(profile?.role === 'admin' || profile?.role === 'moderator') && (
-            <>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer p-0">
-                <Link href="/admin" className="font-bold text-violet-400 w-full flex items-center px-2 py-1.5">
-                  <LayoutDashboard className="mr-2 h-4 w-4" />
-                  <span>Admin Area</span>
-                </Link>
-              </DropdownMenuItem>
-            </>
-          )}
-
-          <DropdownMenuSeparator />
-          <DropdownMenuItem className="focus:bg-red-500/10 focus:text-red-500 cursor-pointer p-0">
-            <LogoutButton className="flex w-full items-center justify-start py-1.5 px-2 h-full bg-transparent border-none">
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Sair da conta</span>
-            </LogoutButton>
+      <DropdownMenuContent className="w-56" align="end">
+        <DropdownMenuLabel className="font-normal">
+          <div className="flex flex-col space-y-1">
+            <p className="text-sm font-medium leading-none">{displayName}</p>
+            <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem className="cursor-pointer p-0">
+            <Link href={profileHref} className="flex items-center w-full px-2 py-1.5">
+              <User className="mr-2 h-4 w-4" />
+              <span>Meu Perfil</span>
+            </Link>
           </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+          <DropdownMenuItem className="cursor-pointer p-0">
+            <Link href="/painel" className="flex items-center w-full px-2 py-1.5">
+              <LayoutDashboard className="mr-2 h-4 w-4" />
+              <span>Painel</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer p-0">
+            <Link href="/minhas-compras" className="flex items-center w-full px-2 py-1.5">
+              <Store className="mr-2 h-4 w-4" />
+              <span>Minhas Compras</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer p-0">
+            <Link href="/meus-anuncios/novo" className="flex items-center w-full px-2 py-1.5">
+              <PlusCircle className="mr-2 h-4 w-4" />
+              <span>Criar Anúncio</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer p-0">
+            <Link href="/configuracoes" className="flex items-center w-full px-2 py-1.5">
+              <Settings className="mr-2 h-4 w-4" />
+              <span>Configurações</span>
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+
+        {(profile?.role === 'admin' || profile?.role === 'moderator') && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="cursor-pointer p-0">
+              <Link href="/admin" className="font-bold text-violet-400 w-full flex items-center px-2 py-1.5">
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                <span>Admin Area</span>
+              </Link>
+            </DropdownMenuItem>
+          </>
+        )}
+
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className="focus:bg-red-500/10 focus:text-red-500 cursor-pointer p-0">
+          <LogoutButton className="flex w-full items-center justify-start py-1.5 px-2 h-full bg-transparent border-none">
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Sair da conta</span>
+          </LogoutButton>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
