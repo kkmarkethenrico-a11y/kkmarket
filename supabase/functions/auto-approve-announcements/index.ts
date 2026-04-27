@@ -14,9 +14,9 @@
  *   - E-mail via Resend
  *
  * Deploy:
- *   supabase functions deploy auto-approve-announcements
- *
- * Cron:
+    supabase functions deploy auto-approve-announcements
+ 
+ *Cron:
  *   SELECT cron.schedule(
  *     'auto-approve-announcements',
  *     '0 * * * *',

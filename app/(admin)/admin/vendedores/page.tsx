@@ -10,7 +10,6 @@ type Profile = {
   id: string
   username: string
   display_name: string | null
-  email: string | null
   seller_status: string
   seller_applied_at: string | null
   seller_rejection_reason: string | null
@@ -46,14 +45,28 @@ export default async function AdminVendedoresPage({
   const statusFilter = filter ?? 'pending'
 
   const admin = createAdminClient()
-  const { data: profiles } = await admin
+  const { data: profiles, error: profilesError } = await admin
     .from('profiles')
-    .select('id, username, display_name, email, seller_status, seller_applied_at, seller_rejection_reason')
+    .select('id, username, display_name, seller_status, seller_applied_at, seller_rejection_reason')
     .eq('seller_status', statusFilter)
     .order('seller_applied_at', { ascending: false, nullsFirst: false })
     .limit(100)
 
+  if (profilesError) {
+    console.error('[admin/vendedores] profiles query error:', profilesError.message)
+  }
+
   const userIds = (profiles ?? []).map((p) => p.id)
+
+  // Fetch emails from auth.users (profiles table doesn't store email)
+  const emailMap = new Map<string, string>()
+  await Promise.all(
+    userIds.map(async (id) => {
+      const { data } = await admin.auth.admin.getUserById(id)
+      if (data.user?.email) emailMap.set(id, data.user.email)
+    })
+  )
+
   const { data: validations } = userIds.length
     ? await admin
         .from('user_validations')
@@ -115,7 +128,7 @@ export default async function AdminVendedoresPage({
                     {p.display_name ?? p.username}{' '}
                     <span className="text-xs text-muted-foreground">@{p.username}</span>
                   </h2>
-                  <p className="text-xs text-muted-foreground">{p.email}</p>
+                  <p className="text-xs text-muted-foreground">{emailMap.get(p.id) ?? '—'}</p>
                   {p.seller_applied_at && (
                     <p className="mt-1 text-xs text-muted-foreground">
                       Aplicou em {new Date(p.seller_applied_at).toLocaleString('pt-BR')}
