@@ -123,7 +123,7 @@ export default async function AnnouncioPage({ params }: Props) {
     .limit(30)
 
   // ─── Dados derivados ─────────────────────────────────────────────────────
-  const seller = ann.profiles as {
+  const seller = ann.profiles as unknown as {
     id: string
     username: string
     display_name: string | null
