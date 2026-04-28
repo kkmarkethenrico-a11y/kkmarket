@@ -166,10 +166,22 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     console.error('[categoria/slug] query error:', error.message)
   }
 
-  // Sort client-side by plan weight within result set (Supabase enum order ≠ plan priority)
-  const announcements = ((rawAnn ?? []) as unknown as AnnouncementWithRelations[]).sort(
+  // Fetch user_stats separately and merge
+  const sellerIds = [...new Set((rawAnn ?? []).map((a) => a.user_id))]
+  const { data: statsData } = sellerIds.length
+    ? await supabase
+        .from('user_stats')
+        .select('user_id, avg_response_time_minutes, reviews_positive, reviews_neutral, reviews_negative')
+        .in('user_id', sellerIds)
+    : { data: [] as any[] }
+  const statsMap = new Map((statsData ?? []).map((s: any) => [s.user_id, s]))
+
+  const announcements = ((rawAnn ?? []) as any[]).map((ann) => ({
+    ...ann,
+    user_stats: statsMap.get(ann.user_id) ?? null,
+  })).sort(
     (a, b) => planWeight(b.plan) - planWeight(a.plan),
-  )
+  ) as unknown as AnnouncementWithRelations[]
 
   const total = count ?? 0
 

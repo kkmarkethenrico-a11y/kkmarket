@@ -89,7 +89,7 @@ async function getData() {
   const { data: posts } = await supabase
     .from('blog_posts')
     .select('id, title, slug, cover_url, created_at')
-    .eq('status', 'published')
+    .eq('is_published', true)
     .order('created_at', { ascending: false })
     .limit(4)
 
