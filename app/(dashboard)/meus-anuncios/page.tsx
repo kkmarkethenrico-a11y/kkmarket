@@ -128,7 +128,7 @@ export default async function MeusAnunciosPage({ searchParams }: PageProps) {
                 ?? ann.announcement_images?.[0]
               const status = STATUS_LABELS[ann.status] ?? { label: ann.status, cls: 'bg-zinc-700 text-zinc-300' }
               const plan = PLAN_LABELS[ann.plan] ?? { label: ann.plan, cls: 'text-zinc-400' }
-              const category = (ann.categories as { name: string } | null)?.name ?? '—'
+              const category = (ann.categories as unknown as { name: string } | null)?.name ?? '—'
 
               return (
                 <div
