@@ -317,7 +317,7 @@ export default async function AnnouncioPage({ params }: Props) {
               </div>
 
               <div className="rounded-2xl border border-zinc-800/40 bg-zinc-900/20 px-4 py-3 text-xs text-zinc-600">
-                🔒 Pagamento seguro via Pagar.me · Dinheiro retido em escrow até sua confirmação · Suporte 24h
+                🔒 Pagamento seguro via Mercado Pago · Dinheiro retido em escrow até sua confirmação · Suporte 24h
               </div>
             </aside>
           </div>

@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { checkKycComplete } from '@/lib/validations/kyc'
-import { WITHDRAWAL_LIMITS } from '@/lib/pagarme/withdrawals'
+import { WITHDRAWAL_LIMITS } from '@/lib/withdrawal/limits'
 import WithdrawalsClient from './WithdrawalsClient'
 
 export const dynamic = 'force-dynamic'

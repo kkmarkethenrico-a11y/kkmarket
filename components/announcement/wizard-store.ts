@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
 // ─── Plan config ─────────────────────────────────────────────────────────────
-// Fees aligned with lib/pagarme/escrow.ts (env: PLATFORM_FEE_*).
+// Fees aligned with lib/mercadopago/client.ts (env: MP_MARKETPLACE_FEE_*).
 export const PLANS = {
   silver:  { label: 'Prata',    fee: 0.0999, badge: '🥈', color: 'zinc',   tag: null,                      description: 'Anúncio básico. Posição orgânica por vendas.' },
   gold:    { label: 'Ouro',     fee: 0.1199, badge: '🥇', color: 'amber',  tag: { text: 'POPULAR', tone: 'amber' as const },  description: 'Destaque na seção “Mais Vistos” da categoria.' },

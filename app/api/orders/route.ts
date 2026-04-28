@@ -1,35 +1,32 @@
 /**
  * POST /api/orders
  *
- * Creates an order + Pagar.me charge in a single transaction.
- * Flow:
- *   1. Validate body (announcement_id, item_id?, payment_method, card_token?)
- *   2. Verify announcement exists, is active, has stock
- *   3. Atomically decrement stock via RPC
- *   4. Calculate platform_fee based on announcement plan
- *   5. Insert order row (status: pending_payment)
- *   6. Create charge on Pagar.me (PIX / Boleto / Credit Card)
- *   7. Return { order_id, payment_data }
+ * Cria um pedido + cobrança no Mercado Pago em uma única transação.
+ *
+ * Fluxo:
+ *   1. Valida body (announcement_id, item_id?, payment_method, card_token?)
+ *   2. Verifica anúncio ativo + estoque
+ *   3. Decrementa estoque atomicamente via RPC
+ *   4. Calcula platform_fee conforme o plano do anúncio
+ *   5. Insere a linha em `orders` (status: pending_payment)
+ *   6. Cria a cobrança no Mercado Pago (PIX / Boleto / Credit Card)
+ *   7. Retorna { order_id, payment_data }
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { createClient }      from '@/lib/supabase/server'
-import { createAdminClient }  from '@/lib/supabase/admin'
+import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import {
-  createOrder as pagarmeCreateOrder,
-  buildPixCharge,
-  buildBoletoCharge,
-  buildCreditCardCharge,
-  PagarmeError,
-} from '@/lib/pagarme/client'
-import {
-  calculateFee,
-  decrementStock,
-} from '@/lib/pagarme/escrow'
+  createPixPayment,
+  createBoletoPayment,
+  createCreditCardPayment,
+} from '@/lib/mercadopago/payments'
+import type { MPPaymentMethod, MPPaymentResult } from '@/lib/mercadopago/types'
+import { calculateFee, decrementStock } from '@/lib/orders/escrow'
 import type { AnnouncementPlan } from '@/types'
 
-// ─── Request Schema ───────────────────────────────────────────────────────────
+// ─── Request Schema ──────────────────────────────────────────────────────────
 const bodySchema = z.object({
   announcement_id: z.string().uuid(),
   item_id:         z.string().uuid().optional(),
@@ -38,7 +35,7 @@ const bodySchema = z.object({
   installments:    z.number().int().min(1).max(12).optional(),
 })
 
-// ─── Handler ──────────────────────────────────────────────────────────────────
+// ─── Handler ─────────────────────────────────────────────────────────────────
 export async function POST(request: NextRequest) {
   // 1. Auth
   const supabase = await createClient()
@@ -60,13 +57,17 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  const { announcement_id, item_id, payment_method, card_token, installments } = parsed.data
+  const body = parsed.data
+  const { announcement_id, item_id, payment_method } = body
 
-  if (payment_method === 'credit_card' && !card_token) {
-    return NextResponse.json({ error: 'card_token obrigatório para cartão de crédito.' }, { status: 422 })
+  if (payment_method === 'credit_card' && !body.card_token) {
+    return NextResponse.json(
+      { error: 'card_token obrigatório para cartão de crédito.' },
+      { status: 422 },
+    )
   }
 
-  // 3. Fetch announcement + seller + category
+  // 3. Fetch announcement
   const admin = createAdminClient()
   const { data: ann, error: annErr } = await admin
     .from('announcements')
@@ -83,12 +84,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Anúncio não encontrado ou inativo.' }, { status: 404 })
   }
 
-  // Prevent self-purchase
   if (ann.user_id === user.id) {
     return NextResponse.json({ error: 'Você não pode comprar seu próprio anúncio.' }, { status: 403 })
   }
 
-  // 4. Determine price + validate stock
+  // 4. Determina preço + valida estoque
   let amount: number
 
   if (ann.model === 'dynamic') {
@@ -117,23 +117,25 @@ export async function POST(request: NextRequest) {
     amount = ann.unit_price
   }
 
-  // Min order amount
   const minAmount = parseFloat(process.env.MIN_ORDER_AMOUNT ?? '2.00')
   if (amount < minAmount) {
-    return NextResponse.json({ error: `Valor mínimo do pedido: R$ ${minAmount.toFixed(2)}.` }, { status: 422 })
+    return NextResponse.json(
+      { error: `Valor mínimo do pedido: R$ ${minAmount.toFixed(2)}.` },
+      { status: 422 },
+    )
   }
 
-  // 5. Atomically decrement stock
+  // 5. Decrementa estoque atomicamente
   const decremented = await decrementStock(announcement_id, item_id ?? null)
   if (!decremented) {
     return NextResponse.json({ error: 'Estoque insuficiente.' }, { status: 409 })
   }
 
-  // 6. Calculate fees
+  // 6. Calcula taxas
   const plan = ann.plan as AnnouncementPlan
   const { fee: platformFee, sellerAmount } = calculateFee(amount, plan)
 
-  // 7. Insert order
+  // 7. Insere a ordem
   const { data: order, error: orderErr } = await admin
     .from('orders')
     .insert({
@@ -155,7 +157,6 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (orderErr || !order) {
-    // Restore stock on failure
     await admin.rpc('restore_stock', {
       p_announcement_id: announcement_id,
       p_item_id:         item_id ?? undefined,
@@ -165,86 +166,73 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Erro ao criar pedido.' }, { status: 500 })
   }
 
-  // 8. Get buyer profile for Pagar.me customer
+  // 8. Buyer profile (para nome/CPF no boleto)
   const { data: profile } = await admin
     .from('profiles')
-    .select('username, display_name')
+    .select('username, display_name, full_name, cpf')
     .eq('id', user.id)
-    .single()
+    .single<{
+      username:     string | null
+      display_name: string | null
+      full_name:    string | null
+      cpf:          string | null
+    }>()
 
-  const customerName = profile?.display_name ?? profile?.username ?? 'Comprador'
+  const fullName = profile?.full_name ?? profile?.display_name ?? profile?.username ?? 'Comprador'
+  const [firstName, ...rest] = fullName.trim().split(/\s+/)
+  const lastName = rest.join(' ') || firstName
 
-  // 9. Create Pagar.me charge
-  const amountCents = Math.round(amount * 100)
-  let charge
-  switch (payment_method) {
-    case 'pix':
-      charge = buildPixCharge(amountCents, 1800)  // 30 min
-      break
-    case 'boleto': {
-      const due = new Date()
-      due.setDate(due.getDate() + 1) // 1 business day
-      charge = buildBoletoCharge(amountCents, due)
-      break
-    }
-    case 'credit_card':
-      charge = buildCreditCardCharge(amountCents, card_token!, installments ?? 1)
-      break
+  if (!user.email) {
+    await admin.rpc('restore_stock', {
+      p_announcement_id: announcement_id,
+      p_item_id:         item_id ?? undefined,
+      p_quantity:        1,
+    })
+    return NextResponse.json({ error: 'E-mail do comprador não encontrado.' }, { status: 422 })
   }
 
+  // 9. Cria cobrança no Mercado Pago
+  const mpMethod: MPPaymentMethod =
+    payment_method === 'boleto' ? 'ticket' : payment_method
+  const paymentParams = {
+    orderId:     order.id,
+    amount,
+    method:      mpMethod,
+    buyerEmail:  user.email,
+    description: `Pedido #${order.id.slice(0, 8)} — ${ann.title}`,
+  }
+
+  let paymentResult: MPPaymentResult
   try {
-    const pagarmeOrder = await pagarmeCreateOrder({
-      customer: {
-        name:     customerName,
-        email:    user.email!,
-        document: '00000000000', // Will be replaced by real CPF from KYC
-        type:     'individual',
-      },
-      items: [{
-        amount:      amountCents,
-        description: ann.title.slice(0, 120),
-        quantity:    1,
-      }],
-      charges:  [charge],
-      metadata: {
-        order_id:     order.id,
-        platform:     'gamemarket',
-      },
-    })
-
-    // 10. Update order with Pagar.me IDs
-    const pagarmeCharge = pagarmeOrder.charges?.[0]
-    await admin
-      .from('orders')
-      .update({
-        pagarme_order_id:  pagarmeOrder.id,
-        pagarme_charge_id: pagarmeCharge?.id ?? null,
-        updated_at:        new Date().toISOString(),
-      })
-      .eq('id', order.id)
-
-    // 11. Build payment response
-    const lastTx = pagarmeCharge?.last_transaction
-    const paymentData: Record<string, unknown> = { payment_method }
-
-    if (payment_method === 'pix' && lastTx) {
-      paymentData.qr_code     = lastTx.qr_code
-      paymentData.qr_code_url = lastTx.qr_code_url
-      paymentData.expires_at  = lastTx.expires_at
-    } else if (payment_method === 'boleto' && lastTx) {
-      paymentData.boleto_url = lastTx.url
-      paymentData.boleto_pdf = lastTx.pdf
-      paymentData.expires_at = lastTx.expires_at
-    } else if (payment_method === 'credit_card') {
-      paymentData.status = pagarmeCharge?.status
+    switch (payment_method) {
+      case 'pix':
+        paymentResult = await createPixPayment(paymentParams)
+        break
+      case 'boleto':
+        if (!profile?.cpf) {
+          throw new Error(
+            'CPF do comprador não cadastrado. Conclua a verificação de identidade para pagar com boleto.',
+          )
+        }
+        paymentResult = await createBoletoPayment({
+          ...paymentParams,
+          buyerFirstName: firstName,
+          buyerLastName:  lastName,
+          buyerCpf:       profile.cpf,
+        })
+        break
+      case 'credit_card':
+        paymentResult = await createCreditCardPayment({
+          ...paymentParams,
+          cardToken:    body.card_token,
+          installments: body.installments ?? 1,
+        })
+        break
+      default:
+        return NextResponse.json({ error: 'Método inválido.' }, { status: 400 })
     }
-
-    return NextResponse.json(
-      { order_id: order.id, payment_data: paymentData },
-      { status: 201 },
-    )
   } catch (e) {
-    // Rollback: restore stock + cancel order
+    // Rollback: restaura estoque + cancela ordem
     await admin.rpc('restore_stock', {
       p_announcement_id: announcement_id,
       p_item_id:         item_id ?? undefined,
@@ -260,8 +248,34 @@ export async function POST(request: NextRequest) {
       })
       .eq('id', order.id)
 
-    const msg = e instanceof PagarmeError ? e.message : 'Erro no gateway de pagamento'
-    console.error('[orders] Pagar.me createOrder failed:', e)
+    const msg = e instanceof Error ? e.message : 'Erro no gateway de pagamento'
+    console.error('[orders] Mercado Pago createPayment failed:', e)
     return NextResponse.json({ error: msg }, { status: 502 })
   }
+
+  // 10. Atualiza ordem com o ID do pagamento MP
+  await admin
+    .from('orders')
+    .update({
+      mp_payment_id: paymentResult.id,
+      updated_at:    new Date().toISOString(),
+    })
+    .eq('id', order.id)
+
+  // 11. Resposta ao frontend
+  return NextResponse.json(
+    {
+      order_id: order.id,
+      payment_data: {
+        method:          payment_method,
+        pix_qr_code:     paymentResult.pixQrCode,
+        pix_qr_base64:   paymentResult.pixQrCodeBase64,
+        pix_expiration:  paymentResult.pixExpiration,
+        boleto_url:      paymentResult.boletoUrl,
+        boleto_barcode:  paymentResult.boletoBarcode,
+        boleto_exp:      paymentResult.boletoExpiration,
+      },
+    },
+    { status: 201 },
+  )
 }

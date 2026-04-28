@@ -3,9 +3,11 @@
  *
  * Roda 1x ao dia (10h America/Sao_Paulo) via pg_cron. Busca todos os
  * withdrawal_requests com status='pending' AND type='normal' e dispara
- * a transferência PIX na Pagar.me.
+ * a transferência PIX via Mercado Pago Disbursements API.
  *
- * Em caso de falha, o valor é estornado para o saldo (RPC reject_withdrawal).
+ * ATENÇÃO: A API de Disbursements exige habilitação manual pelo suporte MP.
+ * Enquanto não habilitada, processar saques manualmente em:
+ * mercadopago.com.br → Seu negócio → Saques.
  *
  * Deploy:
  *   supabase functions deploy process-withdrawal
@@ -29,41 +31,34 @@ const SUPABASE_URL     = Deno.env.get('SUPABASE_URL')!
 // @ts-ignore
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 // @ts-ignore
-const PAGARME_API_KEY  = Deno.env.get('PAGARME_API_KEY')!
+const MP_ACCESS_TOKEN  = Deno.env.get('MP_ACCESS_TOKEN')!
 
-const PAGARME_BASE = 'https://api.pagar.me/core/v5'
-
-function pagarmeHeaders(): HeadersInit {
-  // @ts-ignore — Deno polyfill
-  const encoded = btoa(`${PAGARME_API_KEY}:`)
-  return {
-    'Content-Type': 'application/json',
-    Authorization:  `Basic ${encoded}`,
-  }
-}
-
-async function createPixTransfer(params: {
-  amountCents: number
+async function createMPPixWithdrawal(params: {
+  amount:      number
   pixKey:      string
   pixKeyType:  string
   description: string
-  metadata:    Record<string, string>
+  externalRef: string
 }): Promise<{ id: string; status: string }> {
-  const res = await fetch(`${PAGARME_BASE}/transfers`, {
+  const res = await fetch('https://api.mercadopago.com/v1/disbursements', {
     method:  'POST',
-    headers: pagarmeHeaders(),
+    headers: {
+      'Content-Type':      'application/json',
+      'Authorization':     `Bearer ${MP_ACCESS_TOKEN}`,
+      'X-Idempotency-Key': params.externalRef,
+    },
     body: JSON.stringify({
-      amount: params.amountCents,
-      pix: {
-        key:      params.pixKey,
-        key_type: params.pixKeyType,
+      external_reference: params.externalRef,
+      amount:             params.amount,
+      description:        params.description,
+      receiver: {
+        pix_key:      params.pixKey,
+        pix_key_type: params.pixKeyType,
       },
-      description: params.description,
-      metadata:    params.metadata,
     }),
   })
   const json = await res.json()
-  if (!res.ok) throw new Error(json?.message ?? `Pagar.me ${res.status}`)
+  if (!res.ok) throw new Error(json?.message ?? json?.error ?? `MP HTTP ${res.status}`)
   return json
 }
 
@@ -114,23 +109,19 @@ Deno.serve(async (req) => {
     }
 
     try {
-      const transfer = await createPixTransfer({
-        amountCents: Math.round(Number(req.net_amount) * 100),
+      const transfer = await createMPPixWithdrawal({
+        amount:      Number(req.net_amount),
         pixKey:      req.pix_key,
         pixKeyType:  req.pix_key_type,
         description: `Saque ${req.type} #${req.id.slice(0, 8)}`,
-        metadata:    {
-          user_id:       req.user_id,
-          withdrawal_id: req.id,
-          type:          req.type,
-        },
+        externalRef: req.id,
       })
 
       await admin
         .from('withdrawal_requests')
         .update({
           status:       'completed',
-          pagarme_id:   transfer.id,
+          mp_id:        transfer.id,
           processed_at: new Date().toISOString(),
           updated_at:   new Date().toISOString(),
         })
@@ -141,7 +132,7 @@ Deno.serve(async (req) => {
         type:    'withdrawal_approved',
         title:   'Saque aprovado',
         message: `Seu saque de R$ ${Number(req.net_amount).toFixed(2)} foi processado com sucesso.`,
-        data:    { withdrawal_id: req.id, pagarme_id: transfer.id },
+        data:    { withdrawal_id: req.id, mp_id: transfer.id },
       })
 
       results.completed++
@@ -153,7 +144,7 @@ Deno.serve(async (req) => {
       await admin.rpc('reject_withdrawal', {
         p_request_id: req.id,
         p_admin_id:   null,
-        p_note:       `Falha automática: ${msg}`,
+        p_note:       `Falha automática MP: ${msg}`,
       })
 
       results.failed++

@@ -131,7 +131,7 @@ export function CartPageClient() {
           </div>
 
           <p className="rounded-xl bg-zinc-800/60 px-4 py-3 text-xs text-zinc-500 text-center">
-            🚧 Integração de pagamento via Pagar.me em breve.
+            🚧 Integração de pagamento via Mercado Pago em breve.
           </p>
 
           <button

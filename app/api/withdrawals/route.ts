@@ -1,8 +1,8 @@
 /**
  * /api/withdrawals
  *
- * POST → solicita um novo saque (após validação de KYC + saldo)
- * GET  → lista os saques do usuário autenticado (paginação simples)
+ * GET → lista saques do usuário autenticado.
+ * POST → solicita novo saque (valida KYC + saldo, processa TURBO imediatamente).
  */
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -11,7 +11,8 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { checkKycComplete } from '@/lib/validations/kyc'
 import { PIX_KEY_TYPES, validatePixKey, type PixKeyType } from '@/lib/validations/pix'
-import { processWithdrawal, WITHDRAWAL_LIMITS } from '@/lib/pagarme/withdrawals'
+import { WITHDRAWAL_LIMITS } from '@/lib/withdrawal/limits'
+import { processWithdrawal } from '@/lib/orders/withdrawals'
 
 const postSchema = z.object({
   amount:       z.number().positive(),
@@ -20,7 +21,7 @@ const postSchema = z.object({
   pix_key_type: z.enum(PIX_KEY_TYPES),
 })
 
-// ──────────────────────────────────────────────────────────────────────
+// ─── GET ─────────────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -54,16 +55,15 @@ export async function GET(request: NextRequest) {
     .maybeSingle()
 
   return NextResponse.json({
-    items:   data ?? [],
-    total:   count ?? 0,
+    data:    data ?? [],
+    count:   count ?? 0,
     page,
     limit,
     balance: Number(stats?.wallet_balance ?? 0),
-    limits:  WITHDRAWAL_LIMITS,
   })
 }
 
-// ──────────────────────────────────────────────────────────────────────
+// ─── POST ─────────────────────────────────────────────────────────────────────
 export async function POST(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -95,6 +95,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: pixCheck.reason ?? 'Chave PIX inválida.' }, { status: 400 })
   }
 
+  // Verificação de identidade obrigatória para saques
   const kyc = await checkKycComplete(user.id)
   if (!kyc.complete) {
     return NextResponse.json(
@@ -129,7 +130,7 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // RPC atômica: cria withdrawal + debita saldo
+  // RPC atômica: cria withdrawal_request + debita saldo
   const { data: created, error: rpcErr } = await admin.rpc('request_withdrawal', {
     p_user_id:      user.id,
     p_amount:       amount,
@@ -149,7 +150,7 @@ export async function POST(request: NextRequest) {
 
   const row = Array.isArray(created) ? created[0] : created
 
-  // TURBO: processa imediatamente
+  // TURBO: processa via MP Disbursements imediatamente
   if (body.type === 'turbo') {
     const result = await processWithdrawal(row.id)
     if (!result.ok) {
@@ -164,5 +165,6 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  // Normal: fica pendente para processamento diário (Edge Function ou admin)
   return NextResponse.json({ ok: true, withdrawal: row }, { status: 201 })
 }

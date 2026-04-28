@@ -78,8 +78,7 @@ export interface Order {
   platform_fee: number;
   seller_amount: number;
   payment_method: PaymentMethod | null;
-  pagarme_order_id: string | null;
-  pagarme_charge_id: string | null;
+  mp_payment_id: string | null;
   escrow_release_at: string | null;
   accelerated_release: boolean;
   buyer_confirmed_at: string | null;

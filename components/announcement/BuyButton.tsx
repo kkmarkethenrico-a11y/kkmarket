@@ -3,6 +3,8 @@
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import type { AnnouncementItem } from './VariationSelector'
+import { PaymentMethods, PixResult } from '@/components/checkout/PaymentMethods'
+import type { PaymentData } from '@/components/checkout/PaymentMethods'
 
 interface BuyButtonProps {
   announcementId: string
@@ -110,7 +112,7 @@ export function BuyButton({
   )
 }
 
-// ─── Checkout Modal placeholder (O-01 will replace this) ─────────────────────
+// ─── Checkout Modal ───────────────────────────────────────────────────────────
 function CheckoutModal({
   announcementId,
   selectedItemId,
@@ -122,6 +124,15 @@ function CheckoutModal({
   price: number
   onClose: () => void
 }) {
+  const [orderId, setOrderId]           = useState<string | null>(null)
+  const [paymentData, setPaymentData]   = useState<PaymentData | null>(null)
+  const [errorMsg, setErrorMsg]         = useState<string | null>(null)
+
+  function handleSuccess(id: string, pd: PaymentData) {
+    setOrderId(id)
+    setPaymentData(pd)
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-end justify-center bg-zinc-950/80 backdrop-blur-sm sm:items-center"
@@ -130,8 +141,8 @@ function CheckoutModal({
       aria-modal="true"
       aria-label="Checkout"
     >
-      <div className="w-full max-w-md rounded-t-3xl border border-zinc-800 bg-zinc-950 p-6 sm:rounded-3xl">
-        <div className="mb-6 flex items-center justify-between">
+      <div className="w-full max-w-md rounded-t-3xl border border-zinc-800 bg-zinc-950 p-6 sm:rounded-3xl max-h-[90dvh] overflow-y-auto">
+        <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-bold text-white">Confirmar Compra</h2>
           <button
             type="button"
@@ -142,37 +153,79 @@ function CheckoutModal({
           </button>
         </div>
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-4 mb-6">
+        {/* Total */}
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-4 mb-4">
           <div className="flex items-center justify-between">
             <span className="text-sm text-zinc-400">Total a pagar</span>
             <span className="text-2xl font-bold text-green-400">
               R$ {price.toFixed(2).replace('.', ',')}
             </span>
           </div>
-          {selectedItemId && (
-            <p className="mt-1 text-xs text-zinc-600">ID da variação: {selectedItemId}</p>
-          )}
         </div>
 
-        <p className="mb-4 rounded-xl bg-zinc-900 px-4 py-3 text-xs text-zinc-500 text-center">
-          🚧 Integração de pagamento via Pagar.me será implementada em O-01.
-        </p>
+        {/* Erro */}
+        {errorMsg && (
+          <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+            {errorMsg}
+          </div>
+        )}
 
-        <div className="flex gap-3">
+        {/* Resultado PIX */}
+        {orderId && paymentData?.pix && (
+          <PixResult data={paymentData.pix} />
+        )}
+
+        {/* Resultado Boleto */}
+        {orderId && paymentData?.boleto && (
+          <div className="flex flex-col items-center gap-3">
+            <p className="text-sm text-zinc-400 text-center">Boleto gerado com sucesso!</p>
+            <a
+              href={paymentData.boleto.boleto_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full rounded-xl bg-amber-600 py-3 text-center text-sm font-bold text-white hover:bg-amber-500 transition-colors"
+            >
+              Abrir boleto
+            </a>
+            <div className="w-full rounded-xl bg-zinc-900 border border-zinc-800 p-3">
+              <p className="text-xs text-zinc-500 mb-1">Código de barras</p>
+              <code className="text-xs text-zinc-300 break-all select-all">
+                {paymentData.boleto.boleto_barcode}
+              </code>
+            </div>
+            <p className="text-xs text-zinc-500">Vencimento: {paymentData.boleto.boleto_exp}</p>
+          </div>
+        )}
+
+        {/* Resultado cartão */}
+        {orderId && paymentData?.method === 'credit_card' && (
+          <div className="text-center py-4">
+            <p className="text-2xl mb-2">✅</p>
+            <p className="text-sm font-semibold text-green-400">Pagamento aprovado!</p>
+            <p className="text-xs text-zinc-500 mt-1">Pedido #{orderId.slice(0, 8)}</p>
+          </div>
+        )}
+
+        {/* Formulário de pagamento (antes de submeter) */}
+        {!orderId && (
+          <PaymentMethods
+            amount={price}
+            announcementId={announcementId}
+            itemId={selectedItemId}
+            onSuccess={handleSuccess}
+            onError={setErrorMsg}
+          />
+        )}
+
+        {orderId && (
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-xl border border-zinc-700 py-3 text-sm font-medium text-zinc-300 hover:border-zinc-600"
+            className="mt-4 w-full rounded-xl border border-zinc-700 py-3 text-sm font-medium text-zinc-300 hover:border-zinc-600"
           >
-            Cancelar
+            Fechar
           </button>
-          <button
-            type="button"
-            className="flex-1 rounded-xl bg-green-600 py-3 text-sm font-bold text-white hover:bg-green-500"
-          >
-            Prosseguir para pagamento
-          </button>
-        </div>
+        )}
       </div>
     </div>
   )

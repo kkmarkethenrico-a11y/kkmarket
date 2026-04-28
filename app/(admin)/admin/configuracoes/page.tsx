@@ -64,7 +64,7 @@ export default async function AdminConfiguracoesPage() {
       {/* Tarifas e policy */}
       <section className="rounded-xl border bg-card p-6 space-y-3">
         <h2 className="font-semibold text-lg">Tarifas atuais</h2>
-        <p className="text-xs text-muted-foreground">Configuradas no código — altere em <code className="bg-muted px-1 rounded">lib/pagarme/</code> para modificar.</p>
+        <p className="text-xs text-muted-foreground">Configuradas no código — altere em <code className="bg-muted px-1 rounded">lib/mercadopago/</code> para modificar.</p>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 text-sm">
           {[
             { label: 'Taxa da plataforma', value: '10%' },
@@ -89,7 +89,7 @@ export default async function AdminConfiguracoesPage() {
           {[
             { label: 'Supabase Dashboard', href: 'https://supabase.com/dashboard' },
             { label: 'Vercel Deployments', href: 'https://vercel.com/dashboard' },
-            { label: 'Pagar.me Dashboard', href: 'https://dashboard.pagar.me' },
+            { label: 'Mercado Pago Dashboard', href: 'https://www.mercadopago.com.br/home' },
             { label: 'Resend Dashboard', href: 'https://resend.com/overview' },
             { label: 'MeiliSearch', href: process.env.NEXT_PUBLIC_MEILISEARCH_HOST ?? '#' },
           ].map(({ label, href }) => (
