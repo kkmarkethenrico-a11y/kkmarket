@@ -129,6 +129,8 @@ export async function signInWithOAuthAction(provider: 'google' | 'discord') {
     provider,
     options: {
       redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/callback`,
+      // Solicita escopo de e-mail e perfil ao Google
+      scopes: provider === 'google' ? 'openid email profile' : undefined,
     },
   })
 
@@ -137,4 +139,37 @@ export async function signInWithOAuthAction(provider: 'google' | 'discord') {
   }
 
   redirect(data.url)
+}
+
+// ─── Completa perfil de usuário OAuth (username definitivo) ──────────────────
+
+export type CompleteProfileState = { error?: string } | null
+
+export async function completeProfileAction(
+  _prevState: CompleteProfileState,
+  formData: FormData,
+): Promise<CompleteProfileState> {
+  const username = formData.get('username')?.toString().trim().toLowerCase() ?? ''
+
+  if (!/^[a-z0-9_]{3,30}$/.test(username)) {
+    return { error: 'Username deve ter 3–30 caracteres (letras, números e _).' }
+  }
+
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({ username, onboarding_complete: true, updated_at: new Date().toISOString() })
+    .eq('id', user.id)
+
+  if (error) {
+    if (error.code === '23505') {
+      return { error: 'Este username já está em uso. Escolha outro.' }
+    }
+    return { error: 'Erro ao salvar. Tente novamente.' }
+  }
+
+  redirect('/painel')
 }

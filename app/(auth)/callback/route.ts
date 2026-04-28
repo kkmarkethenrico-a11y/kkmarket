@@ -10,6 +10,9 @@ import { createClient } from '@/lib/supabase/server'
  * 2. Recuperação de senha / confirmação de e-mail: o `next` param permite
  *    redirecionar para a rota correta após a troca.
  *
+ * Novos usuários OAuth (onboarding_complete = false) são redirecionados para
+ * /completar-perfil para escolherem um username definitivo.
+ *
  * Redireciona para /painel em caso de sucesso, ou para /login?error=... em
  * caso de falha (sem expor detalhes internos ao client).
  */
@@ -29,6 +32,20 @@ export async function GET(request: NextRequest) {
   if (error) {
     console.error('[auth/callback] exchangeCodeForSession falhou:', error.message)
     return NextResponse.redirect(new URL('/login?error=auth_failed', origin))
+  }
+
+  // Verifica se o usuário OAuth é novo e precisa completar o perfil
+  const { data: { user } } = await supabase.auth.getUser()
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('onboarding_complete')
+      .eq('id', user.id)
+      .single()
+
+    if (profile && profile.onboarding_complete === false) {
+      return NextResponse.redirect(new URL('/completar-perfil', origin))
+    }
   }
 
   // Redireciona para /painel ou para a rota específica (ex: /nova-senha)
