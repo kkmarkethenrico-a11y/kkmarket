@@ -307,6 +307,8 @@ export default async function AnnouncioPage({ params }: Props) {
                 <PurchasePanel
                   announcementId={ann.id}
                   announcementSlug={ann.slug}
+                  title={ann.title}
+                  coverImageUrl={images.find((i) => i.is_cover)?.url ?? images[0]?.url ?? null}
                   model={ann.model as 'normal' | 'dynamic'}
                   normalPrice={ann.unit_price}
                   normalStock={ann.stock_quantity}
