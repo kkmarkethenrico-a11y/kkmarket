@@ -70,7 +70,7 @@ export function Step4Review({ categories }: Step4Props) {
 
       setSuccess(true)
       resetDraft()
-      setTimeout(() => router.push('/painel/meus-anuncios'), 3000)
+      setTimeout(() => router.push('/meus-anuncios'), 3000)
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Erro inesperado.')
     } finally {
