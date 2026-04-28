@@ -19,8 +19,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className="dark">
-      <body className="min-h-screen bg-zinc-950 text-zinc-100 antialiased">
-        {/* Background gaming image with overlay */}
+      <body className="min-h-screen text-zinc-100 antialiased">
+        {/* Background gaming image */}
         <div
           className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat"
           style={{
@@ -29,7 +29,8 @@ export default function RootLayout({
           }}
           aria-hidden="true"
         />
-        <div className="fixed inset-0 -z-10 bg-zinc-950/88" aria-hidden="true" />
+        {/* Dark overlay preserving readability */}
+        <div className="fixed inset-0 -z-10 bg-zinc-950/85" aria-hidden="true" />
         {children}
         <Toaster position="bottom-right" richColors />
       </body>

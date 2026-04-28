@@ -127,7 +127,7 @@ export default async function HomePage() {
   const { featured, popular, newest, reviews, posts, categories } = await getData()
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <div className="min-h-screen text-white">
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-zinc-800/40 py-20">
