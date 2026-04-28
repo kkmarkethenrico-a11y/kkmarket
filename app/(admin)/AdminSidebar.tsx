@@ -15,6 +15,7 @@ import {
   Star,
   BookOpen,
   Settings,
+  ArrowLeft,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
@@ -43,7 +44,7 @@ export default function AdminSidebar({ pendingCount, role }: AdminSidebarProps) 
   const pathname = usePathname()
 
   return (
-    <aside className="w-64 flex-shrink-0 border-r bg-card">
+    <aside className="w-64 flex-shrink-0 border-r bg-card flex flex-col min-h-screen">
       <div className="flex h-16 items-center gap-2 border-b px-6">
         <Shield className="h-5 w-5 text-primary" />
         <span className="font-semibold">Admin</span>
@@ -51,7 +52,7 @@ export default function AdminSidebar({ pendingCount, role }: AdminSidebarProps) 
           {role}
         </span>
       </div>
-      <nav className="p-3">
+      <nav className="flex-1 overflow-y-auto p-3">
         <ul className="space-y-0.5">
           {navItems.map(({ href, label, icon: Icon, badge }) => {
             const isActive =
@@ -80,6 +81,17 @@ export default function AdminSidebar({ pendingCount, role }: AdminSidebarProps) 
           })}
         </ul>
       </nav>
+
+      {/* Voltar ao site */}
+      <div className="p-3 border-t">
+        <Link
+          href="/"
+          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors group"
+        >
+          <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" />
+          Voltar ao site
+        </Link>
+      </div>
     </aside>
   )
 }
