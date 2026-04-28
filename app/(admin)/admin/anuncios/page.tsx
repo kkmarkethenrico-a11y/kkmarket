@@ -35,14 +35,13 @@ export default async function AdminAnunciosPage({ searchParams }: PageProps) {
     ? { column: 'created_at', ascending: true }   // mais antigos primeiro
     : { column: 'created_at', ascending: false }
 
-  const { data: items, count } = await admin
+  const { data: rawItems, count } = await admin
     .from('announcements')
     .select(
       `id, title, slug, description, model, plan, unit_price, stock_quantity,
        status, rejection_reason, approved_at, created_at, updated_at,
        has_auto_delivery, sale_count,
        profiles:user_id (id, username, display_name, avatar_url),
-       user_stats:user_id (reviews_positive, reviews_neutral, reviews_negative, total_sales),
        categories:category_id (id, name),
        announcement_images (url, is_cover, sort_order)`,
       { count: 'exact' },
@@ -50,6 +49,21 @@ export default async function AdminAnunciosPage({ searchParams }: PageProps) {
     .eq('status', tab)
     .order(order.column, { ascending: order.ascending })
     .limit(100)
+
+  // Fetch user_stats separately and merge (no direct FK from announcements to user_stats)
+  const sellerIds = [...new Set((rawItems ?? []).map((a) => a.user_id as string))]
+  const { data: statsData } = sellerIds.length
+    ? await admin
+        .from('user_stats')
+        .select('user_id, reviews_positive, reviews_neutral, reviews_negative, total_sales')
+        .in('user_id', sellerIds)
+    : { data: [] as { user_id: string; reviews_positive: number; reviews_neutral: number; reviews_negative: number; total_sales: number }[] }
+  const statsMap = new Map((statsData ?? []).map((s) => [s.user_id, s]))
+
+  const items = (rawItems ?? []).map((ann) => ({
+    ...ann,
+    user_stats: statsMap.get(ann.user_id as string) ?? null,
+  }))
 
   // Pending count badge
   const { count: pendingCount } = await admin
