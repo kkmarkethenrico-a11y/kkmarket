@@ -1,11 +1,7 @@
 import MercadoPago from 'mercadopago'
 
-if (!process.env.MP_ACCESS_TOKEN) {
-  throw new Error('MP_ACCESS_TOKEN não definido')
-}
-
 export const mp = new MercadoPago({
-  accessToken: process.env.MP_ACCESS_TOKEN!,
+  accessToken: process.env.MP_ACCESS_TOKEN ?? '',
 })
 
 export const MP_PUBLIC_KEY = process.env.NEXT_PUBLIC_MP_PUBLIC_KEY!
