@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import BuyerActions from './BuyerActions'
+import ReviewForm from '@/components/review/ReviewForm'
 
 export const dynamic = 'force-dynamic'
 
@@ -56,23 +57,34 @@ export default async function MinhaCompraDetalhe({ params }: PageProps) {
   if (!user) redirect('/login')
 
   const admin = createAdminClient()
-  const { data: order } = await admin
-    .from('orders')
-    .select(`
-      id, status, amount, platform_fee, seller_amount, payment_method,
-      mp_payment_id, escrow_release_at, buyer_confirmed_at, completed_at,
-      cancelled_at, cancellation_reason, created_at, updated_at,
-      announcements!announcement_id (
-        title, slug,
-        announcement_images (url, is_cover, sort_order)
-      ),
-      profiles!seller_id (username, display_name, avatar_url)
-    `)
-    .eq('id', orderId)
-    .eq('buyer_id', user.id)
-    .maybeSingle()
+  const [{ data: order }, { data: myReview }] = await Promise.all([
+    admin
+      .from('orders')
+      .select(`
+        id, status, amount, platform_fee, seller_amount, payment_method,
+        mp_payment_id, escrow_release_at, buyer_confirmed_at, completed_at,
+        cancelled_at, cancellation_reason, created_at, updated_at,
+        announcements!announcement_id (
+          title, slug,
+          announcement_images (url, is_cover, sort_order)
+        ),
+        profiles!seller_id (username, display_name, avatar_url)
+      `)
+      .eq('id', orderId)
+      .eq('buyer_id', user.id)
+      .maybeSingle(),
+    admin
+      .from('order_reviews')
+      .select('id')
+      .eq('order_id', orderId)
+      .eq('reviewer_id', user.id)
+      .maybeSingle(),
+  ])
 
   if (!order) notFound()
+
+  const alreadyReviewed = !!myReview
+  const canReview = ['delivered', 'completed'].includes(order.status)
 
   const ann = order.announcements as unknown as {
     title: string
@@ -202,6 +214,15 @@ export default async function MinhaCompraDetalhe({ params }: PageProps) {
 
             {/* Ações do comprador */}
             <BuyerActions orderId={order.id} status={order.status} />
+
+            {/* Avaliar vendedor */}
+            {canReview && (
+              <ReviewForm
+                orderId={order.id}
+                reviewerRole="buyer"
+                alreadyReviewed={alreadyReviewed}
+              />
+            )}
           </div>
 
           {/* Sidebar */}

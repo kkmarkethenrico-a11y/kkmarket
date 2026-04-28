@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import SellerActions from './SellerActions'
+import ReviewForm from '@/components/review/ReviewForm'
 
 export const dynamic = 'force-dynamic'
 
@@ -48,23 +49,34 @@ export default async function MinhaVendaDetalhe({ params }: PageProps) {
   if (!user) redirect('/login')
 
   const admin = createAdminClient()
-  const { data: order } = await admin
-    .from('orders')
-    .select(`
-      id, status, amount, platform_fee, seller_amount, payment_method,
-      escrow_release_at, buyer_confirmed_at, completed_at,
-      cancelled_at, cancellation_reason, created_at, updated_at,
-      announcements!announcement_id (
-        title, slug,
-        announcement_images (url, is_cover, sort_order)
-      ),
-      profiles!buyer_id (username, display_name, avatar_url)
-    `)
-    .eq('id', orderId)
-    .eq('seller_id', user.id)
-    .maybeSingle()
+  const [{ data: order }, { data: myReview }] = await Promise.all([
+    admin
+      .from('orders')
+      .select(`
+        id, status, amount, platform_fee, seller_amount, payment_method,
+        escrow_release_at, buyer_confirmed_at, completed_at,
+        cancelled_at, cancellation_reason, created_at, updated_at,
+        announcements!announcement_id (
+          title, slug,
+          announcement_images (url, is_cover, sort_order)
+        ),
+        profiles!buyer_id (username, display_name, avatar_url)
+      `)
+      .eq('id', orderId)
+      .eq('seller_id', user.id)
+      .maybeSingle(),
+    admin
+      .from('order_reviews')
+      .select('id')
+      .eq('order_id', orderId)
+      .eq('reviewer_id', user.id)
+      .maybeSingle(),
+  ])
 
   if (!order) notFound()
+
+  const alreadyReviewed = !!myReview
+  const canReview = ['delivered', 'completed'].includes(order.status)
 
   const ann = order.announcements as unknown as {
     title: string
@@ -210,6 +222,15 @@ export default async function MinhaVendaDetalhe({ params }: PageProps) {
 
             {/* Ações do vendedor */}
             <SellerActions orderId={order.id} status={order.status} />
+
+            {/* Avaliar comprador */}
+            {canReview && (
+              <ReviewForm
+                orderId={order.id}
+                reviewerRole="seller"
+                alreadyReviewed={alreadyReviewed}
+              />
+            )}
           </div>
 
           {/* Sidebar */}

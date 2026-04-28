@@ -13,6 +13,7 @@ const LINKS = {
     { label: 'Formas de pagamento', href: '/formas-de-pagamento' },
     { label: 'Programa de pontos', href: '/programa-de-pontos' },
     { label: 'Verificador de contas', href: '/verificador' },
+    { label: 'Ranking de Vendedores', href: '/ranking' },
   ],
   'Institucional': [
     { label: 'Termos de uso', href: '/termos' },
