@@ -126,9 +126,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       profiles!user_id (
         username, display_name, avatar_url, last_seen_at
       ),
-      user_stats!user_id (
-        avg_response_time_minutes, reviews_positive, reviews_neutral, reviews_negative
-      ),
       announcement_images (
         url, is_cover, sort_order
       )

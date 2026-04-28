@@ -106,9 +106,6 @@ export default async function TopCategoryPage({ params, searchParams }: Props) {
       profiles!user_id (
         username, display_name, avatar_url, last_seen_at
       ),
-      user_stats!user_id (
-        avg_response_time_minutes, reviews_positive, reviews_neutral, reviews_negative
-      ),
       announcement_images (
         url, is_cover, sort_order
       )
@@ -148,9 +145,22 @@ export default async function TopCategoryPage({ params, searchParams }: Props) {
     console.error('[categoria/top] query error:', error.message)
   }
 
-  const announcements = ((rawAnn ?? []) as unknown as AnnouncementWithRelations[]).sort(
+  // Fetch user_stats separately and merge
+  const sellerIds = [...new Set((rawAnn ?? []).map((a) => a.user_id))]
+  const { data: statsData } = sellerIds.length
+    ? await supabase
+        .from('user_stats')
+        .select('user_id, avg_response_time_minutes, reviews_positive, reviews_neutral, reviews_negative')
+        .in('user_id', sellerIds)
+    : { data: [] as any[] }
+  const statsMap = new Map((statsData ?? []).map((s: any) => [s.user_id, s]))
+
+  const announcements = ((rawAnn ?? []) as any[]).map((ann) => ({
+    ...ann,
+    user_stats: statsMap.get(ann.user_id) ?? null,
+  })).sort(
     (a, b) => planWeight(b.plan) - planWeight(a.plan),
-  )
+  ) as unknown as AnnouncementWithRelations[]
 
   const total = count ?? 0
 

@@ -27,9 +27,9 @@ export function AnnouncementCard({ ann }: { ann: AnnouncementWithRelations }) {
   const stats   = ann.user_stats
   const images  = ann.announcement_images ?? []
   const imgSrc  = coverUrl(images)
-  const online  = isOnline(seller.last_seen_at)
+  const online  = seller ? isOnline(seller.last_seen_at) : false
 
-  const sellerName  = seller.display_name ?? seller.username
+  const sellerName  = seller?.display_name ?? seller?.username ?? '—'
   const reviewStr   = stats
     ? pluralReviews(stats.reviews_positive, stats.reviews_neutral, stats.reviews_negative)
     : 'Sem avaliações'
@@ -91,7 +91,7 @@ export function AnnouncementCard({ ann }: { ann: AnnouncementWithRelations }) {
         {/* Seller row */}
         <div className="flex items-center gap-2 border-t border-zinc-800/60 pt-3">
           <div className="relative shrink-0">
-            {seller.avatar_url ? (
+            {seller?.avatar_url ? (
               <Image
                 src={seller.avatar_url}
                 alt={sellerName}

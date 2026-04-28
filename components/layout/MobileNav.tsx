@@ -92,7 +92,11 @@ export function MobileNav({ isAuthenticated, profile, sellerStatus = 'disabled' 
             {/* User Area */}
             {isAuthenticated ? (
               <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-3 mb-2">
+                <Link
+                  href={`/perfil/${profile?.username ?? ''}`}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 mb-2 hover:opacity-80 transition-opacity"
+                >
                   <Avatar className="h-10 w-10 border border-zinc-800">
                     <AvatarImage src={profile?.avatar_url ?? ''} />
                     <AvatarFallback className="bg-violet-600 font-bold text-white uppercase">
@@ -103,7 +107,7 @@ export function MobileNav({ isAuthenticated, profile, sellerStatus = 'disabled' 
                     <span className="text-sm font-semibold text-white">{displayName}</span>
                     <span className="text-xs text-zinc-400">@{profile?.username}</span>
                   </div>
-                </div>
+                </Link>
                 
                 <div className="grid grid-cols-2 gap-2">
                   <Link 

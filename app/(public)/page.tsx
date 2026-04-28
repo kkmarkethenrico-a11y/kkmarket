@@ -22,19 +22,20 @@ const GAME_COVERS = [
 async function getData() {
   const supabase = await createClient()
 
+  const announcementSelect = `
+    id, user_id, category_id, title, slug, description,
+    model, plan, unit_price, stock_quantity,
+    has_auto_delivery, is_vip, sale_count, view_count,
+    status, created_at, updated_at,
+    filters_data, rejection_reason, approved_at, approved_by,
+    profiles!user_id(username, display_name, avatar_url, last_seen_at),
+    announcement_images(url, is_cover, sort_order)
+  `
+
   // Featured (diamond plan, sorted by sale_count)
   const { data: featuredRaw } = await supabase
     .from('announcements')
-    .select(`
-      id, user_id, category_id, title, slug, description,
-      model, plan, unit_price, stock_quantity,
-      has_auto_delivery, is_vip, sale_count, view_count,
-      status, created_at, updated_at,
-      filters_data, rejection_reason, approved_at, approved_by,
-      profiles!user_id(username, display_name, avatar_url, last_seen_at),
-      user_stats!user_id(avg_response_time_minutes, reviews_positive, reviews_neutral, reviews_negative),
-      announcement_images(url, is_cover, sort_order)
-    `)
+    .select(announcementSelect)
     .eq('status', 'active')
     .eq('plan', 'diamond')
     .order('sale_count', { ascending: false })
@@ -43,16 +44,7 @@ async function getData() {
   // Most popular (all plans, sorted by sale_count)
   const { data: popularRaw } = await supabase
     .from('announcements')
-    .select(`
-      id, user_id, category_id, title, slug, description,
-      model, plan, unit_price, stock_quantity,
-      has_auto_delivery, is_vip, sale_count, view_count,
-      status, created_at, updated_at,
-      filters_data, rejection_reason, approved_at, approved_by,
-      profiles!user_id(username, display_name, avatar_url, last_seen_at),
-      user_stats!user_id(avg_response_time_minutes, reviews_positive, reviews_neutral, reviews_negative),
-      announcement_images(url, is_cover, sort_order)
-    `)
+    .select(announcementSelect)
     .eq('status', 'active')
     .order('plan', { ascending: false })
     .order('sale_count', { ascending: false })
@@ -61,25 +53,35 @@ async function getData() {
   // Newest
   const { data: newestRaw } = await supabase
     .from('announcements')
-    .select(`
-      id, user_id, category_id, title, slug, description,
-      model, plan, unit_price, stock_quantity,
-      has_auto_delivery, is_vip, sale_count, view_count,
-      status, created_at, updated_at,
-      filters_data, rejection_reason, approved_at, approved_by,
-      profiles!user_id(username, display_name, avatar_url, last_seen_at),
-      user_stats!user_id(avg_response_time_minutes, reviews_positive, reviews_neutral, reviews_negative),
-      announcement_images(url, is_cover, sort_order)
-    `)
+    .select(announcementSelect)
     .eq('status', 'active')
     .order('created_at', { ascending: false })
     .limit(12)
 
-  // Recent reviews
+  // Collect unique seller user_ids and fetch their stats in one query
+  const allRaw = [...(featuredRaw ?? []), ...(popularRaw ?? []), ...(newestRaw ?? [])]
+  const sellerIds = [...new Set(allRaw.map((a) => a.user_id))]
+  const { data: statsData } = sellerIds.length
+    ? await supabase
+        .from('user_stats')
+        .select('user_id, avg_response_time_minutes, reviews_positive, reviews_neutral, reviews_negative')
+        .in('user_id', sellerIds)
+    : { data: [] as { user_id: string; avg_response_time_minutes: number | null; reviews_positive: number; reviews_neutral: number; reviews_negative: number }[] }
+
+  const statsMap = new Map((statsData ?? []).map((s) => [s.user_id, s]))
+
+  function mergeStats(raw: typeof allRaw) {
+    return raw.map((ann) => ({
+      ...ann,
+      user_stats: statsMap.get(ann.user_id) ?? null,
+    }))
+  }
+
+  // Recent reviews — using actual schema columns
   const { data: reviews } = await supabase
     .from('order_reviews')
-    .select('id, rating, comment, created_at, buyer:buyer_id(username), seller:seller_id(username), announcement:announcement_id(title, slug)')
-    .eq('rating', 'positive')
+    .select('id, type, message, created_at, profiles!reviewer_id(username)')
+    .eq('type', 'positive')
     .order('created_at', { ascending: false })
     .limit(8)
 
@@ -101,11 +103,11 @@ async function getData() {
     .limit(8)
 
   return {
-    featured: (featuredRaw ?? []) as unknown as AnnouncementWithRelations[],
-    popular: ((popularRaw ?? []) as unknown as AnnouncementWithRelations[]).sort(
-      (a, b) => planWeight(b.plan) - planWeight(a.plan)
-    ),
-    newest: (newestRaw ?? []) as unknown as AnnouncementWithRelations[],
+    featured: mergeStats(featuredRaw ?? []) as unknown as AnnouncementWithRelations[],
+    popular: mergeStats(popularRaw ?? []).sort(
+      (a, b) => planWeight((b as any).plan) - planWeight((a as any).plan)
+    ) as unknown as AnnouncementWithRelations[],
+    newest: mergeStats(newestRaw ?? []) as unknown as AnnouncementWithRelations[],
     reviews: reviews ?? [],
     posts: posts ?? [],
     categories: (cats ?? []) as Category[],
