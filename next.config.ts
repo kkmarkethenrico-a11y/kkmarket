@@ -11,10 +11,22 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '*.cloudflare.com', // Ajuste conforme CDN Cloudflare usada
+        hostname: '*.cloudflare.com',
         port: '',
         pathname: '/**',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.igdb.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
   async headers() {
