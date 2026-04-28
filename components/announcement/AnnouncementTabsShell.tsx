@@ -47,10 +47,9 @@ export function AnnouncementTabsShell({
 
       {/* Description */}
       <TabsContent value="description" className="mt-6">
-        <div
-          className="prose prose-invert prose-sm max-w-none text-zinc-300 [&_h2]:text-zinc-100 [&_h3]:text-zinc-200 [&_strong]:text-zinc-200 [&_a]:text-violet-400 [&_a:hover]:text-violet-300 [&_ul]:text-zinc-400 [&_ol]:text-zinc-400 leading-relaxed whitespace-pre-wrap"
-          dangerouslySetInnerHTML={{ __html: description }}
-        />
+        <div className="text-zinc-300 text-sm leading-relaxed whitespace-pre-wrap">
+          {description}
+        </div>
       </TabsContent>
 
       {/* Reviews */}
