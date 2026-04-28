@@ -9,8 +9,8 @@ function planWeight(p: string) { return PLAN_ORDER[p] ?? 0 }
 
 // Fallback images from Unsplash for top-level categories (when image_url is null in DB)
 const CATEGORY_COVERS: Record<string, string> = {
-  'jogos':          'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=224&h=288&fit=crop&q=80',
-  'redes-sociais':  'https://images.unsplash.com/photo-1611162617213-9d786adfd7e5?w=224&h=288&fit=crop&q=80',
+  'jogos':          'https://images.unsplash.com/photo-1593118247619-e2d6f056869e?w=224&h=288&fit=crop&q=80',
+  'redes-sociais':  'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=224&h=288&fit=crop&q=80',
   'bots':           'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=224&h=288&fit=crop&q=80',
   'scripts':        'https://images.unsplash.com/photo-1555066931-bf19f8fd1085?w=224&h=288&fit=crop&q=80',
   'outros-digitais':'https://images.unsplash.com/photo-1518770660439-4636190af475?w=224&h=288&fit=crop&q=80',
