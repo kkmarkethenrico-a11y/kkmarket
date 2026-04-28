@@ -3,7 +3,6 @@
 import { useState, useRef, useCallback } from 'react'
 import Image from 'next/image'
 import { useWizardStore } from './wizard-store'
-import { createClient } from '@/lib/supabase/client'
 
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 const MAX_COVER_BYTES = 2 * 1024 * 1024   // 2 MB
@@ -20,14 +19,17 @@ function fileToDataUrl(file: File): Promise<string> {
   })
 }
 
-async function uploadToStorage(file: File, path: string): Promise<string> {
-  const supabase = createClient()
-  const { data, error } = await supabase.storage
-    .from('announcement-images')
-    .upload(path, file, { upsert: true, contentType: file.type })
-  if (error) throw new Error(error.message)
-  const { data: pub } = supabase.storage.from('announcement-images').getPublicUrl(data.path)
-  return pub.publicUrl
+async function uploadToStorage(file: File): Promise<string> {
+  const form = new FormData()
+  form.append('file', file)
+  form.append('bucket', 'announcement-images')
+  const res = await fetch('/api/upload', { method: 'POST', body: form })
+  if (!res.ok) {
+    const json = await res.json().catch(() => ({}))
+    throw new Error(json.error ?? 'Falha no upload')
+  }
+  const { url } = await res.json()
+  return url as string
 }
 
 // ─── Image drop zone ─────────────────────────────────────────────────────────
@@ -181,8 +183,7 @@ export function Step3Images() {
       // Upload cover if new file selected
       let coverUrl = coverPreview!
       if (coverFile) {
-        const path = `covers/${Date.now()}-${coverFile.name}`
-        coverUrl = await uploadToStorage(coverFile, path)
+        coverUrl = await uploadToStorage(coverFile)
       }
 
       // Upload gallery files
@@ -191,8 +192,7 @@ export function Step3Images() {
       const uploadedUrls = await Promise.all(
         galleryFiles.map(async (file, i) => {
           if (galleryPreviews[i]?.startsWith('http')) return galleryPreviews[i]
-          const path = `gallery/${Date.now()}-${i}-${file.name}`
-          return uploadToStorage(file, path)
+          return uploadToStorage(file)
         }),
       )
 
