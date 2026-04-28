@@ -102,6 +102,16 @@ export async function Header() {
             
             {user && (
               <Link
+                href="/painel"
+                className="hidden lg:flex items-center gap-1.5 rounded-full border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-200 transition-all hover:border-zinc-500 hover:text-white active:scale-[0.97]"
+                title="Meu painel"
+              >
+                Painel
+              </Link>
+            )}
+
+            {user && (
+              <Link
                 href="/meus-anuncios"
                 className="hidden lg:flex items-center gap-1.5 rounded-full border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-200 transition-all hover:border-zinc-500 hover:text-white active:scale-[0.97]"
                 title="Meus anúncios"
