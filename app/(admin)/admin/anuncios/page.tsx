@@ -38,7 +38,7 @@ export default async function AdminAnunciosPage({ searchParams }: PageProps) {
   const { data: rawItems, count } = await admin
     .from('announcements')
     .select(
-      `id, title, slug, description, model, plan, unit_price, stock_quantity,
+      `id, user_id, title, slug, description, model, plan, unit_price, stock_quantity,
        status, rejection_reason, approved_at, created_at, updated_at,
        has_auto_delivery, sale_count,
        profiles:user_id (id, username, display_name, avatar_url),
