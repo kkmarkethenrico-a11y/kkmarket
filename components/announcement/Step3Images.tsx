@@ -23,10 +23,10 @@ function fileToDataUrl(file: File): Promise<string> {
 async function uploadToStorage(file: File, path: string): Promise<string> {
   const supabase = createClient()
   const { data, error } = await supabase.storage
-    .from('announcements')
+    .from('announcement-images')
     .upload(path, file, { upsert: true, contentType: file.type })
   if (error) throw new Error(error.message)
-  const { data: pub } = supabase.storage.from('announcements').getPublicUrl(data.path)
+  const { data: pub } = supabase.storage.from('announcement-images').getPublicUrl(data.path)
   return pub.publicUrl
 }
 
