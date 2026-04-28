@@ -102,6 +102,16 @@ export async function Header() {
             
             {user && (
               <Link
+                href="/meus-anuncios"
+                className="hidden lg:flex items-center gap-1.5 rounded-full border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-200 transition-all hover:border-zinc-500 hover:text-white active:scale-[0.97]"
+                title="Meus anúncios"
+              >
+                Meus anúncios
+              </Link>
+            )}
+
+            {user && (
+              <Link
                 href={profile?.seller_status === 'approved' ? '/meus-anuncios/novo' : '/verificacao'}
                 className="hidden lg:flex items-center gap-1.5 rounded-full bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-violet-500 active:scale-[0.97]"
                 title={profile?.seller_status === 'approved' ? 'Criar novo anúncio' : 'Qualifique sua conta para vender'}
