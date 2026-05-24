@@ -48,6 +48,9 @@ const nextConfig: NextConfig = {
               "font-src 'self' data:",
               "connect-src 'self' https: wss:",
               "frame-src https://*.mercadopago.com https://*.mercadopago.com.br",
+              // MP SDK v2 cria web workers via blob: URLs para tokenização de cartão
+              "worker-src blob: 'self'",
+              "child-src blob: 'self' https://*.mercadopago.com https://*.mercadopago.com.br",
             ].join('; '),
           },
           {
