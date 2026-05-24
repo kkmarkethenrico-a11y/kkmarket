@@ -40,7 +40,15 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https: wss:;",
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://sdk.mercadopago.com",
+              "style-src 'self' 'unsafe-inline' https://sdk.mercadopago.com",
+              "img-src 'self' data: https:",
+              "font-src 'self' data:",
+              "connect-src 'self' https: wss:",
+              "frame-src https://*.mercadopago.com https://*.mercadopago.com.br",
+            ].join('; '),
           },
           {
             key: 'X-Content-Type-Options',
