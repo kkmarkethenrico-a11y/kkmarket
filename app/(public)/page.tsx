@@ -172,7 +172,7 @@ export default async function HomePage() {
           </div>
           <h1 className="mb-4 text-5xl font-black leading-tight tracking-tight md:text-6xl text-[var(--gm-ink)]">
             comprar e{' '}
-            <span className="text-[var(--gm-violet)]" style={{ textShadow: '0 0 30px rgba(167,139,250,0.4)' }}>
+            <span className="text-[var(--gm-violet)]" style={{ textShadow: '0 0 30px rgba(255, 157, 0, 0.4)' }}>
               vender
             </span>
           </h1>

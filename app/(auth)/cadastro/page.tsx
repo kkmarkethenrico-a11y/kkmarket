@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { RegisterForm } from '@/components/auth/RegisterForm'
 
@@ -17,7 +18,7 @@ export default async function CadastroPage() {
 
       {/* ── Left panel ────────────────────────────────────────────────── */}
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 relative overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, rgba(34,211,238,0.06) 0%, rgba(167,139,250,0.08) 100%)' }}
+        style={{ background: 'linear-gradient(135deg, rgba(0, 162, 255, 0.06) 0%, rgba(255, 157, 0, 0.08) 100%)' }}
       >
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-[var(--gm-cyan)]/8 blur-3xl" />
@@ -25,12 +26,14 @@ export default async function CadastroPage() {
         </div>
 
         <div className="relative flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--gm-violet)] text-[#1a1126] font-black text-xl shadow-[0_0_20px_rgba(167,139,250,0.5)]">
-            ▶
-          </div>
-          <span className="text-2xl font-black tracking-tight text-[var(--gm-ink)]">
-            Game<span className="text-[var(--gm-violet)]">Market</span>
-          </span>
+          <Image
+            src="/images/logo.png"
+            alt="KKmarket Logo"
+            width={130}
+            height={38}
+            priority
+            className="h-9 w-auto object-contain"
+          />
         </div>
 
         <div className="relative">

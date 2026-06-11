@@ -52,6 +52,32 @@
   --color-gm-green: #34d399;
   --color-gm-amber: #FFC000;
   --color-gm-rose: #fb7185;
+
+  /* Overwrite default violet colors to match the gold white-label branding */
+  --color-violet-50: #fff7ed;
+  --color-violet-100: #ffedd5;
+  --color-violet-200: #fed7aa;
+  --color-violet-300: #fdbb2d;
+  --color-violet-400: #fbbf24;
+  --color-violet-500: #FF9D00;
+  --color-violet-600: #e58d00;
+  --color-violet-700: #b26e00;
+  --color-violet-800: #8c5600;
+  --color-violet-900: #663f00;
+  --color-violet-950: #331f00;
+
+  /* Overwrite default purple colors to match the gold white-label branding */
+  --color-purple-50: #fff7ed;
+  --color-purple-100: #ffedd5;
+  --color-purple-200: #fed7aa;
+  --color-purple-300: #fdbb2d;
+  --color-purple-400: #fbbf24;
+  --color-purple-500: #FF9D00;
+  --color-purple-600: #e58d00;
+  --color-purple-700: #b26e00;
+  --color-purple-800: #8c5600;
+  --color-purple-900: #663f00;
+  --color-purple-950: #331f00;
 }
 
 /* ── kkmarket palette raw tokens ──────────────────────────────────────────── */
@@ -195,17 +221,17 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--gm-violet);
-  background: rgba(167,139,250,0.08);
+  background: rgba(255, 157, 0, 0.08);
   line-height: 1.6;
 }
 .rank-chip.gold   { color: var(--gm-amber); border-color: var(--gm-amber); background: rgba(251,191,36,0.08); }
-.rank-chip.cyan   { color: var(--gm-cyan);  border-color: var(--gm-cyan);  background: rgba(34,211,238,0.08); }
+.rank-chip.cyan   { color: var(--gm-cyan);  border-color: var(--gm-cyan);  background: rgba(0, 162, 255, 0.08); }
 .rank-chip.green  { color: var(--gm-green); border-color: var(--gm-green); background: rgba(52,211,153,0.08); }
 
 /* ── Glow pulse animation ─────────────────────────────────────────────────── */
 @keyframes gm-glow-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(167,139,250,0.25); }
-  50%       { box-shadow: 0 0 16px 4px rgba(167,139,250,0.35); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 157, 0, 0.25); }
+  50%       { box-shadow: 0 0 16px 4px rgba(255, 157, 0, 0.35); }
 }
 .gm-glow { animation: gm-glow-pulse 2.5s ease-in-out infinite; }
 
@@ -215,7 +241,7 @@
 }
 .gm-card-tilt:hover {
   transform: translateY(-4px) perspective(600px) rotateX(2deg);
-  box-shadow: 0 16px 40px -12px rgba(167,139,250,0.2);
+  box-shadow: 0 16px 40px -12px rgba(255, 157, 0, 0.2);
 }
 
 /* ─── Mercado Pago card form iframes ──────────────────────────────────────── */

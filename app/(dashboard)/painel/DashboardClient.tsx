@@ -20,7 +20,7 @@ const PERIOD_OPTIONS = [
   { value: '90d', label: '90 dias' },
 ] as const
 
-const PIE_COLORS = ['#a78bfa', '#22d3ee', '#34d399', '#fbbf24', '#fb7185']
+const PIE_COLORS = ['#FF9D00', '#00A2FF', '#34d399', '#FFC000', '#fb7185']
 
 const PLAN_COLORS: Record<string, string> = {
   diamond: 'text-[#22d3ee]',
@@ -208,7 +208,7 @@ export default function DashboardClient({
 
         {/* ── Player Card Hero ────────────────────────────────────────────── */}
         <div className="relative overflow-hidden rounded-xl border border-[var(--gm-violet)]/30 bg-[var(--gm-paper-2)] p-6"
-          style={{ background: 'linear-gradient(135deg, rgba(167,139,250,0.06), rgba(34,211,238,0.03))' }}>
+          style={{ background: 'linear-gradient(135deg, rgba(255, 157, 0, 0.06), rgba(0, 162, 255, 0.03))' }}>
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             {/* Avatar / Level badge */}
             <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-[var(--gm-violet)]/40 bg-[var(--gm-violet)]/15 text-3xl font-black text-[var(--gm-violet)]">
@@ -327,7 +327,7 @@ export default function DashboardClient({
                     className="flex aspect-square items-center justify-center rounded-lg text-lg"
                     style={{
                       border: `1.5px ${a.unlocked ? 'solid' : 'dashed'} ${i < 2 && a.unlocked ? 'var(--gm-violet)' : 'var(--gm-ink-faint)'}`,
-                      background: i < 2 && a.unlocked ? 'rgba(167,139,250,0.1)' : 'transparent',
+                      background: i < 2 && a.unlocked ? 'rgba(255, 157, 0, 0.1)' : 'transparent',
                       opacity: a.unlocked ? 1 : 0.4,
                     }}>
                     {a.icon}
@@ -498,10 +498,10 @@ export default function DashboardClient({
                       <Line
                         type="monotone"
                         dataKey="revenue"
-                        stroke="#a78bfa"
+                        stroke="#FF9D00"
                         strokeWidth={2}
                         dot={false}
-                        activeDot={{ r: 4, fill: '#a78bfa' }}
+                        activeDot={{ r: 4, fill: '#FF9D00' }}
                       />
                     </LineChart>
                   </ResponsiveContainer>
@@ -587,7 +587,7 @@ export default function DashboardClient({
                         (props as { payload?: AnnouncementPerf }).payload?.title ?? 'Receita',
                       ]}
                     />
-                    <Bar dataKey="revenue" fill="#a78bfa" radius={[6, 6, 0, 0]} />
+                    <Bar dataKey="revenue" fill="#FF9D00" radius={[6, 6, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               )}

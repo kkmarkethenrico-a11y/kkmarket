@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { LoginForm } from '@/components/auth/LoginForm'
 
@@ -17,7 +18,7 @@ export default async function LoginPage() {
 
       {/* ── Left panel: gaming art ─────────────────────────────────────── */}
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 relative overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, rgba(167,139,250,0.08) 0%, rgba(34,211,238,0.04) 100%)' }}
+        style={{ background: 'linear-gradient(135deg, rgba(255, 157, 0, 0.08) 0%, rgba(0, 162, 255, 0.04) 100%)' }}
       >
         {/* Background glow blobs */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -27,12 +28,14 @@ export default async function LoginPage() {
 
         {/* Logo */}
         <div className="relative flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--gm-violet)] text-[#1a1126] font-black text-xl shadow-[0_0_20px_rgba(167,139,250,0.5)]">
-            ▶
-          </div>
-          <span className="text-2xl font-black tracking-tight text-[var(--gm-ink)]">
-            Game<span className="text-[var(--gm-violet)]">Market</span>
-          </span>
+          <Image
+            src="/images/logo.png"
+            alt="KKmarket Logo"
+            width={130}
+            height={38}
+            priority
+            className="h-9 w-auto object-contain"
+          />
         </div>
 
         {/* Main copy */}
@@ -40,7 +43,7 @@ export default async function LoginPage() {
           <div className="rank-chip cyan mb-6 inline-flex">◆ ACCESS GRANTED</div>
           <h2 className="text-5xl font-black leading-tight tracking-tight text-[var(--gm-ink)] mb-4">
             entre na{' '}
-            <span className="text-[var(--gm-violet)]" style={{ textShadow: '0 0 24px rgba(167,139,250,0.5)' }}>
+            <span className="text-[var(--gm-violet)]" style={{ textShadow: '0 0 24px rgba(255, 157, 0, 0.5)' }}>
               arena
             </span>
           </h2>

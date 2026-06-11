@@ -129,7 +129,7 @@ export default async function PublicProfilePage({ params }: Props) {
           {/* ─── Gamer Card (sticky sidebar) ─── */}
           <aside className="lg:sticky lg:top-6 lg:self-start">
             <div className="rounded-xl border border-[var(--gm-violet)]/30 bg-[var(--gm-paper-2)] p-5 flex flex-col gap-4"
-              style={{ background: 'linear-gradient(160deg, rgba(167,139,250,0.06), rgba(34,211,238,0.02))' }}>
+              style={{ background: 'linear-gradient(160deg, rgba(255, 157, 0, 0.06), rgba(0, 162, 255, 0.02))' }}>
 
               {/* Rank chips */}
               <div className="flex items-center justify-between">
@@ -215,7 +215,7 @@ export default async function PublicProfilePage({ params }: Props) {
                   <div className="flex flex-wrap gap-1.5">
                     {badges.map((b, i) => (
                       <div key={i} className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--gm-ink-faint)]/30 text-sm"
-                        style={{ background: i < 3 ? 'rgba(167,139,250,0.1)' : 'transparent' }}>
+                        style={{ background: i < 3 ? 'rgba(255, 157, 0, 0.1)' : 'transparent' }}>
                         {b}
                       </div>
                     ))}
