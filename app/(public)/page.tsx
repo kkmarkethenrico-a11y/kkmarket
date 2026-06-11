@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { AnnouncementCard } from '@/components/marketplace/AnnouncementCard'
 import type { AnnouncementWithRelations, Category } from '@/types'
-import { Gamepad2, Share2, Bot, Code, Box, Flame, Crosshair, Sparkles, Pickaxe, Blocks, Sword } from 'lucide-react'
+import { Gamepad2, Share2, Bot, Code, Box, Flame, Crosshair, Sparkles, Pickaxe, Blocks, Sword, Target, Trophy, Star, ShieldCheck, HeadphonesIcon, Gift } from 'lucide-react'
 
 const PLAN_ORDER: Record<string, number> = { diamond: 3, gold: 2, silver: 1 }
 function planWeight(p: string) { return PLAN_ORDER[p] ?? 0 }
@@ -91,7 +91,7 @@ async function getData() {
 }
 
 // ── Section heading component ──────────────────────────────────────────────
-function SectionHead({ title, href, hrefLabel = 'ver mais →' }: { title: string; href?: string; hrefLabel?: string }) {
+function SectionHead({ title, href, hrefLabel = 'ver mais →' }: { title: React.ReactNode; href?: string; hrefLabel?: string }) {
   return (
     <div className="mb-6 flex items-center justify-between">
       <h2 className="text-lg font-black tracking-tight text-[var(--gm-ink)] uppercase">
@@ -204,7 +204,7 @@ export default async function HomePage() {
             {/* Missão diária */}
             <div className="rounded-xl border border-[var(--gm-violet)]/30 bg-[var(--gm-violet)]/5 p-4 flex flex-col gap-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wide text-[var(--gm-violet)]">🎯 Missão Diária</span>
+                <span className="text-xs font-bold uppercase tracking-wide text-[var(--gm-violet)] flex items-center justify-center gap-1"><Target className="h-4 w-4" /> Missão Diária</span>
                 <span className="rank-chip text-[9px]">+25 pts</span>
               </div>
               <p className="text-sm font-semibold text-[var(--gm-ink)]">Explore o marketplace hoje</p>
@@ -230,7 +230,7 @@ export default async function HomePage() {
               href="/ranking"
               className="rounded-xl border border-[var(--gm-ink-faint)]/40 bg-[var(--gm-paper-3)] p-4 flex flex-col items-center justify-center gap-2 hover:border-[var(--gm-violet)]/50 transition-colors"
             >
-              <span className="text-3xl">🏆</span>
+              <Trophy className="h-10 w-10 text-[var(--gm-violet)]" strokeWidth={1.5} />
               <span className="text-xs font-bold uppercase tracking-wide text-[var(--gm-ink-dim)]">Ver Ranking</span>
             </Link>
           </div>
@@ -299,7 +299,7 @@ export default async function HomePage() {
       {popular.length > 0 && (
         <section className="border-b border-[var(--gm-ink-faint)]/30 py-12">
           <div className="container mx-auto px-4">
-            <SectionHead title="🔥 Mais Populares" href="/buscar?order=best_sellers" />
+            <SectionHead title={<span className="flex items-center gap-2"><Flame className="h-5 w-5 text-[var(--gm-amber)]" /> Mais Populares</span>} href="/buscar?order=best_sellers" />
             <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
               {popular.map((ann) => (
                 <AnnouncementCard key={ann.id} ann={ann} />
@@ -313,7 +313,7 @@ export default async function HomePage() {
       {reviews.length > 0 && (
         <section className="border-b border-[var(--gm-ink-faint)]/30 py-12">
           <div className="container mx-auto px-4">
-            <SectionHead title="⭐ Avaliações Recentes" />
+            <SectionHead title={<span className="flex items-center gap-2"><Star className="h-5 w-5 text-[var(--gm-amber)]" /> Avaliações Recentes</span>} />
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {reviews.map((r: any) => (
                 <div key={r.id} className="rounded-xl border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-2)] p-4 flex flex-col gap-2 hover:border-[var(--gm-green)]/40 transition-colors">
@@ -384,15 +384,15 @@ export default async function HomePage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {[
-              { icon: '🔒', title: 'Compra segura',         desc: 'Entrega garantida ou o seu dinheiro de volta.',      color: 'var(--gm-green)' },
-              { icon: '💬', title: 'Suporte 24 horas',       desc: 'Equipe pronta para te atender sempre que precisar.', color: 'var(--gm-cyan)'  },
-              { icon: '🎁', title: 'Programa de recompensa', desc: 'Seja recompensado pelas suas compras e vendas.',      color: 'var(--gm-violet)'},
+              { icon: <ShieldCheck className="h-8 w-8" />, title: 'Compra segura',         desc: 'Entrega garantida ou o seu dinheiro de volta.',      color: 'var(--gm-green)' },
+              { icon: <HeadphonesIcon className="h-8 w-8" />, title: 'Suporte 24 horas',       desc: 'Equipe pronta para te atender sempre que precisar.', color: 'var(--gm-cyan)'  },
+              { icon: <Gift className="h-8 w-8" />, title: 'Programa de recompensa', desc: 'Seja recompensado pelas suas compras e vendas.',      color: 'var(--gm-violet)'},
             ].map((b) => (
               <div
                 key={b.title}
                 className="rounded-xl border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-2)] p-6 text-center hover:border-[var(--gm-violet)]/40 transition-colors"
               >
-                <div className="mb-3 text-3xl">{b.icon}</div>
+                <div className="mb-3 flex justify-center text-[var(--gm-ink)]">{b.icon}</div>
                 <h3 className="mb-1 text-sm font-bold" style={{ color: b.color }}>{b.title}</h3>
                 <p className="text-xs text-[var(--gm-ink-dim)]">{b.desc}</p>
               </div>

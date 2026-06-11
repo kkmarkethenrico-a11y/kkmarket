@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
+import { Trophy, Star, Target } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 
 export const dynamic = 'force-dynamic'
@@ -118,7 +119,7 @@ export default async function RankingPage() {
 
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-extrabold text-foreground">🏆 Ranking de Vendedores</h1>
+          <h1 className="text-3xl font-extrabold text-foreground flex items-center justify-center gap-2"><Trophy className="h-8 w-8 text-amber-500" /> Ranking de Vendedores</h1>
           <p className="text-muted-foreground text-sm max-w-lg mx-auto">
             Classificação baseada em avaliações recebidas de compradores. Mínimo de 3 avaliações para aparecer no ranking.
           </p>
@@ -165,7 +166,7 @@ export default async function RankingPage() {
                   <div>
                     <p className="text-sm font-bold text-foreground truncate max-w-[90px]">
                       {seller.display_name ?? seller.username}
-                      {seller.is_vip && <span className="ml-1 text-amber-400">★</span>}
+                      {seller.is_vip && <Star className="inline h-3 w-3 text-amber-400 ml-1" />}
                     </p>
                     <p className="text-xs text-muted-foreground">@{seller.username}</p>
                   </div>
@@ -180,7 +181,7 @@ export default async function RankingPage() {
         {/* Lista completa */}
         {list.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 gap-3 text-center">
-            <span className="text-5xl">🎯</span>
+            <Target className="h-12 w-12 text-muted-foreground" />
             <p className="text-foreground font-semibold">Nenhum vendedor no ranking ainda</p>
             <p className="text-muted-foreground text-sm">São necessárias pelo menos 3 avaliações para aparecer aqui.</p>
           </div>
@@ -226,7 +227,7 @@ export default async function RankingPage() {
                     <div className="flex items-center gap-2">
                       <p className="font-semibold text-foreground text-sm truncate group-hover:text-primary transition-colors">
                         {seller.display_name ?? seller.username}
-                        {seller.is_vip && <span className="ml-1 text-amber-400 text-xs">★ VIP</span>}
+                        {seller.is_vip && <span className="ml-1 text-amber-400 text-xs inline-flex items-center"><Star className="h-3 w-3 mr-0.5" /> VIP</span>}
                       </p>
                       <span className="text-xs text-muted-foreground shrink-0">@{seller.username}</span>
                     </div>
