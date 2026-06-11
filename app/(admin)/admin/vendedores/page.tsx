@@ -78,7 +78,20 @@ export default async function AdminVendedoresPage({
   const docsByUser = new Map<string, Record<string, string | null>>()
   for (const v of (validations ?? []) as Validation[]) {
     const m = docsByUser.get(v.user_id) ?? {}
-    m[v.type] = v.file_url
+    let urlToUse = v.file_url
+    
+    // Generate signed URLs for KYC documents since the bucket is private
+    if (urlToUse && urlToUse.includes('/kyc-docs/')) {
+      const fileName = urlToUse.split('/kyc-docs/')[1]
+      if (fileName) {
+        const { data: signed } = await admin.storage.from('kyc-docs').createSignedUrl(fileName, 60 * 60)
+        if (signed?.signedUrl) {
+          urlToUse = signed.signedUrl
+        }
+      }
+    }
+
+    m[v.type] = urlToUse
     docsByUser.set(v.user_id, m)
   }
 
