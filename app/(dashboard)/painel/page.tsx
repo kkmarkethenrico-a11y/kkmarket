@@ -17,8 +17,8 @@ export default async function PainelPage() {
 
   const admin = createAdminClient()
 
-  // User stats + escrow
-  const [statsRes, escrowRes, ordersRes, wishlistRes] = await Promise.all([
+  // User stats + escrow + quests
+  const [statsRes, escrowRes, ordersRes, wishlistRes, questsRes] = await Promise.all([
     admin.from('user_stats')
       .select('wallet_balance, points_balance, total_purchases, total_sales, reviews_positive, reviews_neutral, reviews_negative')
       .eq('user_id', user.id)
@@ -36,12 +36,18 @@ export default async function PainelPage() {
       .select('id, announcements:announcement_id(title, unit_price, slug, announcement_images(url, is_cover, sort_order))')
       .eq('user_id', user.id)
       .limit(3),
+    admin.from('points_transactions')
+      .select('description')
+      .eq('user_id', user.id)
+      .like('description', 'quest_%')
   ])
 
   const stats = statsRes.data
   const escrowAmount = (escrowRes.data ?? []).reduce((s, r) => s + Number(r.seller_amount), 0)
   const escrowRelease = (escrowRes.data ?? [])
     .map((r) => r.escrow_release_at).filter(Boolean).sort()[0] ?? null
+
+  const claimedQuests = (questsRes.data ?? []).map(q => q.description?.replace('quest_', ''))
 
   return (
     <DashboardClient
@@ -53,6 +59,7 @@ export default async function PainelPage() {
       totalSales={Number(stats?.total_sales ?? 0)}
       recentOrders={(ordersRes.data ?? []) as any}
       wishlistItems={(wishlistRes.data ?? []) as any}
+      claimedQuests={claimedQuests as string[]}
     />
   )
 }

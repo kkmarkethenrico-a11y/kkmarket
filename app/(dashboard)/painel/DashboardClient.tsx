@@ -11,7 +11,9 @@ import {
   ArrowUpRight, ChevronUp, ChevronDown, ChevronsUpDown,
   Wallet, Lock, Loader2,
 } from 'lucide-react'
+import { toast } from 'sonner'
 import type { AnalyticsData, AnnouncementPerf } from '@/app/api/analytics/seller/route'
+import { claimQuestAction, exchangePointsAction } from '@/app/actions/quests'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const PERIOD_OPTIONS = [
@@ -117,18 +119,21 @@ interface Props {
   totalSales:     number
   recentOrders:   RecentOrder[]
   wishlistItems:  WishlistItem[]
+  claimedQuests:  string[]
 }
 
 export default function DashboardClient({
   walletBalance, escrowAmount, escrowRelease,
   pointsBalance, totalPurchases, totalSales,
-  recentOrders, wishlistItems,
+  recentOrders, wishlistItems, claimedQuests,
 }: Props) {
   const [period,    setPeriod]   = useState<'7d' | '30d' | '90d'>('30d')
   const [data,      setData]     = useState<AnalyticsData | null>(null)
   const [loading,   setLoading]  = useState(true)
   const [sortKey,   setSortKey]  = useState<SortKey>('revenue')
   const [sortDir,   setSortDir]  = useState<SortDir>('desc')
+  const [claiming,  setClaiming] = useState<string | null>(null)
+  const [exchanging,setExchanging] = useState(false)
 
   const load = useCallback(async (p: string) => {
     setLoading(true)
@@ -152,6 +157,24 @@ export default function DashboardClient({
     }
   }
 
+  async function handleClaimQuest(questId: string, pts: number) {
+    setClaiming(questId)
+    const res = await claimQuestAction(questId, pts)
+    if (res.success) toast.success(res.message)
+    else toast.error(res.message)
+    setClaiming(null)
+  }
+
+  async function handleExchangeXP() {
+    if (pointsBalance < 100) return
+    setExchanging(true)
+    const ptsToExchange = Math.floor(pointsBalance / 100) * 100
+    const res = await exchangePointsAction(ptsToExchange)
+    if (res.success) toast.success(res.message)
+    else toast.error(res.message)
+    setExchanging(false)
+  }
+
   const sortedAnns = data
     ? sortAnnouncements(data.announcements, sortKey, sortDir)
     : []
@@ -163,9 +186,9 @@ export default function DashboardClient({
 
   // Quest definitions (client-side derived from real data)
   const quests = [
-    { label: 'fazer sua 1ª compra da semana', progress: Math.min(totalPurchases, 1), max: 1, pts: 25, done: totalPurchases >= 1 },
-    { label: 'criar 1 novo anúncio', progress: Math.min(totalSales, 1), max: 1, pts: 50, done: false },
-    { label: 'convidar 1 amigo', progress: 0, max: 1, pts: 100, done: false },
+    { id: 'first_purchase', label: 'fazer sua 1ª compra da semana', progress: claimedQuests.includes('first_purchase') ? 1 : Math.min(totalPurchases, 1), max: 1, pts: 25, done: claimedQuests.includes('first_purchase') },
+    { id: 'first_sale', label: 'criar 1 novo anúncio', progress: claimedQuests.includes('first_sale') ? 1 : Math.min(totalSales, 1), max: 1, pts: 50, done: claimedQuests.includes('first_sale') },
+    { id: 'invite_friend', label: 'convidar 1 amigo', progress: claimedQuests.includes('invite_friend') ? 1 : 0, max: 1, pts: 100, done: claimedQuests.includes('invite_friend') },
   ]
 
   // Activity feed from orders
@@ -227,6 +250,15 @@ export default function DashboardClient({
                   <div className="xp-bar-fill" style={{ width: `${xpPct}%` }} />
                 </div>
                 <span className="text-xs font-bold text-[var(--gm-violet)] shrink-0">{xpPct} / {xpMax} XP</span>
+                {pointsBalance >= 100 && (
+                  <button 
+                    onClick={handleExchangeXP}
+                    disabled={exchanging}
+                    className="ml-2 text-[10px] bg-[var(--gm-green)]/15 text-[var(--gm-green)] border border-[var(--gm-green)]/30 px-2 py-0.5 rounded font-bold hover:bg-[var(--gm-green)] hover:text-black transition-colors disabled:opacity-50"
+                  >
+                    {exchanging ? '...' : `Trocar por R$ ${Math.floor(pointsBalance / 100).toFixed(2)}`}
+                  </button>
+                )}
               </div>
             </div>
             <div className="flex gap-2 shrink-0">
@@ -284,7 +316,19 @@ export default function DashboardClient({
                     <div className="xp-bar w-16 shrink-0">
                       <div className="xp-bar-fill" style={{ width: `${(q.progress / q.max) * 100}%` }} />
                     </div>
-                    <span className="text-xs font-bold text-[var(--gm-violet)] shrink-0 min-w-[50px] text-right">+{q.pts} pts</span>
+                    {q.progress >= q.max && !q.done ? (
+                      <button 
+                        onClick={() => handleClaimQuest(q.id, q.pts)}
+                        disabled={claiming === q.id}
+                        className="text-xs font-black text-black bg-[var(--gm-cyan)] px-2 py-1 rounded shrink-0 min-w-[50px] text-center hover:opacity-90 disabled:opacity-50 transition-all"
+                      >
+                        {claiming === q.id ? '...' : 'Resgatar'}
+                      </button>
+                    ) : (
+                      <span className={`text-xs font-bold shrink-0 min-w-[50px] text-right ${q.done ? 'text-[var(--gm-ink-dim)]' : 'text-[var(--gm-violet)]'}`}>
+                        +{q.pts} pts
+                      </span>
+                    )}
                   </div>
                 ))}
               </div>
