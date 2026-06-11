@@ -89,7 +89,7 @@ export function SellerApplicationForm() {
       <button
         type="submit"
         disabled={busy}
-        className="w-full rounded-full bg-violet-600 px-6 py-3 text-sm font-bold text-white transition-all hover:bg-violet-500 active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full rounded-full bg-[var(--gm-violet)] px-6 py-3 text-sm font-black text-[#1a1126] transition-all hover:opacity-90 active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed gm-glow"
       >
         {busy ? 'Enviando...' : 'Enviar para análise'}
       </button>
@@ -106,16 +106,16 @@ function FileSlot({
   onChange: (f: File | null) => void
 }) {
   return (
-    <label className="block cursor-pointer rounded-2xl border border-zinc-800 bg-zinc-900/50 p-4 hover:border-violet-500/50 transition-colors">
+    <label className="block cursor-pointer rounded-2xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-2)] p-4 hover:border-[var(--gm-violet)] transition-colors">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-zinc-200">{title}</p>
-          <p className="mt-0.5 text-xs text-zinc-500">{desc}</p>
+          <p className="text-sm font-bold text-[var(--gm-ink)]">{title}</p>
+          <p className="mt-0.5 text-xs text-[var(--gm-ink-faint)]">{desc}</p>
           {file && (
-            <p className="mt-2 truncate text-xs text-violet-400">📎 {file.name}</p>
+            <p className="mt-2 truncate text-xs font-bold text-[var(--gm-violet)]">📎 {file.name}</p>
           )}
         </div>
-        <span className="shrink-0 rounded-full bg-zinc-800 px-3 py-1 text-xs font-medium text-zinc-300">
+        <span className="shrink-0 rounded-full bg-[var(--gm-paper-3)] border border-[var(--gm-ink-faint)]/30 px-3 py-1 text-xs font-bold text-[var(--gm-ink)]">
           {file ? 'Trocar' : 'Selecionar'}
         </span>
       </div>

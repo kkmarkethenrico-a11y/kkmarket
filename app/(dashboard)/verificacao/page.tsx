@@ -23,8 +23,8 @@ export default async function VerificacaoPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <header className="mb-8">
-        <h1 className="text-2xl font-bold text-white">Qualificação para vendedor</h1>
-        <p className="mt-1 text-sm text-zinc-400">
+        <h1 className="text-2xl font-black text-[var(--gm-ink)]">Qualificação para vendedor</h1>
+        <p className="mt-1 text-sm text-[var(--gm-ink-faint)]">
           Para vender produtos digitais na GameMarket, é necessário verificar sua identidade.
           Envie os documentos abaixo. A análise é feita em até 48h.
         </p>
@@ -60,7 +60,7 @@ export default async function VerificacaoPage() {
           </p>
           <a
             href="/meus-anuncios/novo"
-            className="mt-4 inline-flex rounded-full bg-violet-600 px-6 py-2 text-sm font-bold text-white hover:bg-violet-500 transition-colors"
+            className="mt-4 inline-flex rounded-full bg-[var(--gm-violet)] px-6 py-2 text-sm font-black text-[#1a1126] hover:opacity-90 transition-all gm-glow"
           >
             Criar primeiro anúncio
           </a>
@@ -72,10 +72,10 @@ export default async function VerificacaoPage() {
 
 function StatusBadge({ status }: { status: string }) {
   const map: Record<string, { label: string; cls: string }> = {
-    disabled: { label: 'Não qualificado',   cls: 'bg-zinc-800 text-zinc-300' },
-    pending:  { label: 'Em análise',         cls: 'bg-amber-500/20 text-amber-300' },
-    approved: { label: 'Aprovado',           cls: 'bg-green-500/20 text-green-300' },
-    rejected: { label: 'Rejeitado',          cls: 'bg-red-500/20 text-red-300' },
+    disabled: { label: 'Não qualificado',   cls: 'bg-[var(--gm-paper-3)] text-[var(--gm-ink)]' },
+    pending:  { label: 'Em análise',         cls: 'bg-amber-500/20 text-amber-500' },
+    approved: { label: 'Aprovado',           cls: 'bg-green-500/20 text-green-500' },
+    rejected: { label: 'Rejeitado',          cls: 'bg-red-500/20 text-red-500' },
   }
   const m = map[status] ?? map.disabled
   return (

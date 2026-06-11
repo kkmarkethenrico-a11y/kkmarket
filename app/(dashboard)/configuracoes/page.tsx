@@ -19,13 +19,13 @@ export default async function ConfiguracoesPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <header className="mb-8">
-        <h1 className="text-2xl font-bold text-white">Configurações da conta</h1>
-        <p className="mt-1 text-sm text-zinc-400">
+        <h1 className="text-2xl font-black text-[var(--gm-ink)]">Configurações da conta</h1>
+        <p className="mt-1 text-sm text-[var(--gm-ink-faint)]">
           Atualize seus dados pessoais. Eles são usados em compras, vendas e identificação fiscal.
         </p>
       </header>
 
-      <section className="mb-8 rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5">
+      <section className="mb-8 rounded-2xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-2)] p-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
           <Field label="E-mail" value={user.email ?? '—'} />
           <Field label="Username" value={`@${profile?.username ?? ''}`} />
@@ -52,8 +52,8 @@ export default async function ConfiguracoesPage() {
 function Field({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs uppercase tracking-wider text-zinc-500">{label}</p>
-      <p className="mt-1 text-zinc-200">{value}</p>
+      <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--gm-ink-faint)]">{label}</p>
+      <p className="mt-1 font-bold text-[var(--gm-ink)]">{value}</p>
     </div>
   )
 }

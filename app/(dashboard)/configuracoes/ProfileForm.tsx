@@ -61,19 +61,19 @@ export function ProfileForm({ defaults }: { defaults: Defaults }) {
   return (
     <form action={action} className="space-y-6">
       {/* Avatar */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5">
-        <label className="block text-sm font-medium text-zinc-300 mb-3">Foto de perfil</label>
+      <div className="rounded-2xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-2)] p-5">
+        <label className="block text-sm font-bold text-[var(--gm-ink)] mb-3">Foto de perfil</label>
         <div className="flex items-center gap-4">
-          <div className="relative h-20 w-20 overflow-hidden rounded-full border border-zinc-800 bg-zinc-800">
+          <div className="relative h-20 w-20 overflow-hidden rounded-full border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-3)]">
             {avatarUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
             ) : (
-              <div className="flex h-full w-full items-center justify-center text-xs text-zinc-500">sem foto</div>
+              <div className="flex h-full w-full items-center justify-center text-xs text-[var(--gm-ink-faint)]">sem foto</div>
             )}
           </div>
           <div>
-            <label className="inline-flex cursor-pointer rounded-full border border-zinc-700 bg-zinc-800 px-4 py-2 text-xs font-semibold text-zinc-200 hover:bg-zinc-700">
+            <label className="inline-flex cursor-pointer rounded-full border border-[var(--gm-ink-faint)]/40 bg-[var(--gm-paper-3)] px-4 py-2 text-xs font-bold text-[var(--gm-ink)] hover:bg-[var(--gm-paper-2)] transition-colors">
               {uploading ? 'Enviando…' : 'Trocar foto'}
               <input
                 type="file"
@@ -83,16 +83,16 @@ export function ProfileForm({ defaults }: { defaults: Defaults }) {
                 onChange={onAvatarChange}
               />
             </label>
-            {uploadError && <p className="mt-2 text-xs text-red-400">{uploadError}</p>}
-            <p className="mt-1 text-xs text-zinc-500">JPG, PNG ou WEBP até 2MB.</p>
+            {uploadError && <p className="mt-2 text-xs font-bold text-red-500">{uploadError}</p>}
+            <p className="mt-1 text-xs text-[var(--gm-ink-faint)]">JPG, PNG ou WEBP até 2MB.</p>
           </div>
         </div>
         <input type="hidden" name="avatar_url" value={avatarUrl} />
       </div>
 
       {/* Dados pessoais */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5 space-y-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">Dados pessoais</h2>
+      <div className="rounded-2xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-2)] p-5 space-y-4">
+        <h2 className="text-[10px] font-black uppercase tracking-widest text-[var(--gm-ink-dim)]">Dados pessoais</h2>
 
         <Input
           label="Nome de exibição"
@@ -168,7 +168,7 @@ export function ProfileForm({ defaults }: { defaults: Defaults }) {
         <button
           type="submit"
           disabled={pending || uploading}
-          className="rounded-full bg-violet-600 px-6 py-3 text-sm font-bold text-white transition-all hover:bg-violet-500 active:scale-[0.97] disabled:opacity-50"
+          className="rounded-full bg-[var(--gm-violet)] px-6 py-3 text-sm font-black text-[#1a1126] transition-all hover:opacity-90 active:scale-[0.97] disabled:opacity-50 gm-glow"
         >
           {pending ? 'Salvando…' : 'Salvar alterações'}
         </button>
@@ -184,14 +184,14 @@ function Input({
 }: React.InputHTMLAttributes<HTMLInputElement> & { label: string; error?: string }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-zinc-300 mb-1.5">{label}</label>
+      <label className="block text-xs font-bold text-[var(--gm-ink)] mb-1.5">{label}</label>
       <input
         {...rest}
         className={`w-full rounded-xl border ${
-          error ? 'border-red-500' : 'border-zinc-700'
-        } bg-zinc-800/60 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20`}
+          error ? 'border-red-500' : 'border-[var(--gm-ink-faint)]/30'
+        } bg-[var(--gm-paper)] px-4 py-3 text-sm font-semibold text-[var(--gm-ink)] placeholder-[var(--gm-ink-faint)] outline-none transition-all focus:border-[var(--gm-violet)] focus:ring-2 focus:ring-[var(--gm-violet)]/20`}
       />
-      {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
+      {error && <p className="mt-1 text-xs font-bold text-red-500">{error}</p>}
     </div>
   )
 }
@@ -203,15 +203,15 @@ function Textarea({
 }: React.TextareaHTMLAttributes<HTMLTextAreaElement> & { label: string; error?: string }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-zinc-300 mb-1.5">{label}</label>
+      <label className="block text-xs font-bold text-[var(--gm-ink)] mb-1.5">{label}</label>
       <textarea
         {...rest}
         rows={3}
         className={`w-full rounded-xl border ${
-          error ? 'border-red-500' : 'border-zinc-700'
-        } bg-zinc-800/60 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20`}
+          error ? 'border-red-500' : 'border-[var(--gm-ink-faint)]/30'
+        } bg-[var(--gm-paper)] px-4 py-3 text-sm font-semibold text-[var(--gm-ink)] placeholder-[var(--gm-ink-faint)] outline-none transition-all focus:border-[var(--gm-violet)] focus:ring-2 focus:ring-[var(--gm-violet)]/20`}
       />
-      {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
+      {error && <p className="mt-1 text-xs font-bold text-red-500">{error}</p>}
     </div>
   )
 }
