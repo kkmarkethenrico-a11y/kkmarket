@@ -40,7 +40,7 @@ export function Footer() {
               />
             </Link>
             <p className="text-sm leading-relaxed text-[var(--gm-ink-dim)]">
-              Somos a solução para o mercado digital, disponibilizando uma plataforma moderna que permite que o comprador receba pelo produto desejado, e que o vendedor receba pela sua venda. Tudo isso com praticidade e segurança.
+              Somos o marketplace ideal para o mercado digital. Conectamos compradores e vendedores de forma segura, garantindo a entrega do produto e o pagamento, com total praticidade.
             </p>
           </div>
 

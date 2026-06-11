@@ -185,7 +185,9 @@ export default function DashboardClient({
   const xpMax  = 100
 
   // Quest definitions (client-side derived from real data)
+  const todayQuestId = `daily_login_${new Date().toISOString().split('T')[0]}`
   const quests = [
+    { id: 'daily_login', label: 'login diário', progress: 1, max: 1, pts: 10, done: claimedQuests.includes(todayQuestId) },
     { id: 'first_purchase', label: 'fazer sua 1ª compra da semana', progress: claimedQuests.includes('first_purchase') ? 1 : Math.min(totalPurchases, 1), max: 1, pts: 25, done: claimedQuests.includes('first_purchase') },
     { id: 'first_sale', label: 'criar 1 novo anúncio', progress: claimedQuests.includes('first_sale') ? 1 : Math.min(totalSales, 1), max: 1, pts: 50, done: claimedQuests.includes('first_sale') },
     { id: 'invite_friend', label: 'convidar 1 amigo', progress: claimedQuests.includes('invite_friend') ? 1 : 0, max: 1, pts: 100, done: claimedQuests.includes('invite_friend') },

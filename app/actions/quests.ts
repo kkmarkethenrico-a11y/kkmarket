@@ -48,7 +48,10 @@ export async function claimQuestAction(questId: string, pts: number) {
   
   // To avoid claiming the same quest multiple times, we can use reference_id or description
   // Since we don't have a unique quest table, we'll check if a transaction for this quest already exists
-  const questReference = `quest_${questId}`
+  // For daily_login, we append the current date to allow claiming once per day
+  const questReference = questId === 'daily_login' 
+    ? `quest_${questId}_${new Date().toISOString().split('T')[0]}`
+    : `quest_${questId}`
 
   const { data: existing } = await admin
     .from('points_transactions')
@@ -58,7 +61,7 @@ export async function claimQuestAction(questId: string, pts: number) {
     .maybeSingle()
 
   if (existing) {
-    return { success: false, message: 'Quest já resgatada.' }
+    return { success: false, message: 'Quest já resgatada hoje.' }
   }
 
   // Double check actual requirements
@@ -77,6 +80,8 @@ export async function claimQuestAction(questId: string, pts: number) {
   } else if (questId === 'invite_friend') {
     // Emulated invite validation
     valid = false 
+  } else if (questId === 'daily_login') {
+    valid = true // Always valid
   }
 
   if (!valid) {
