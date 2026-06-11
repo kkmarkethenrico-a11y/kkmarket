@@ -70,25 +70,25 @@ export default async function BlogPostPage({ params }: Props) {
     .limit(3)
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen text-[var(--gm-ink)]">
       <div className="container mx-auto max-w-3xl px-4 py-10">
 
         {/* Breadcrumb */}
-        <nav className="mb-6 flex items-center gap-2 text-sm text-zinc-500">
-          <Link href="/" className="hover:text-zinc-300 transition-colors">Home</Link>
+        <nav className="mb-6 flex items-center gap-2 text-sm text-[var(--gm-ink-dim)]">
+          <Link href="/" className="hover:text-[var(--gm-ink)] transition-colors">Home</Link>
           <span>/</span>
-          <Link href="/blog" className="hover:text-zinc-300 transition-colors">Blog</Link>
+          <Link href="/blog" className="hover:text-[var(--gm-ink)] transition-colors">Blog</Link>
           <span>/</span>
-          <span className="truncate max-w-[200px] text-zinc-300">{post.title}</span>
+          <span className="truncate max-w-[200px] text-[var(--gm-ink)]">{post.title}</span>
         </nav>
 
         {/* Header */}
         <header className="mb-8">
-          <h1 className="mb-4 text-3xl font-black leading-tight text-white sm:text-4xl">{post.title}</h1>
+          <h1 className="mb-4 text-3xl font-black leading-tight text-[var(--gm-ink)] sm:text-4xl">{post.title}</h1>
           {post.excerpt && (
-            <p className="mb-4 text-lg text-zinc-400 leading-relaxed">{post.excerpt}</p>
+            <p className="mb-4 text-lg text-[var(--gm-ink-dim)] leading-relaxed">{post.excerpt}</p>
           )}
-          <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-500">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-[var(--gm-ink-dim)]">
             <div className="flex items-center gap-2">
               {author?.avatar_url ? (
                 <Image src={author.avatar_url} alt={authorName} width={28} height={28} className="h-7 w-7 rounded-full object-cover" />
@@ -97,7 +97,7 @@ export default async function BlogPostPage({ params }: Props) {
                   {authorName[0]}
                 </span>
               )}
-              <span className="text-zinc-300 font-medium">{authorName}</span>
+              <span className="text-[var(--gm-ink)] font-medium">{authorName}</span>
             </div>
             <span>·</span>
             <span>{publishedDate}</span>
@@ -125,30 +125,30 @@ export default async function BlogPostPage({ params }: Props) {
         )}
 
         {/* Content */}
-        <article className="prose prose-invert prose-zinc max-w-none prose-headings:font-bold prose-a:text-violet-400 prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl">
+        <article className="prose prose-zinc max-w-none prose-headings:font-bold prose-p:text-[var(--gm-ink-dim)] prose-headings:text-[var(--gm-ink)] prose-a:text-[var(--gm-violet)] prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl">
           <div dangerouslySetInnerHTML={{ __html: post.content }} />
         </article>
 
         {/* Related posts */}
         {(related ?? []).length > 0 && (
-          <section className="mt-16 border-t border-zinc-800/60 pt-10">
-            <h2 className="mb-5 text-lg font-bold text-zinc-100">Mais artigos</h2>
+          <section className="mt-16 border-t border-[var(--gm-ink-faint)]/20 pt-10">
+            <h2 className="mb-5 text-lg font-bold text-[var(--gm-ink)]">Mais artigos</h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               {(related ?? []).map((r: any) => (
                 <Link
                   key={r.id}
                   href={`/blog/${r.slug}`}
-                  className="group overflow-hidden rounded-xl border border-zinc-800/60 bg-zinc-900/40 hover:border-zinc-700 transition-colors"
+                  className="group overflow-hidden rounded-xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper)] hover:border-[var(--gm-violet)] transition-colors"
                 >
-                  <div className="relative aspect-video overflow-hidden bg-zinc-800">
+                  <div className="relative aspect-video overflow-hidden bg-muted">
                     {r.cover_url ? (
                       <Image src={r.cover_url} alt={r.title} fill sizes="33vw" className="object-cover transition-transform duration-300 group-hover:scale-105" />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-3xl text-zinc-700">📝</div>
+                      <div className="flex h-full items-center justify-center text-3xl text-muted-foreground">📝</div>
                     )}
                   </div>
                   <div className="p-3">
-                    <p className="line-clamp-2 text-sm font-semibold text-zinc-200 group-hover:text-white">{r.title}</p>
+                    <p className="line-clamp-2 text-sm font-semibold text-[var(--gm-ink)] group-hover:text-[var(--gm-violet)]">{r.title}</p>
                   </div>
                 </Link>
               ))}
@@ -157,7 +157,7 @@ export default async function BlogPostPage({ params }: Props) {
         )}
 
         <div className="mt-10">
-          <Link href="/blog" className="text-sm text-violet-400 hover:text-violet-300 transition-colors">
+          <Link href="/blog" className="text-sm font-medium text-[var(--gm-violet)] hover:opacity-80 transition-opacity">
             ← Voltar ao blog
           </Link>
         </div>

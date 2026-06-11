@@ -20,25 +20,25 @@ export default async function BlogPage() {
   const list = (posts ?? []) as any[]
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen text-[var(--gm-ink)]">
       <div className="container mx-auto max-w-5xl px-4 py-10">
 
         {/* Header */}
         <div className="mb-10">
-          <nav className="mb-4 flex items-center gap-2 text-sm text-zinc-500">
-            <Link href="/" className="hover:text-zinc-300 transition-colors">Home</Link>
+          <nav className="mb-4 flex items-center gap-2 text-sm text-[var(--gm-ink-dim)]">
+            <Link href="/" className="hover:text-[var(--gm-ink)] transition-colors">Home</Link>
             <span>/</span>
-            <span className="text-zinc-300">Blog</span>
+            <span className="text-[var(--gm-ink)]">Blog</span>
           </nav>
-          <h1 className="text-3xl font-black text-white">Blog</h1>
-          <p className="mt-1 text-zinc-400">Guias, dicas e novidades do mundo gamer.</p>
+          <h1 className="text-3xl font-black text-[var(--gm-ink)]">Blog</h1>
+          <p className="mt-1 text-[var(--gm-ink-dim)]">Guias, dicas e novidades do mundo gamer.</p>
         </div>
 
         {list.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-800 py-24 text-center">
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[var(--gm-ink-faint)]/30 py-24 text-center">
             <span className="text-5xl mb-4">📝</span>
-            <p className="text-lg font-semibold text-zinc-300">Nenhum post publicado ainda</p>
-            <p className="mt-1 text-sm text-zinc-600">Volte em breve para novidades.</p>
+            <p className="text-lg font-semibold text-[var(--gm-ink)]">Nenhum post publicado ainda</p>
+            <p className="mt-1 text-sm text-[var(--gm-ink-dim)]">Volte em breve para novidades.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -52,9 +52,9 @@ export default async function BlogPage() {
                 <Link
                   key={post.id}
                   href={`/blog/${post.slug}`}
-                  className="group flex flex-col overflow-hidden rounded-2xl border border-zinc-800/60 bg-zinc-900/40 hover:border-zinc-700 transition-colors"
+                  className="group flex flex-col overflow-hidden rounded-2xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper)] hover:border-[var(--gm-violet)] transition-colors shadow-sm"
                 >
-                  <div className="relative aspect-video overflow-hidden bg-zinc-800">
+                  <div className="relative aspect-video overflow-hidden bg-muted">
                     {post.cover_url ? (
                       <Image
                         src={post.cover_url}
@@ -64,16 +64,16 @@ export default async function BlogPage() {
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-4xl text-zinc-700">📝</div>
+                      <div className="flex h-full items-center justify-center text-4xl text-muted-foreground">📝</div>
                     )}
                   </div>
                   <div className="flex flex-1 flex-col gap-2 p-4">
-                    <h2 className="line-clamp-2 font-bold text-zinc-100 group-hover:text-white leading-snug">{post.title}</h2>
+                    <h2 className="line-clamp-2 font-bold text-[var(--gm-ink)] group-hover:text-[var(--gm-violet)] leading-snug">{post.title}</h2>
                     {post.excerpt && (
-                      <p className="line-clamp-2 text-sm text-zinc-400">{post.excerpt}</p>
+                      <p className="line-clamp-2 text-sm text-[var(--gm-ink-dim)]">{post.excerpt}</p>
                     )}
-                    <div className="mt-auto flex items-center gap-2 pt-2 text-xs text-zinc-500">
-                      <span>{authorName}</span>
+                    <div className="mt-auto flex items-center gap-2 pt-2 text-xs text-[var(--gm-ink-faint)]">
+                      <span className="font-medium text-[var(--gm-ink-dim)]">{authorName}</span>
                       <span>·</span>
                       <span>{date}</span>
                       {post.reading_time && (
