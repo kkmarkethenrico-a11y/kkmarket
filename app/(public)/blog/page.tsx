@@ -4,7 +4,7 @@ import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 
 export const metadata: Metadata = {
-  title: 'Blog — GameMarket',
+  title: 'Blog — KKmarket',
   description: 'Guias, dicas e novidades sobre jogos digitais, contas e o mercado gamer.',
 }
 
@@ -44,7 +44,7 @@ export default async function BlogPage() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {list.map((post) => {
               const author = post.profiles as { username: string; display_name: string | null } | null
-              const authorName = author?.display_name ?? author?.username ?? 'GameMarket'
+              const authorName = author?.display_name ?? author?.username ?? 'KKmarket'
               const date = new Date(post.published_at ?? post.created_at).toLocaleDateString('pt-BR', {
                 day: '2-digit', month: 'short', year: 'numeric',
               })

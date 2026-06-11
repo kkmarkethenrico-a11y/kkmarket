@@ -7,7 +7,7 @@ import DashboardClient from './DashboardClient'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Painel — GameMarket',
+  title: 'Painel — KKmarket',
 }
 
 export default async function PainelPage() {

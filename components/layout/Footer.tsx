@@ -64,7 +64,7 @@ export function Footer() {
 
       <div className="border-t border-[var(--gm-ink-faint)]/15">
         <div className="container mx-auto flex flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-[var(--gm-ink-dim)] sm:flex-row">
-          <span>Copyright © GameMarket {new Date().getFullYear()}</span>
+          <span>Copyright © KKmarket {new Date().getFullYear()}</span>
           <span>Plataforma de marketplace de produtos digitais</span>
         </div>
       </div>

@@ -4,8 +4,8 @@ import { Toaster } from '@/components/ui/sonner'
 
 export const metadata: Metadata = {
   title: {
-    default: 'GameMarket — Compre e Venda Produtos Digitais de Games',
-    template: '%s | GameMarket',
+    default: 'KKmarket — Compre e Venda Produtos Digitais de Games',
+    template: '%s | KKmarket',
   },
   description:
     'Marketplace confiável para compra e venda de contas, itens, gold e serviços de jogos digitais. Entrega garantida e pagamento seguro.',

@@ -4,7 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import WishlistClient from './WishlistClient'
 
 export const metadata = {
-  title: 'Lista de Desejos — GameMarket',
+  title: 'Lista de Desejos — KKmarket',
 }
 
 export default async function WishlistPage() {

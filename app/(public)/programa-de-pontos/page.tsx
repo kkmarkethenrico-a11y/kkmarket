@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Programa de Pontos — GameMarket',
+  title: 'Programa de Pontos — KKmarket',
   description: 'Conheça o sistema KKs Points e veja como trocar XP por dinheiro.',
 }
 

@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { SellerApplicationForm } from './SellerApplicationForm'
 
 export const metadata = {
-  title: 'Qualificar para vender — GameMarket',
+  title: 'Qualificar para vender — KKmarket',
   description: 'Envie seus documentos para se qualificar como vendedor.',
 }
 
@@ -25,7 +25,7 @@ export default async function VerificacaoPage() {
       <header className="mb-8">
         <h1 className="text-2xl font-black text-[var(--gm-ink)]">Qualificação para vendedor</h1>
         <p className="mt-1 text-sm text-[var(--gm-ink-faint)]">
-          Para vender produtos digitais na GameMarket, é necessário verificar sua identidade.
+          Para vender produtos digitais na KKmarket, é necessário verificar sua identidade.
           Envie os documentos abaixo. A análise é feita em até 48h.
         </p>
       </header>

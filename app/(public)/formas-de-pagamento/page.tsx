@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Formas de Pagamento — GameMarket',
-  description: 'Saiba quais métodos de pagamento são aceitos na plataforma GameMarket.',
+  title: 'Formas de Pagamento — KKmarket',
+  description: 'Saiba quais métodos de pagamento são aceitos na plataforma KKmarket.',
 }
 
 export default function FormasPagamentoPage() {

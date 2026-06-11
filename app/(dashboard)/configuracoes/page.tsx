@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { ProfileForm } from './ProfileForm'
 
-export const metadata = { title: 'Configurações — GameMarket' }
+export const metadata = { title: 'Configurações — KKmarket' }
 export const dynamic = 'force-dynamic'
 
 export default async function ConfiguracoesPage() {

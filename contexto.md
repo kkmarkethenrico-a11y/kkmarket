@@ -4,7 +4,7 @@
 
 | Campo | Valor |
 |---|---|
-| **Nome do Projeto** | GameMarket (nome provisório — substituir pelo nome final do cliente) |
+| **Nome do Projeto** | KKmarket (nome provisório — substituir pelo nome final do cliente) |
 | **Tipo** | Marketplace B2C/C2C — Produtos e Serviços Digitais de Games |
 | **Repositório** | github.com/[ORG]/gamemarket |
 | **Ambiente Dev** | http://localhost:3000 |
@@ -682,7 +682,7 @@ RESEND_API_KEY=re_XXXXXXXXXX
 
 # ─── App ─────────────────────────────────────────────────────
 NEXT_PUBLIC_APP_URL=https://[dominio].com.br
-NEXT_PUBLIC_APP_NAME=GameMarket
+NEXT_PUBLIC_APP_NAME=KKmarket
 PLATFORM_FEE_SILVER=0.0999    # 9.99%
 PLATFORM_FEE_GOLD=0.1199      # 11.99%
 PLATFORM_FEE_DIAMOND=0.1299   # 12.99%

@@ -38,18 +38,18 @@ export async function generateMetadata(
     .is('parent_id', null)
     .single()
 
-  if (!data) return { title: 'Categoria — GameMarket' }
+  if (!data) return { title: 'Categoria — KKmarket' }
 
   const baseUrl     = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kkmarket.com.br'
-  const title       = `Comprar ${data.seo_title ?? data.name} — Contas, Itens e Gold | GameMarket`
+  const title       = `Comprar ${data.seo_title ?? data.name} — Contas, Itens e Gold | KKmarket`
   const description = data.seo_description ??
-    `Compre itens de ${data.name} com segurança e entrega garantida na GameMarket.`
+    `Compre itens de ${data.name} com segurança e entrega garantida na KKmarket.`
 
   return {
     title,
     description,
     alternates: { canonical: `${baseUrl}/categoria/${slug}` },
-    openGraph: { title, description, type: 'website', siteName: 'GameMarket' },
+    openGraph: { title, description, type: 'website', siteName: 'KKmarket' },
     twitter:   { card: 'summary_large_image', title, description },
   }
 }

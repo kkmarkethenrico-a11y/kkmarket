@@ -19,12 +19,12 @@ export async function generateMetadata(
     .eq('is_published', true)
     .single()
 
-  if (!data) return { title: 'Post não encontrado — GameMarket' }
+  if (!data) return { title: 'Post não encontrado — KKmarket' }
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kkmarket.com.br'
   const desc = data.seo_description ?? data.excerpt ?? ''
   return {
-    title: `${data.seo_title ?? data.title} — GameMarket`,
+    title: `${data.seo_title ?? data.title} — KKmarket`,
     description: desc,
     alternates: { canonical: `${baseUrl}/blog/${slug}` },
     openGraph: {
@@ -55,7 +55,7 @@ export default async function BlogPostPage({ params }: Props) {
     avatar_url: string | null
   } | null
 
-  const authorName = author?.display_name ?? author?.username ?? 'GameMarket'
+  const authorName = author?.display_name ?? author?.username ?? 'KKmarket'
   const publishedDate = new Date(post.published_at ?? post.created_at).toLocaleDateString('pt-BR', {
     day: '2-digit', month: 'long', year: 'numeric',
   })

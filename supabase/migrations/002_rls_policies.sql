@@ -1,6 +1,6 @@
 -- ═══════════════════════════════════════════════════════════════════════════
 -- 002_rls_policies.sql
--- Row Level Security — GameMarket
+-- Row Level Security — KKmarket
 --
 -- PRINCÍPIO FUNDAMENTAL: Negar tudo por padrão, permitir explicitamente.
 -- Se não existe policy para uma operação, ela está BLOQUEADA para

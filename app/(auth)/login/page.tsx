@@ -4,8 +4,8 @@ import { createClient } from '@/lib/supabase/server'
 import { LoginForm } from '@/components/auth/LoginForm'
 
 export const metadata = {
-  title: 'Entrar — GameMarket',
-  description: 'Entre na sua conta GameMarket para comprar e vender produtos digitais de games.',
+  title: 'Entrar — KKmarket',
+  description: 'Entre na sua conta KKmarket para comprar e vender produtos digitais de games.',
 }
 
 export default async function LoginPage() {

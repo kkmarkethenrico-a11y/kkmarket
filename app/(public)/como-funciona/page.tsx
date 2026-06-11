@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Como Funciona — GameMarket',
-  description: 'Entenda como funciona a plataforma GameMarket para compradores e vendedores.',
+  title: 'Como Funciona — KKmarket',
+  description: 'Entenda como funciona a plataforma KKmarket para compradores e vendedores.',
 }
 
 export default function ComoFuncionaPage() {
@@ -11,7 +11,7 @@ export default function ComoFuncionaPage() {
     <main className="min-h-screen text-[var(--gm-ink)] py-16">
       <div className="container mx-auto max-w-4xl px-4">
         <div className="mb-10 text-center">
-          <h1 className="text-4xl font-black mb-4">Como Funciona a <span className="text-[var(--gm-violet)]">GameMarket</span>?</h1>
+          <h1 className="text-4xl font-black mb-4">Como Funciona a <span className="text-[var(--gm-violet)]">KKmarket</span>?</h1>
           <p className="text-lg text-[var(--gm-ink-dim)]">
             A sua segurança é a nossa prioridade. Entenda o nosso modelo de intermediação.
           </p>

@@ -4,8 +4,8 @@ import { createClient } from '@/lib/supabase/server'
 import { RegisterForm } from '@/components/auth/RegisterForm'
 
 export const metadata = {
-  title: 'Criar conta — GameMarket',
-  description: 'Crie sua conta GameMarket grátis e comece a comprar e vender produtos digitais de games.',
+  title: 'Criar conta — KKmarket',
+  description: 'Crie sua conta KKmarket grátis e comece a comprar e vender produtos digitais de games.',
 }
 
 export default async function CadastroPage() {

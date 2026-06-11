@@ -208,7 +208,7 @@ export function Step4Review({ categories }: Step4Props) {
 
       {/* ⚠ Moderação aviso */}
       <div className="rounded-2xl border border-yellow-500/20 bg-yellow-500/5 px-5 py-4 text-sm text-yellow-300">
-        ⏱ Após publicar, seu anúncio entrará em análise pela equipe GameMarket (até 6 horas). Você receberá uma notificação quando for aprovado ou rejeitado.
+        ⏱ Após publicar, seu anúncio entrará em análise pela equipe KKmarket (até 6 horas). Você receberá uma notificação quando for aprovado ou rejeitado.
       </div>
 
       {error && (

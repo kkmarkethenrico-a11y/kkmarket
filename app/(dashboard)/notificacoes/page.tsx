@@ -4,7 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import NotificationsClient from './NotificationsClient'
 
 export const metadata = {
-  title: 'Notificações — GameMarket',
+  title: 'Notificações — KKmarket',
 }
 
 export default async function NotificationsPage() {

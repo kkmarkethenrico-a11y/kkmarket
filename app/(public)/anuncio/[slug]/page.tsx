@@ -33,7 +33,7 @@ export async function generateMetadata(
     .eq('status', 'active')
     .single()
 
-  if (!data) return { title: 'Anúncio não encontrado — GameMarket' }
+  if (!data) return { title: 'Anúncio não encontrado — KKmarket' }
 
   const baseUrl  = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kkmarket.com.br'
   const excerpt  = stripHtml(data.description ?? '').slice(0, 155)
@@ -42,10 +42,10 @@ export async function generateMetadata(
   const ogImages = cover ? [{ url: cover.url, width: 1200, height: 630, alt: data.title }] : []
 
   return {
-    title:       `${data.title} — GameMarket`,
+    title:       `${data.title} — KKmarket`,
     description: excerpt,
     alternates:  { canonical: `${baseUrl}/anuncio/${slug}` },
-    openGraph:   { title: data.title, description: excerpt, type: 'website', images: ogImages, siteName: 'GameMarket' },
+    openGraph:   { title: data.title, description: excerpt, type: 'website', images: ogImages, siteName: 'KKmarket' },
     twitter:     { card: 'summary_large_image', title: data.title, description: excerpt, images: cover ? [cover.url] : [] },
   }
 }

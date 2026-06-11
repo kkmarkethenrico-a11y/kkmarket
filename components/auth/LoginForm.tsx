@@ -60,7 +60,7 @@ export function LoginForm() {
           login
         </h1>
         <p className="mt-2 text-sm text-[var(--gm-ink-dim)]">
-          novo no GameMarket?{' '}
+          novo no KKmarket?{' '}
           <Link href="/cadastro" className="text-[var(--gm-violet)] hover:text-[var(--gm-cyan)] font-semibold transition-colors">
             criar conta grátis
           </Link>

@@ -41,11 +41,11 @@ export async function generateMetadata(
     .eq('slug', subslug)
     .single()
 
-  if (!data) return { title: 'Categoria — GameMarket' }
+  if (!data) return { title: 'Categoria — KKmarket' }
 
   const baseUrl     = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kkmarket.com.br'
-  const title       = `Comprar ${data.seo_title ?? data.name} — Contas, Itens e Gold | GameMarket`
-  const description = data.seo_description ?? `Compre ${data.name} com segurança e entrega garantida na GameMarket.`
+  const title       = `Comprar ${data.seo_title ?? data.name} — Contas, Itens e Gold | KKmarket`
+  const description = data.seo_description ?? `Compre ${data.name} com segurança e entrega garantida na KKmarket.`
 
   return {
     title,
@@ -56,7 +56,7 @@ export async function generateMetadata(
       title,
       description,
       type:     'website',
-      siteName: 'GameMarket',
+      siteName: 'KKmarket',
     },
     twitter: {
       card:        'summary_large_image',

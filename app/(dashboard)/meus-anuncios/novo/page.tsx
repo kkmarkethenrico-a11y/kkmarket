@@ -5,8 +5,8 @@ import { AnnouncementWizard } from '@/components/announcement/AnnouncementWizard
 import type { Category } from '@/types'
 
 export const metadata = {
-  title: 'Criar Anúncio — GameMarket',
-  description: 'Crie um novo anúncio para vender produtos digitais na GameMarket.',
+  title: 'Criar Anúncio — KKmarket',
+  description: 'Crie um novo anúncio para vender produtos digitais na KKmarket.',
 }
 
 export default async function NovoAnuncioPage() {

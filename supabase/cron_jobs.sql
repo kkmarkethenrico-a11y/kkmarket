@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════════════════════════════════════════
--- CRON JOBS — GameMarket / KKMarket
+-- CRON JOBS — KKmarket / KKMarket
 -- Execute este snippet no SQL Editor do Supabase Dashboard
 -- (Database → SQL Editor → New query → Run)
 --

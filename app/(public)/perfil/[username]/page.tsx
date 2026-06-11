@@ -19,8 +19,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     .single()
   if (!data) return { title: 'Perfil não encontrado' }
   return {
-    title: `${data.display_name ?? data.username} | GameMarket`,
-    description: data.bio ?? `Perfil de ${data.display_name ?? data.username} no GameMarket.`,
+    title: `${data.display_name ?? data.username} | KKmarket`,
+    description: data.bio ?? `Perfil de ${data.display_name ?? data.username} no KKmarket.`,
   }
 }
 

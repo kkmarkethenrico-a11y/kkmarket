@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Tarifas e Prazos — GameMarket',
+  title: 'Tarifas e Prazos — KKmarket',
   description: 'Conheça nossas tarifas transparentes e os prazos de recebimento.',
 }
 
@@ -14,7 +14,7 @@ export default function TarifasPrazosPage() {
         <div className="rounded-2xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper)] p-8 shadow-sm mb-8">
           <h2 className="text-2xl font-bold mb-4">É grátis para anunciar?</h2>
           <p className="text-[var(--gm-ink-dim)] leading-relaxed mb-6">
-            Sim! Você não paga absolutamente nada para criar sua conta ou publicar seus anúncios na GameMarket. Nós só ganhamos quando você ganha.
+            Sim! Você não paga absolutamente nada para criar sua conta ou publicar seus anúncios na KKmarket. Nós só ganhamos quando você ganha.
           </p>
 
           <h2 className="text-2xl font-bold mb-4">Taxas sobre Vendas</h2>

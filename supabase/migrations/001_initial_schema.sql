@@ -29,7 +29,7 @@ create type notification_type as enum ('order_new', 'order_paid', 'order_deliver
 
 -- ═══════════════════════════════════════════════════════════
 -- TABELA: profiles
--- Objetivo: Extensão da tabela de usuários (auth.users do supabase) com informações públicas e regras do GameMarket.
+-- Objetivo: Extensão da tabela de usuários (auth.users do supabase) com informações públicas e regras do KKmarket.
 -- ═══════════════════════════════════════════════════════════
 create table public.profiles (
   id             uuid primary key references auth.users(id) on delete cascade,
