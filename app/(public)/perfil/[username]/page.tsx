@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 import { Settings } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { ProfileReviewTabs } from '@/components/profile/ProfileReviewTabs'
+import { ProfileActions } from '@/components/profile/ProfileActions'
 
 type Props = { params: Promise<{ username: string }> }
 
@@ -224,14 +225,7 @@ export default async function PublicProfilePage({ params }: Props) {
               )}
 
               {/* CTA Buttons */}
-              <div className="flex gap-2">
-                <button className="flex-1 rounded-lg border border-[var(--gm-ink-faint)]/40 px-3 py-2 text-xs font-bold text-[var(--gm-ink-dim)] hover:border-[var(--gm-violet)]/50 hover:text-[var(--gm-ink)] transition-all">
-                  ♡ seguir
-                </button>
-                <button className="flex-1 rounded-lg bg-[var(--gm-violet)] px-3 py-2 text-xs font-black text-[#1a1126] hover:opacity-90 transition-all gm-glow">
-                  💬 chat
-                </button>
-              </div>
+              <ProfileActions username={profile.username} />
             </div>
           </aside>
 
