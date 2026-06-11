@@ -46,6 +46,27 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  /* kkmarket gaming tokens */
+  --color-gm-violet: #FF9D00;
+  --color-gm-cyan: #00A2FF;
+  --color-gm-green: #34d399;
+  --color-gm-amber: #FFC000;
+  --color-gm-rose: #fb7185;
+}
+
+/* ── kkmarket palette raw tokens ──────────────────────────────────────────── */
+:root {
+  --gm-paper:    #020617;
+  --gm-paper-2:  #070f1e;
+  --gm-paper-3:  #0a162d;
+  --gm-ink:      #f5f3ef;   /* brighter near-white primary text */
+  --gm-ink-dim:  #94a3b8;   /* clearly readable secondary text   */
+  --gm-ink-faint:#334155;   /* borders + tertiary labels         */
+  --gm-violet:   #FF9D00;
+  --gm-cyan:     #00A2FF;
+  --gm-green:    #34d399;
+  --gm-amber:    #FFC000;
+  --gm-rose:     #fb7185;
 }
 
 :root {
@@ -84,37 +105,38 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* kkmarket dark theme — maps kkmarket tokens to shadcn variables */
+  --background:  #020617;
+  --foreground:  #f5f3ef;
+  --card:        #070f1e;
+  --card-foreground: #f5f3ef;
+  --popover:     #070f1e;
+  --popover-foreground: #f5f3ef;
+  --primary:     #FF9D00;
+  --primary-foreground: #020617;
+  --secondary:   #0a162d;
+  --secondary-foreground: #f5f3ef;
+  --muted:       #0a162d;
+  --muted-foreground: #94a3b8;
+  --accent:      #0a162d;
+  --accent-foreground: #FF9D00;
+  --destructive: #fb7185;
+  --border: rgba(0, 162, 255, 0.15);
+  --input:  rgba(0, 162, 255, 0.1);
+  --ring:   #FF9D00;
+  --chart-1: #FF9D00;
+  --chart-2: #00A2FF;
+  --chart-3: #34d399;
+  --chart-4: #FFC000;
+  --chart-5: #fb7185;
+  --sidebar: #070f1e;
+  --sidebar-foreground: #f5f3ef;
+  --sidebar-primary: #FF9D00;
+  --sidebar-primary-foreground: #020617;
+  --sidebar-accent: #0a162d;
+  --sidebar-accent-foreground: #f5f3ef;
+  --sidebar-border: rgba(0, 162, 255, 0.1);
+  --sidebar-ring: #FF9D00;
 }
 
 @layer base {
@@ -127,6 +149,73 @@
   html {
     @apply font-sans;
   }
+}
+
+/* ── Dot-grid background (paper texture) ─────────────────────────────────── */
+.dark body {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.018) 1px, transparent 0);
+  background-size: 24px 24px;
+  background-attachment: fixed;
+}
+
+/* ── Input placeholder brightness ────────────────────────────────────────── */
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: var(--gm-ink-faint);
+  opacity: 1;
+}
+
+/* ── XP Bar ──────────────────────────────────────────────────────────────── */
+.xp-bar {
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+.xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gm-violet), var(--gm-cyan));
+  border-radius: 999px;
+  transition: width 0.6s ease;
+}
+.xp-bar.thick { height: 10px; }
+
+/* ── Rank Chip ────────────────────────────────────────────────────────────── */
+.rank-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border: 1px solid var(--gm-violet);
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gm-violet);
+  background: rgba(167,139,250,0.08);
+  line-height: 1.6;
+}
+.rank-chip.gold   { color: var(--gm-amber); border-color: var(--gm-amber); background: rgba(251,191,36,0.08); }
+.rank-chip.cyan   { color: var(--gm-cyan);  border-color: var(--gm-cyan);  background: rgba(34,211,238,0.08); }
+.rank-chip.green  { color: var(--gm-green); border-color: var(--gm-green); background: rgba(52,211,153,0.08); }
+
+/* ── Glow pulse animation ─────────────────────────────────────────────────── */
+@keyframes gm-glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(167,139,250,0.25); }
+  50%       { box-shadow: 0 0 16px 4px rgba(167,139,250,0.35); }
+}
+.gm-glow { animation: gm-glow-pulse 2.5s ease-in-out infinite; }
+
+/* ── Card 3D tilt on hover ────────────────────────────────────────────────── */
+.gm-card-tilt {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.gm-card-tilt:hover {
+  transform: translateY(-4px) perspective(600px) rotateX(2deg);
+  box-shadow: 0 16px 40px -12px rgba(167,139,250,0.2);
 }
 
 /* ─── Mercado Pago card form iframes ──────────────────────────────────────── */

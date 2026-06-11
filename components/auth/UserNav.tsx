@@ -13,13 +13,13 @@ export async function UserNav() {
       <div className="flex items-center gap-3">
         <Link
           href="/login"
-          className="text-sm font-medium text-zinc-300 hover:text-white transition-colors"
+          className="text-sm font-medium text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)] transition-colors"
         >
           Entrar
         </Link>
         <Link
           href="/cadastro"
-          className="rounded-xl bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-violet-500 active:scale-[0.97]"
+          className="rounded-xl bg-[var(--gm-violet)] px-4 py-2 text-sm font-semibold text-[#1a1126] transition-all hover:opacity-90 active:scale-[0.97]"
         >
           Criar conta
         </Link>

@@ -32,9 +32,9 @@ interface ReviewsListProps {
 }
 
 const REVIEW_ICON = {
-  positive: <ThumbsUp  className="h-4 w-4 text-emerald-500" aria-label="Positiva" />,
-  neutral:  <Minus     className="h-4 w-4 text-zinc-400"    aria-label="Neutra"   />,
-  negative: <ThumbsDown className="h-4 w-4 text-red-500"   aria-label="Negativa" />,
+  positive: <ThumbsUp  className="h-4 w-4 text-[var(--gm-green)]" aria-label="Positiva" />,
+  neutral:  <Minus     className="h-4 w-4 text-[var(--gm-ink-faint)]" aria-label="Neutra"   />,
+  negative: <ThumbsDown className="h-4 w-4 text-[var(--gm-rose)]" aria-label="Negativa" />,
 }
 
 function formatDate(iso: string) {
@@ -61,7 +61,7 @@ function Avatar({ src, name }: { src: string | null; name: string }) {
     )
   }
   return (
-    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-700 text-xs font-semibold text-zinc-300">
+    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--gm-violet)]/20 text-xs font-semibold text-[var(--gm-violet)]">
       {initials}
     </div>
   )
@@ -110,22 +110,22 @@ export function ReviewsList({
     <div className="space-y-4">
       {/* Resumo */}
       {total > 0 && (
-        <div className="flex items-center gap-3 rounded-lg bg-zinc-800/60 px-4 py-3 text-sm">
-          <span className="font-semibold text-emerald-400">
+        <div className="flex items-center gap-3 rounded-lg bg-[var(--gm-paper-3)] px-4 py-3 text-sm">
+          <span className="font-semibold text-[var(--gm-green)]">
             {posPct}% positivas
           </span>
-          <span className="text-zinc-500">·</span>
-          <span className="text-zinc-400">
+          <span className="text-[var(--gm-ink-faint)]">·</span>
+          <span className="text-[var(--gm-ink-dim)]">
             {reviewsPositive} positiva{reviewsPositive !== 1 ? 's' : ''}
           </span>
-          <span className="text-zinc-600">de</span>
-          <span className="text-zinc-400">{total} vendas avaliadas</span>
+          <span className="text-[var(--gm-ink-faint)]">de</span>
+          <span className="text-[var(--gm-ink-dim)]">{total} vendas avaliadas</span>
         </div>
       )}
 
       {/* Lista */}
       {reviews.length === 0 && (
-        <p className="py-4 text-center text-sm text-zinc-500">
+        <p className="py-4 text-center text-sm text-[var(--gm-ink-faint)]">
           Nenhuma avaliação ainda.
         </p>
       )}
@@ -142,20 +142,20 @@ export function ReviewsList({
                   ? 'border-emerald-500/20 bg-emerald-500/5'
                   : r.type === 'negative'
                   ? 'border-red-500/20 bg-red-500/5'
-                  : 'border-zinc-700/40 bg-zinc-800/40',
+                  : 'border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-3)]/60',
               )}
             >
               <Avatar src={r.profiles?.avatar_url ?? null} name={name} />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   {REVIEW_ICON[r.type]}
-                  <span className="text-sm font-medium text-zinc-200">{name}</span>
-                  <span className="ml-auto text-xs text-zinc-500">
+                  <span className="text-sm font-medium text-[var(--gm-ink)]">{name}</span>
+                  <span className="ml-auto text-xs text-[var(--gm-ink-faint)]">
                     {formatDate(r.created_at)}
                   </span>
                 </div>
                 {r.message && (
-                  <p className="mt-1 text-sm text-zinc-400 break-words">
+                  <p className="mt-1 text-sm text-[var(--gm-ink-dim)] break-words">
                     {r.message}
                   </p>
                 )}
@@ -170,7 +170,7 @@ export function ReviewsList({
           <button
             onClick={loadMore}
             disabled={loading}
-            className="rounded-md border border-zinc-700 px-4 py-1.5 text-sm text-zinc-400 hover:bg-zinc-800 disabled:opacity-50 transition-colors"
+            className="rounded-md border border-[var(--gm-ink-faint)]/40 px-4 py-1.5 text-sm text-[var(--gm-ink-dim)] hover:bg-[var(--gm-paper-3)] hover:text-[var(--gm-ink)] disabled:opacity-50 transition-colors"
           >
             {loading ? 'Carregando…' : 'Carregar mais'}
           </button>

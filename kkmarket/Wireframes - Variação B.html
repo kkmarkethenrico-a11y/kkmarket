@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1100" />
+<title>GameMarket — Wireframes (Variação B)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Caveat:wght@400;700&family=Patrick+Hand&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="styles.css" />
+<style>
+  body.hide-annotations .note-arrow,
+  body.hide-annotations .anim-tag,
+  body.hide-annotations [data-annotation] { display: none !important; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "accent": "#a78bfa",
+    "accent2": "#22d3ee",
+    "paper": "#0d0d12",
+    "fontHand": "Patrick Hand",
+    "showAnnotations": true
+  }/*EDITMODE-END*/;
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="sketch.jsx"></script>
+<script type="text/babel" src="screens-auth.jsx"></script>
+<script type="text/babel" src="screens-shop.jsx"></script>
+<script type="text/babel" src="screens-user.jsx"></script>
+<script type="text/babel" src="app-final.jsx"></script>
+</body>
+</html>

@@ -200,16 +200,16 @@ export default async function AnnouncioPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="min-h-screen bg-zinc-950 text-white">
+      <div className="min-h-screen text-[var(--gm-ink)]">
         <div className="container mx-auto px-4 py-8">
 
           {/* Breadcrumb */}
-          <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-sm text-zinc-500">
-            <Link href="/" className="hover:text-zinc-300 transition-colors">Home</Link>
+          <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-sm text-[var(--gm-ink-faint)]">
+            <Link href="/" className="hover:text-[var(--gm-ink)] transition-colors">Home</Link>
             {parentCategory && (
               <>
                 <span>/</span>
-                <Link href={`/categoria/${parentCategory.slug}`} className="hover:text-zinc-300 transition-colors capitalize">
+                <Link href={`/categoria/${parentCategory.slug}`} className="hover:text-[var(--gm-ink)] transition-colors capitalize">
                   {parentCategory.name}
                 </Link>
               </>
@@ -217,13 +217,13 @@ export default async function AnnouncioPage({ params }: Props) {
             {category && (
               <>
                 <span>/</span>
-                <Link href={`/categoria/${parentCategory?.slug ?? 'categoria'}/${category.slug}`} className="hover:text-zinc-300 transition-colors">
+                <Link href={`/categoria/${parentCategory?.slug ?? 'categoria'}/${category.slug}`} className="hover:text-[var(--gm-ink)] transition-colors">
                   {category.name}
                 </Link>
               </>
             )}
             <span>/</span>
-            <span className="truncate max-w-[200px] text-zinc-300">{ann.title}</span>
+            <span className="truncate max-w-[200px] text-[var(--gm-ink-dim)]">{ann.title}</span>
           </nav>
 
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
@@ -246,64 +246,29 @@ export default async function AnnouncioPage({ params }: Props) {
             </div>
 
             {/* DIREITA: info + compra */}
-            <aside className="flex w-full flex-col gap-6 lg:w-[360px] lg:shrink-0">
+            <aside className="flex w-full flex-col gap-5 lg:w-[360px] lg:shrink-0">
 
-              {/* Título + plano */}
-              <div className="flex flex-col gap-2">
+              {/* Título + plano + stats */}
+              <div className="rounded-xl border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-2)] p-4 flex flex-col gap-3">
                 <div className="flex items-start gap-2">
-                  <h1 className="flex-1 text-xl font-bold leading-snug text-white sm:text-2xl">{ann.title}</h1>
+                  <h1 className="flex-1 text-xl font-black leading-snug text-[var(--gm-ink)] sm:text-2xl">{ann.title}</h1>
                   <PlanBadge plan={ann.plan} />
                 </div>
-                <div className="flex items-center gap-3 text-xs text-zinc-600">
-                  <span>{ann.view_count ?? 0} visualizações</span>
+                <div className="flex flex-wrap items-center gap-3 text-xs text-[var(--gm-ink-faint)]">
+                  {ann.has_auto_delivery && (
+                    <span className="rank-chip green text-[10px]">⚡ auto</span>
+                  )}
+                  {(ann.sale_count ?? 0) > 10 && (
+                    <span className="rank-chip gold text-[10px]">🔥 hot</span>
+                  )}
+                  <span>{ann.view_count ?? 0} views</span>
                   <span>·</span>
                   <span>{ann.sale_count ?? 0} vendas</span>
                 </div>
               </div>
 
-              {/* Card do vendedor */}
-              <div className="rounded-2xl border border-zinc-800/60 bg-zinc-900/40 p-4 flex flex-col gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="relative">
-                    {seller?.avatar_url ? (
-                      <Image src={seller.avatar_url} alt={sellerName} width={48} height={48} sizes="48px" className="h-12 w-12 rounded-full object-cover" />
-                    ) : (
-                      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-violet-700 text-lg font-bold uppercase">
-                        {sellerName[0]}
-                      </span>
-                    )}
-                    {online && <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-zinc-900 bg-green-500" />}
-                  </div>
-                  <div className="flex flex-col">
-                    <Link href={`/perfil/${seller?.username ?? ''}`} className="text-sm font-semibold text-zinc-100 hover:text-violet-400 transition-colors">
-                      {sellerName}
-                    </Link>
-                    <span className="text-xs text-zinc-500">@{seller?.username}</span>
-                  </div>
-                  <span className={`ml-auto rounded-full px-2.5 py-1 text-xs font-medium ${online ? 'bg-green-500/20 text-green-400' : 'bg-zinc-800 text-zinc-500'}`}>
-                    {online ? '● Online' : '○ Offline'}
-                  </span>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  <VerBadge ok={hasEmail}    label="E-mail"     emoji="✉️" />
-                  <VerBadge ok={hasPhone}    label="Telefone"   emoji="📱" />
-                  <VerBadge ok={hasIdentity} label="Documentos" emoji="🪪" />
-                </div>
-
-                {positiveRatio !== null && (
-                  <div className="flex items-center gap-2 rounded-xl bg-zinc-800/40 px-3 py-2">
-                    <span className="text-lg">⭐</span>
-                    <div className="flex flex-col">
-                      <span className="text-sm font-semibold text-zinc-100">{positiveRatio}% positivas</span>
-                      <span className="text-xs text-zinc-500">{totalReviews} avaliação{totalReviews !== 1 ? 'ões' : ''} · {stats?.total_sales ?? 0} vendas</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-
               {/* Painel de compra */}
-              <div className="rounded-2xl border border-zinc-800/60 bg-zinc-900/40 p-4">
+              <div className="rounded-xl border border-[var(--gm-violet)]/20 bg-[var(--gm-paper-2)] p-4">
                 <PurchasePanel
                   announcementId={ann.id}
                   announcementSlug={ann.slug}
@@ -318,8 +283,57 @@ export default async function AnnouncioPage({ params }: Props) {
                 />
               </div>
 
-              <div className="rounded-2xl border border-zinc-800/40 bg-zinc-900/20 px-4 py-3 text-xs text-zinc-600">
-                🔒 Pagamento seguro via Mercado Pago · Dinheiro retido em escrow até sua confirmação · Suporte 24h
+              {/* Card do vendedor */}
+              <div className="rounded-xl border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-2)] p-4 flex flex-col gap-4">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--gm-ink-faint)]">Vendedor</p>
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    {seller?.avatar_url ? (
+                      <Image src={seller.avatar_url} alt={sellerName} width={48} height={48} sizes="48px" className="h-12 w-12 rounded-full object-cover ring-2 ring-[var(--gm-violet)]/30" />
+                    ) : (
+                      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--gm-violet)]/20 text-lg font-black text-[var(--gm-violet)] uppercase ring-2 ring-[var(--gm-violet)]/30">
+                        {sellerName[0]}
+                      </span>
+                    )}
+                    {online && <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[var(--gm-paper-2)] bg-[var(--gm-green)]" />}
+                  </div>
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <Link href={`/perfil/${seller?.username ?? ''}`} className="text-sm font-black text-[var(--gm-ink)] hover:text-[var(--gm-violet)] transition-colors">
+                      {sellerName}
+                    </Link>
+                    <span className="text-xs text-[var(--gm-ink-faint)]">@{seller?.username}</span>
+                  </div>
+                  <span className={`shrink-0 rounded-lg px-2.5 py-1 text-[10px] font-bold ${online ? 'bg-[var(--gm-green)]/15 text-[var(--gm-green)]' : 'bg-[var(--gm-ink-faint)]/10 text-[var(--gm-ink-faint)]'}`}>
+                    {online ? '● Online' : '○ Offline'}
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5">
+                  <VerBadge ok={hasEmail}    label="E-mail"     emoji="✉️" />
+                  <VerBadge ok={hasPhone}    label="Telefone"   emoji="📱" />
+                  <VerBadge ok={hasIdentity} label="Documentos" emoji="🪪" />
+                </div>
+
+                {positiveRatio !== null && (
+                  <div className="flex items-center gap-2 rounded-lg border border-[var(--gm-amber)]/20 bg-[var(--gm-amber)]/5 px-3 py-2">
+                    <span className="text-base">⭐</span>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-black text-[var(--gm-amber)]">{positiveRatio}% positivas</span>
+                      <span className="text-[10px] text-[var(--gm-ink-faint)]">{totalReviews} avaliações · {stats?.total_sales ?? 0} vendas</span>
+                    </div>
+                  </div>
+                )}
+
+                <Link
+                  href={`/perfil/${seller?.username ?? ''}`}
+                  className="flex items-center justify-center gap-2 rounded-lg border border-[var(--gm-ink-faint)]/40 px-4 py-2 text-xs font-bold text-[var(--gm-ink-dim)] hover:border-[var(--gm-violet)]/50 hover:text-[var(--gm-ink)] transition-all"
+                >
+                  ver perfil →
+                </Link>
+              </div>
+
+              <div className="rounded-lg border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-3)] px-4 py-3 text-[10px] text-[var(--gm-ink-faint)] text-center">
+                🔒 Pagamento seguro via Mercado Pago · Escrow até confirmação · Suporte 24h
               </div>
             </aside>
           </div>
@@ -332,8 +346,8 @@ export default async function AnnouncioPage({ params }: Props) {
 // ─── Badge de verificação ─────────────────────────────────────────────────────
 function VerBadge({ ok, label, emoji }: { ok: boolean; label: string; emoji: string }) {
   return (
-    <span className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium ${
-      ok ? 'border-green-500/30 bg-green-500/10 text-green-400' : 'border-zinc-800 bg-zinc-900/40 text-zinc-600'
+    <span className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-[10px] font-bold ${
+      ok ? 'border-[var(--gm-green)]/30 bg-[var(--gm-green)]/10 text-[var(--gm-green)]' : 'border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-3)] text-[var(--gm-ink-faint)]'
     }`}>
       {emoji} <span>{label}</span> <span>{ok ? '✓' : '–'}</span>
     </span>

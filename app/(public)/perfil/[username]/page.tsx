@@ -4,7 +4,6 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { Settings } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
-import { ReputationBadge } from '@/components/profile/ReputationBadge'
 import { ProfileReviewTabs } from '@/components/profile/ProfileReviewTabs'
 
 type Props = { params: Promise<{ username: string }> }
@@ -28,7 +27,6 @@ export default async function PublicProfilePage({ params }: Props) {
   const { username } = await params
   const supabase = await createClient()
 
-  // Usuário logado (para mostrar engrenagem se for o dono)
   const { data: { user: currentUser } } = await supabase.auth.getUser()
 
   const { data: profile } = await supabase
@@ -59,7 +57,15 @@ export default async function PublicProfilePage({ params }: Props) {
     avg_response_time_minutes: number | null
   } | null
 
-  // Reviews iniciais para SSR (10 primeiras, todas as roles)
+  // Fetch announcements
+  const { data: announcements } = await supabase
+    .from('announcements')
+    .select('id, title, slug, unit_price, has_auto_delivery, sale_count, announcement_images(url, is_cover, sort_order)')
+    .eq('user_id', profile.id)
+    .eq('status', 'active')
+    .order('sale_count', { ascending: false })
+    .limit(7)
+
   const { data: initialReviews } = await supabase
     .from('order_reviews')
     .select(
@@ -76,111 +82,267 @@ export default async function PublicProfilePage({ params }: Props) {
   const hasIdentity = verifications.some((v) => ['identity_front', 'identity_back'].includes(v.type))
 
   const displayName = profile.display_name ?? profile.username
-  const joinDate    = new Date(profile.created_at).toLocaleDateString('pt-BR', {
-    month: 'long',
-    year:  'numeric',
-  })
+  const joinYear    = new Date(profile.created_at).getFullYear()
+
+  const totalSales = stats?.total_sales ?? 0
+  const totalReviews = (stats?.reviews_positive ?? 0) + (stats?.reviews_neutral ?? 0) + (stats?.reviews_negative ?? 0)
+  const positiveRatio = totalReviews > 0
+    ? Math.round(((stats?.reviews_positive ?? 0) / totalReviews) * 100)
+    : null
+
+  // Derive level from total_sales
+  const level = Math.max(1, Math.floor(totalSales / 10) + 1)
+  const xpPct = (totalSales % 10) * 10
+
+  const respTime = stats?.avg_response_time_minutes
+  const respLabel = respTime == null ? '—'
+    : respTime < 60 ? `${respTime}min`
+    : `${Math.round(respTime / 60)}h`
+
+  const badges = [
+    hasEmail && '✉️',
+    hasPhone && '📱',
+    hasIdentity && '🪪',
+    profile.is_vip && '⭐',
+    profile.role === 'seller' && '💰',
+    totalSales >= 50 && '🏆',
+    totalSales >= 100 && '◆',
+    (stats?.reviews_positive ?? 0) >= 10 && '🔥',
+    (stats?.reviews_positive ?? 0) >= 50 && '🎯',
+  ].filter(Boolean) as string[]
+
+  const anns = (announcements ?? []) as unknown as Array<{
+    id: string; title: string; slug: string
+    unit_price: number | null; has_auto_delivery: boolean; sale_count: number
+    announcement_images: { url: string; is_cover: boolean; sort_order: number }[]
+  }>
+
+  const featured = anns[0]
+  const rest = anns.slice(1, 7)
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
-      <div className="container mx-auto max-w-4xl px-4 py-10">
+    <main className="min-h-screen text-[var(--gm-ink)]">
+      <div className="container mx-auto max-w-6xl px-4 py-10">
 
-        {/* ─── Header do perfil ─── */}
-        <div className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-start">
-          {/* Avatar */}
-          <div className="relative shrink-0">
-            {profile.avatar_url ? (
-              <Image
-                src={profile.avatar_url}
-                alt={displayName}
-                width={96}
-                height={96}
-                className="h-24 w-24 rounded-full object-cover ring-2 ring-zinc-700"
-              />
-            ) : (
-              <div className="flex h-24 w-24 items-center justify-center rounded-full bg-zinc-800 text-2xl font-bold text-zinc-400 ring-2 ring-zinc-700">
-                {displayName.slice(0, 2).toUpperCase()}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[300px_1fr]">
+
+          {/* ─── Gamer Card (sticky sidebar) ─── */}
+          <aside className="lg:sticky lg:top-6 lg:self-start">
+            <div className="rounded-xl border border-[var(--gm-violet)]/30 bg-[var(--gm-paper-2)] p-5 flex flex-col gap-4"
+              style={{ background: 'linear-gradient(160deg, rgba(167,139,250,0.06), rgba(34,211,238,0.02))' }}>
+
+              {/* Rank chips */}
+              <div className="flex items-center justify-between">
+                {profile.is_vip
+                  ? <span className="rank-chip gold text-[10px]">◆ DIAMANTE</span>
+                  : <span className="rank-chip text-[10px]">JOGADOR</span>}
+                {profile.is_vip && <span className="rank-chip gold text-[10px]">VIP</span>}
+                {isOwner && (
+                  <Link
+                    href="/configuracoes"
+                    title="Editar perfil"
+                    className="ml-auto flex items-center justify-center rounded-lg p-1.5 text-[var(--gm-ink-faint)] hover:bg-[var(--gm-paper-3)] hover:text-[var(--gm-ink)] transition-colors"
+                  >
+                    <Settings className="h-4 w-4" />
+                  </Link>
+                )}
               </div>
-            )}
-            {profile.is_vip && (
-              <span className="absolute -right-1 -top-1 rounded-full bg-yellow-400 px-1.5 py-0.5 text-[10px] font-bold text-black">
-                VIP
-              </span>
-            )}
-          </div>
 
-          {/* Info */}
-          <div className="flex-1 space-y-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-2xl font-bold">{displayName}</h1>
-              <span className="text-zinc-500">@{profile.username}</span>
-              {isOwner && (
-                <Link
-                  href="/configuracoes"
-                  title="Editar perfil"
-                  className="ml-1 flex items-center justify-center rounded-full p-1.5 text-zinc-500 hover:bg-zinc-800 hover:text-zinc-200 transition-colors"
-                >
-                  <Settings className="h-4 w-4" />
-                </Link>
+              {/* Avatar + nome */}
+              <div className="flex flex-col items-center gap-3 text-center">
+                {profile.avatar_url ? (
+                  <Image
+                    src={profile.avatar_url}
+                    alt={displayName}
+                    width={80}
+                    height={80}
+                    className="h-20 w-20 rounded-full object-cover ring-2 ring-[var(--gm-violet)]/50"
+                  />
+                ) : (
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[var(--gm-violet)]/20 text-2xl font-black text-[var(--gm-violet)] ring-2 ring-[var(--gm-violet)]/50 uppercase">
+                    {displayName.slice(0, 2)}
+                  </div>
+                )}
+                <div>
+                  <h1 className="text-lg font-black text-[var(--gm-ink)]">{displayName}</h1>
+                  <p className="text-xs text-[var(--gm-ink-faint)]">@{profile.username} · desde {joinYear}</p>
+                </div>
+              </div>
+
+              {/* XP Bar */}
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold text-[var(--gm-ink-faint)] shrink-0">LV {level}</span>
+                <div className="xp-bar flex-1">
+                  <div className="xp-bar-fill" style={{ width: `${xpPct}%` }} />
+                </div>
+                <span className="text-[10px] font-bold text-[var(--gm-violet)] shrink-0">{xpPct}%</span>
+              </div>
+
+              {/* Stats 2x2 */}
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { icon: '⭐', value: positiveRatio !== null ? `${positiveRatio}%` : '—', label: 'avaliações' },
+                  { icon: '📦', value: String(totalSales), label: 'vendas' },
+                  { icon: '⚡', value: respLabel, label: 'resp.' },
+                  { icon: '✓',  value: `${totalReviews > 0 ? positiveRatio ?? '—' : '—'}%`, label: 'ok' },
+                ].map((s) => (
+                  <div key={s.label} className="flex flex-col items-center gap-1 rounded-lg border border-[var(--gm-ink-faint)]/20 p-2">
+                    <span className="text-base">{s.icon}</span>
+                    <span className="text-sm font-black text-[var(--gm-ink)]">{s.value}</span>
+                    <span className="text-[9px] text-[var(--gm-ink-faint)] uppercase tracking-wide">{s.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Bio */}
+              {profile.bio && (
+                <p className="text-xs text-[var(--gm-ink-dim)] leading-relaxed text-center">{profile.bio}</p>
               )}
-            </div>
 
-            {/* Verificações */}
-            <div className="flex flex-wrap gap-2 text-xs">
-              {hasEmail    && <span className="rounded-full bg-blue-500/20 px-2 py-0.5 text-blue-400">✉ Email</span>}
-              {hasPhone    && <span className="rounded-full bg-green-500/20 px-2 py-0.5 text-green-400">📱 Telefone</span>}
-              {hasIdentity && <span className="rounded-full bg-purple-500/20 px-2 py-0.5 text-purple-400">🪪 Identidade</span>}
-            </div>
-
-            {profile.bio && (
-              <p className="text-sm text-zinc-400">{profile.bio}</p>
-            )}
-
-            <p className="text-xs text-zinc-600">Membro desde {joinDate}</p>
-          </div>
-
-          {/* Stats rápidas */}
-          <div className="flex shrink-0 flex-col gap-2 rounded-lg border border-zinc-800 bg-zinc-900 p-4 text-sm">
-            <ReputationBadge
-              reviewsPositive={stats?.reviews_positive ?? 0}
-              reviewsNeutral={stats?.reviews_neutral ?? 0}
-              reviewsNegative={stats?.reviews_negative ?? 0}
-              variant="full"
-            />
-            <div className="mt-2 space-y-1 text-xs text-zinc-500">
-              <div className="flex justify-between gap-6">
-                <span>Vendas</span>
-                <span className="text-zinc-300">{stats?.total_sales ?? 0}</span>
-              </div>
-              <div className="flex justify-between gap-6">
-                <span>Compras</span>
-                <span className="text-zinc-300">{stats?.total_purchases ?? 0}</span>
-              </div>
-              {stats?.avg_response_time_minutes != null && (
-                <div className="flex justify-between gap-6">
-                  <span>Resp. média</span>
-                  <span className="text-zinc-300">
-                    {stats.avg_response_time_minutes < 60
-                      ? `${stats.avg_response_time_minutes}min`
-                      : `${Math.round(stats.avg_response_time_minutes / 60)}h`}
-                  </span>
+              {/* Verificações */}
+              {(hasEmail || hasPhone || hasIdentity) && (
+                <div className="flex flex-wrap gap-1.5 justify-center">
+                  {hasEmail    && <span className="rank-chip text-[9px]">✉️ email</span>}
+                  {hasPhone    && <span className="rank-chip green text-[9px]">📱 tel</span>}
+                  {hasIdentity && <span className="rank-chip text-[9px]">🪪 id</span>}
                 </div>
               )}
+
+              {/* Badges */}
+              {badges.length > 0 && (
+                <div>
+                  <p className="text-[9px] font-bold uppercase tracking-widest text-[var(--gm-ink-faint)] mb-2">Badges · {badges.length}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {badges.map((b, i) => (
+                      <div key={i} className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--gm-ink-faint)]/30 text-sm"
+                        style={{ background: i < 3 ? 'rgba(167,139,250,0.1)' : 'transparent' }}>
+                        {b}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* CTA Buttons */}
+              <div className="flex gap-2">
+                <button className="flex-1 rounded-lg border border-[var(--gm-ink-faint)]/40 px-3 py-2 text-xs font-bold text-[var(--gm-ink-dim)] hover:border-[var(--gm-violet)]/50 hover:text-[var(--gm-ink)] transition-all">
+                  ♡ seguir
+                </button>
+                <button className="flex-1 rounded-lg bg-[var(--gm-violet)] px-3 py-2 text-xs font-black text-[#1a1126] hover:opacity-90 transition-all gm-glow">
+                  💬 chat
+                </button>
+              </div>
+            </div>
+          </aside>
+
+          {/* ─── Content ─── */}
+          <div className="flex flex-col gap-6">
+
+            {/* Tabs */}
+            <div className="flex gap-3 border-b border-[var(--gm-ink-faint)]/20 pb-3">
+              <span className="text-sm font-black text-[var(--gm-violet)] border-b-2 border-[var(--gm-violet)] pb-3 -mb-3">
+                anúncios · {anns.length}
+              </span>
+              <span className="text-sm font-bold text-[var(--gm-ink-faint)]">reviews · {totalReviews}</span>
+            </div>
+
+            {/* Featured announcement */}
+            {featured && (() => {
+              const cover = featured.announcement_images?.find((i) => i.is_cover) ?? featured.announcement_images?.[0]
+              return (
+                <div className="rounded-xl border border-[var(--gm-violet)]/20 bg-[var(--gm-paper-2)] p-4">
+                  <span className="rank-chip gold text-[9px] mb-3 inline-flex">destaque do vendedor</span>
+                  <Link href={`/anuncio/${featured.slug}`} className="flex gap-4 mt-2">
+                    <div className="relative h-28 w-44 shrink-0 overflow-hidden rounded-lg bg-[var(--gm-paper-3)]">
+                      {cover?.url ? (
+                        <Image src={cover.url} alt={featured.title} fill sizes="176px" className="object-cover" />
+                      ) : (
+                        <div className="flex h-full items-center justify-center text-3xl text-[var(--gm-ink-faint)]">🎮</div>
+                      )}
+                    </div>
+                    <div className="flex flex-col gap-2 flex-1 min-w-0">
+                      <h2 className="text-base font-black text-[var(--gm-ink)] leading-snug line-clamp-2 hover:text-[var(--gm-violet)] transition-colors">
+                        {featured.title}
+                      </h2>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl font-black text-[var(--gm-green)]">
+                          {featured.unit_price != null ? `R$ ${featured.unit_price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : '—'}
+                        </span>
+                        {(featured.sale_count ?? 0) > 5 && (
+                          <span className="rank-chip gold text-[9px]">🔥 hot</span>
+                        )}
+                      </div>
+                      {featured.has_auto_delivery && (
+                        <span className="rank-chip green text-[9px] self-start">⚡ entrega auto</span>
+                      )}
+                      <div className="flex gap-2 mt-auto">
+                        <span className="rounded-lg bg-[var(--gm-violet)] px-3 py-1.5 text-xs font-black text-[#1a1126]">comprar</span>
+                        <span className="rounded-lg border border-[var(--gm-ink-faint)]/40 px-3 py-1.5 text-xs font-bold text-[var(--gm-ink-dim)]">ver detalhes</span>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              )
+            })()}
+
+            {/* Announcements grid */}
+            {rest.length > 0 && (
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {rest.map((ann) => {
+                  const cover = ann.announcement_images?.find((i) => i.is_cover) ?? ann.announcement_images?.[0]
+                  return (
+                    <Link
+                      key={ann.id}
+                      href={`/anuncio/${ann.slug}`}
+                      className="group rounded-xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-2)] overflow-hidden hover:border-[var(--gm-violet)]/40 gm-card-tilt transition-all"
+                    >
+                      <div className="relative aspect-video overflow-hidden bg-[var(--gm-paper-3)]">
+                        {cover?.url ? (
+                          <Image src={cover.url} alt={ann.title} fill sizes="200px" className="object-cover" />
+                        ) : (
+                          <div className="flex h-full items-center justify-center text-2xl text-[var(--gm-ink-faint)]">🎮</div>
+                        )}
+                        {ann.has_auto_delivery && (
+                          <span className="absolute top-1.5 left-1.5 rank-chip green text-[8px]">⚡</span>
+                        )}
+                      </div>
+                      <div className="p-3 flex flex-col gap-1">
+                        <p className="text-xs font-semibold text-[var(--gm-ink)] line-clamp-2 group-hover:text-[var(--gm-violet)] transition-colors">{ann.title}</p>
+                        <p className="text-sm font-black text-[var(--gm-green)]">
+                          {ann.unit_price != null ? `R$ ${ann.unit_price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : '—'}
+                        </p>
+                      </div>
+                    </Link>
+                  )
+                })}
+              </div>
+            )}
+
+            {anns.length === 0 && (
+              <div className="flex flex-col items-center gap-3 py-12 text-center">
+                <span className="text-4xl">📦</span>
+                <p className="text-sm text-[var(--gm-ink-faint)]">Nenhum anúncio ativo</p>
+              </div>
+            )}
+
+            {/* Reviews */}
+            <div className="rounded-xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-2)] p-5">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-sm font-black uppercase tracking-wide text-[var(--gm-ink)]">
+                  Avaliações
+                </h2>
+                <span className="text-xs text-[var(--gm-amber)]">★★★★★ {positiveRatio ?? 0}%</span>
+              </div>
+              <ProfileReviewTabs
+                userId={profile.id}
+                initialReviews={(initialReviews ?? []) as unknown as Parameters<typeof ProfileReviewTabs>[0]['initialReviews']}
+                reviewsPositive={stats?.reviews_positive ?? 0}
+                reviewsNeutral={stats?.reviews_neutral ?? 0}
+                reviewsNegative={stats?.reviews_negative ?? 0}
+              />
             </div>
           </div>
         </div>
-
-        {/* ─── Tabs de avaliações ─── */}
-        <section>
-          <h2 className="mb-4 text-lg font-semibold">Avaliações</h2>
-          <ProfileReviewTabs
-            userId={profile.id}
-            initialReviews={(initialReviews ?? []) as unknown as Parameters<typeof ProfileReviewTabs>[0]['initialReviews']}
-            reviewsPositive={stats?.reviews_positive ?? 0}
-            reviewsNeutral={stats?.reviews_neutral ?? 0}
-            reviewsNegative={stats?.reviews_negative ?? 0}
-          />
-        </section>
       </div>
     </main>
   )

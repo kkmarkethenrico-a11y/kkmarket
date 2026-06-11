@@ -1,7 +1,6 @@
 'use client'
 
 import { useActionState, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import {
   loginAction,
@@ -32,7 +31,6 @@ function DiscordIcon() {
 
 // ─── Login Form ──────────────────────────────────────────────────────────────
 export function LoginForm() {
-  const router = useRouter()
   const [state, action, pending] = useActionState<LoginFormState, FormData>(loginAction, null)
   const [showForgot, setShowForgot] = useState(false)
   const [forgotState, forgotAction, forgotPending] = useActionState<{ message?: string } | null, FormData>(
@@ -52,17 +50,19 @@ export function LoginForm() {
     setOauthLoading(null)
   }
 
+  const inputCls = "w-full rounded-lg border border-[var(--gm-ink-faint)]/50 bg-[var(--gm-paper-3)] px-4 py-3 text-sm text-[var(--gm-ink)] placeholder-[var(--gm-ink-faint)] outline-none transition-all focus:border-[var(--gm-violet)] focus:ring-2 focus:ring-[var(--gm-violet)]/20 aria-[invalid]:border-[var(--gm-rose)]"
+
   return (
     <div className="w-full max-w-md">
       {/* Header */}
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-white">
-          Entrar na sua conta
+      <div className="mb-8">
+        <h1 className="text-3xl font-black tracking-tight text-[var(--gm-ink)]">
+          login
         </h1>
-        <p className="mt-2 text-sm text-zinc-400">
-          Não tem conta?{' '}
-          <Link href="/cadastro" className="text-violet-400 hover:text-violet-300 font-medium transition-colors">
-            Cadastre-se grátis
+        <p className="mt-2 text-sm text-[var(--gm-ink-dim)]">
+          novo no GameMarket?{' '}
+          <Link href="/cadastro" className="text-[var(--gm-violet)] hover:text-[var(--gm-cyan)] font-semibold transition-colors">
+            criar conta grátis
           </Link>
         </p>
       </div>
@@ -73,10 +73,10 @@ export function LoginForm() {
           type="button"
           onClick={() => handleOAuth('google')}
           disabled={!!oauthLoading || pending}
-          className="flex items-center justify-center gap-2 rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm font-medium text-white transition-all hover:bg-zinc-700/60 hover:border-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center justify-center gap-2 rounded-lg border border-[var(--gm-ink-faint)]/50 bg-[var(--gm-paper-3)] px-4 py-3 text-sm font-semibold text-[var(--gm-ink)] transition-all hover:border-[var(--gm-violet)]/50 hover:bg-[var(--gm-violet)]/5 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {oauthLoading === 'google' ? (
-            <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+            <span className="h-5 w-5 animate-spin rounded-full border-2 border-[var(--gm-ink-faint)] border-t-[var(--gm-violet)]" />
           ) : (
             <GoogleIcon />
           )}
@@ -86,10 +86,10 @@ export function LoginForm() {
           type="button"
           onClick={() => handleOAuth('discord')}
           disabled={!!oauthLoading || pending}
-          className="flex items-center justify-center gap-2 rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm font-medium text-white transition-all hover:bg-zinc-700/60 hover:border-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center justify-center gap-2 rounded-lg border border-[var(--gm-ink-faint)]/50 bg-[var(--gm-paper-3)] px-4 py-3 text-sm font-semibold text-[var(--gm-ink)] transition-all hover:border-[var(--gm-violet)]/50 hover:bg-[var(--gm-violet)]/5 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {oauthLoading === 'discord' ? (
-            <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+            <span className="h-5 w-5 animate-spin rounded-full border-2 border-[var(--gm-ink-faint)] border-t-[var(--gm-violet)]" />
           ) : (
             <DiscordIcon />
           )}
@@ -100,20 +100,19 @@ export function LoginForm() {
       {/* Divider */}
       <div className="relative mb-6">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-zinc-700" />
+          <div className="w-full border-t border-[var(--gm-ink-faint)]/30" />
         </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-zinc-900 px-3 text-zinc-500">ou continue com e-mail</span>
+        <div className="relative flex justify-center text-[11px] uppercase tracking-widest">
+          <span className="bg-[var(--gm-paper)] px-3 text-[var(--gm-ink-faint)]">ou continue com e-mail</span>
         </div>
       </div>
 
       {/* Email/Password Form */}
       {!showForgot ? (
         <form action={action} className="space-y-4">
-          {/* E-mail */}
           <div>
-            <label htmlFor="login-email" className="block text-sm font-medium text-zinc-300 mb-1.5">
-              E-mail
+            <label htmlFor="login-email" className="block text-xs font-bold uppercase tracking-wide text-[var(--gm-ink-dim)] mb-1.5">
+              E-mail ou usuário
             </label>
             <input
               id="login-email"
@@ -121,21 +120,20 @@ export function LoginForm() {
               type="email"
               autoComplete="email"
               required
-              placeholder="seu@email.com"
-              className="w-full rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 aria-[invalid]:border-red-500"
+              placeholder="player@gamemarket.app"
+              className={inputCls}
               aria-invalid={!!state?.errors?.email}
               aria-describedby={state?.errors?.email ? 'login-email-error' : undefined}
             />
             {state?.errors?.email && (
-              <p id="login-email-error" className="mt-1.5 text-xs text-red-400">
+              <p id="login-email-error" className="mt-1.5 text-xs text-[var(--gm-rose)]">
                 {state.errors.email[0]}
               </p>
             )}
           </div>
 
-          {/* Senha */}
           <div>
-            <label htmlFor="login-password" className="block text-sm font-medium text-zinc-300 mb-1.5">
+            <label htmlFor="login-password" className="block text-xs font-bold uppercase tracking-wide text-[var(--gm-ink-dim)] mb-1.5">
               Senha
             </label>
             <input
@@ -145,64 +143,60 @@ export function LoginForm() {
               autoComplete="current-password"
               required
               placeholder="••••••••"
-              className="w-full rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 aria-[invalid]:border-red-500"
+              className={inputCls}
               aria-invalid={!!state?.errors?.password}
               aria-describedby={state?.errors?.password ? 'login-password-error' : undefined}
             />
             {state?.errors?.password && (
-              <p id="login-password-error" className="mt-1.5 text-xs text-red-400">
+              <p id="login-password-error" className="mt-1.5 text-xs text-[var(--gm-rose)]">
                 {state.errors.password[0]}
               </p>
             )}
           </div>
 
-          {/* Erro geral */}
           {state?.message && (
-            <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+            <div className="rounded-lg border border-[var(--gm-rose)]/30 bg-[var(--gm-rose)]/10 px-4 py-3 text-sm text-[var(--gm-rose)]">
               {state.message}
             </div>
           )}
 
-          {/* Esqueci a senha */}
           <div className="flex justify-end">
             <button
               type="button"
               onClick={() => setShowForgot(true)}
-              className="text-xs text-zinc-400 hover:text-violet-400 transition-colors"
+              className="text-xs text-[var(--gm-ink-faint)] hover:text-[var(--gm-violet)] transition-colors"
             >
-              Esqueci minha senha
+              esqueci a senha
             </button>
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={pending}
-            className="relative w-full rounded-xl bg-violet-600 px-4 py-3 text-sm font-semibold text-white transition-all hover:bg-violet-500 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+            className="relative w-full rounded-lg bg-[var(--gm-violet)] px-4 py-3 text-sm font-black text-[#1a1126] transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed gm-glow"
             aria-busy={pending}
           >
             {pending ? (
               <span className="flex items-center justify-center gap-2">
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#1a1126]/30 border-t-[#1a1126]" />
                 Entrando…
               </span>
             ) : (
-              'Entrar'
+              'entrar →'
             )}
           </button>
         </form>
       ) : (
-        /* Forgot Password */
         <div>
           <button
             type="button"
             onClick={() => setShowForgot(false)}
-            className="mb-4 flex items-center gap-1.5 text-sm text-zinc-400 hover:text-white transition-colors"
+            className="mb-4 flex items-center gap-1.5 text-sm text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)] transition-colors"
           >
             ← Voltar ao login
           </button>
-          <h2 className="text-lg font-semibold text-white mb-1">Recuperar senha</h2>
-          <p className="text-sm text-zinc-400 mb-4">
+          <h2 className="text-lg font-black text-[var(--gm-ink)] mb-1">Recuperar senha</h2>
+          <p className="text-sm text-[var(--gm-ink-dim)] mb-4">
             Informe seu e-mail e enviaremos as instruções de recuperação.
           </p>
           <form action={forgotAction} className="space-y-4">
@@ -211,14 +205,14 @@ export function LoginForm() {
               type="email"
               required
               placeholder="seu@email.com"
-              className="w-full rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
+              className={inputCls}
             />
             {forgotMsg && (
               <div
-                className={`rounded-xl border px-4 py-3 text-sm ${
+                className={`rounded-lg border px-4 py-3 text-sm ${
                   forgotIsSuccess
-                    ? 'border-green-500/30 bg-green-500/10 text-green-400'
-                    : 'border-red-500/30 bg-red-500/10 text-red-400'
+                    ? 'border-[var(--gm-green)]/30 bg-[var(--gm-green)]/10 text-[var(--gm-green)]'
+                    : 'border-[var(--gm-rose)]/30 bg-[var(--gm-rose)]/10 text-[var(--gm-rose)]'
                 }`}
               >
                 {forgotText}
@@ -227,11 +221,11 @@ export function LoginForm() {
             <button
               type="submit"
               disabled={forgotPending}
-              className="w-full rounded-xl bg-violet-600 px-4 py-3 text-sm font-semibold text-white transition-all hover:bg-violet-500 disabled:opacity-60"
+              className="w-full rounded-lg bg-[var(--gm-violet)] px-4 py-3 text-sm font-black text-[#1a1126] transition-all hover:opacity-90 disabled:opacity-60"
             >
               {forgotPending ? (
                 <span className="flex items-center justify-center gap-2">
-                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#1a1126]/30 border-t-[#1a1126]" />
                   Enviando…
                 </span>
               ) : (

@@ -24,7 +24,6 @@ function DiscordIcon() {
   )
 }
 
-// ─── Username availability checker ───────────────────────────────────────────
 type AvailabilityStatus = 'idle' | 'checking' | 'available' | 'taken' | 'invalid'
 
 function useUsernameAvailability() {
@@ -33,40 +32,31 @@ function useUsernameAvailability() {
 
   function check(value: string) {
     clearTimeout(timerRef.current)
-
-    if (!value || value.length < 3) {
-      setStatus('idle')
-      return
-    }
-
-    if (!/^[a-zA-Z0-9_]+$/.test(value)) {
-      setStatus('invalid')
-      return
-    }
-
+    if (!value || value.length < 3) { setStatus('idle'); return }
+    if (!/^[a-zA-Z0-9_]+$/.test(value)) { setStatus('invalid'); return }
     setStatus('checking')
     timerRef.current = setTimeout(async () => {
       try {
         const supabase = createClient()
-        const { data } = await supabase
-          .from('profiles')
-          .select('username')
-          .eq('username', value.toLowerCase())
-          .maybeSingle()
+        const { data } = await supabase.from('profiles').select('username')
+          .eq('username', value.toLowerCase()).maybeSingle()
         setStatus(data ? 'taken' : 'available')
-      } catch {
-        setStatus('idle')
-      }
+      } catch { setStatus('idle') }
     }, 500)
   }
 
   return { status, check }
 }
 
-// ─── Register Form ────────────────────────────────────────────────────────────
+const STEPS = ['conta', 'segurança', 'confirmar'] as const
+
+const inputCls = "w-full rounded-lg border border-[var(--gm-ink-faint)]/50 bg-[var(--gm-paper-3)] px-4 py-3 text-sm text-[var(--gm-ink)] placeholder-[var(--gm-ink-faint)] outline-none transition-all focus:border-[var(--gm-violet)] focus:ring-2 focus:ring-[var(--gm-violet)]/20 aria-[invalid]:border-[var(--gm-rose)]"
+
 export function RegisterForm() {
   const [state, action, pending] = useActionState<RegisterFormState, FormData>(registerAction, null)
   const [oauthLoading, setOauthLoading] = useState<'google' | 'discord' | null>(null)
+  const [step, setStep] = useState(0)
+  const [fields, setFields] = useState({ username: '', email: '', password: '', confirmPassword: '' })
   const { status: usernameStatus, check: checkUsername } = useUsernameAvailability()
 
   const isSuccess = state?.message?.startsWith('success:')
@@ -78,30 +68,52 @@ export function RegisterForm() {
     setOauthLoading(null)
   }
 
-  // Mapa de cores/textos para feedback de username
+  function canAdvanceStep0() {
+    return fields.username.length >= 3 && fields.email.includes('@') &&
+      usernameStatus === 'available'
+  }
+
+  function canAdvanceStep1() {
+    return fields.password.length >= 8 && fields.password === fields.confirmPassword
+  }
+
+  const passwordStrength = (() => {
+    const p = fields.password
+    let score = 0
+    if (p.length >= 8) score++
+    if (/\d/.test(p)) score++
+    if (/[!@#$%^&*]/.test(p)) score++
+    if (p.length >= 12) score++
+    return score
+  })()
+
+  const strengthColors = ['#fb7185', '#fbbf24', '#fbbf24', '#34d399', '#34d399']
+  const strengthLabels = ['', 'fraca', 'média', 'boa', 'forte']
+
   const usernameHint: Record<AvailabilityStatus, { text: string; cls: string } | null> = {
     idle: null,
-    invalid: { text: 'Apenas letras, números e underscore.', cls: 'text-yellow-400' },
-    checking: { text: 'Verificando…', cls: 'text-zinc-400' },
-    available: { text: '✓ Username disponível', cls: 'text-green-400' },
-    taken: { text: '✗ Username já em uso', cls: 'text-red-400' },
+    invalid: { text: 'Apenas letras, números e _', cls: 'text-[var(--gm-amber)]' },
+    checking: { text: 'Verificando…', cls: 'text-[var(--gm-ink-faint)]' },
+    available: { text: '✓ Username disponível', cls: 'text-[var(--gm-green)]' },
+    taken: { text: '✗ Username já em uso', cls: 'text-[var(--gm-rose)]' },
   }
 
   if (isSuccess) {
     return (
       <div className="w-full max-w-md text-center">
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-500/20">
-          <svg className="h-8 w-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[var(--gm-green)]/15 border border-[var(--gm-green)]/30">
+          <svg className="h-10 w-10 text-[var(--gm-green)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">Quase lá!</h2>
-        <p className="text-zinc-400 text-sm mb-6">{successText}</p>
+        <div className="rank-chip green inline-flex mb-4">🎉 CONTA CRIADA</div>
+        <h2 className="text-2xl font-black text-[var(--gm-ink)] mb-2">Quase lá!</h2>
+        <p className="text-[var(--gm-ink-dim)] text-sm mb-8">{successText}</p>
         <Link
           href="/login"
-          className="inline-block rounded-xl bg-violet-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-violet-500"
+          className="inline-block rounded-lg bg-[var(--gm-violet)] px-8 py-3 text-sm font-black text-[#1a1126] transition-all hover:opacity-90 gm-glow"
         >
-          Ir para o login
+          Ir para o login →
         </Link>
       </div>
     )
@@ -110,192 +122,265 @@ export function RegisterForm() {
   return (
     <div className="w-full max-w-md">
       {/* Header */}
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-white">
-          Criar conta grátis
-        </h1>
-        <p className="mt-2 text-sm text-zinc-400">
-          Já tem conta?{' '}
-          <Link href="/login" className="text-violet-400 hover:text-violet-300 font-medium transition-colors">
-            Entrar
+      <div className="mb-8">
+        <h1 className="text-3xl font-black tracking-tight text-[var(--gm-ink)]">criar conta</h1>
+        <p className="mt-2 text-sm text-[var(--gm-ink-dim)]">
+          já tem conta?{' '}
+          <Link href="/login" className="text-[var(--gm-violet)] hover:text-[var(--gm-cyan)] font-semibold transition-colors">
+            entrar
           </Link>
         </p>
       </div>
 
-      {/* OAuth Buttons */}
-      <div className="grid grid-cols-2 gap-3 mb-6">
-        <button
-          type="button"
-          onClick={() => handleOAuth('google')}
-          disabled={!!oauthLoading || pending}
-          className="flex items-center justify-center gap-2 rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm font-medium text-white transition-all hover:bg-zinc-700/60 hover:border-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {oauthLoading === 'google' ? (
-            <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white" />
-          ) : (
-            <GoogleIcon />
-          )}
-          Google
-        </button>
-        <button
-          type="button"
-          onClick={() => handleOAuth('discord')}
-          disabled={!!oauthLoading || pending}
-          className="flex items-center justify-center gap-2 rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm font-medium text-white transition-all hover:bg-zinc-700/60 hover:border-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {oauthLoading === 'discord' ? (
-            <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white" />
-          ) : (
-            <DiscordIcon />
-          )}
-          Discord
-        </button>
+      {/* OAuth on step 0 only */}
+      {step === 0 && (
+        <>
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            <button type="button" onClick={() => handleOAuth('google')} disabled={!!oauthLoading}
+              className="flex items-center justify-center gap-2 rounded-lg border border-[var(--gm-ink-faint)]/50 bg-[var(--gm-paper-3)] px-4 py-3 text-sm font-semibold text-[var(--gm-ink)] transition-all hover:border-[var(--gm-violet)]/50 disabled:opacity-50">
+              {oauthLoading === 'google' ? <span className="h-5 w-5 animate-spin rounded-full border-2 border-[var(--gm-ink-faint)] border-t-[var(--gm-violet)]" /> : <GoogleIcon />}
+              Google
+            </button>
+            <button type="button" onClick={() => handleOAuth('discord')} disabled={!!oauthLoading}
+              className="flex items-center justify-center gap-2 rounded-lg border border-[var(--gm-ink-faint)]/50 bg-[var(--gm-paper-3)] px-4 py-3 text-sm font-semibold text-[var(--gm-ink)] transition-all hover:border-[var(--gm-violet)]/50 disabled:opacity-50">
+              {oauthLoading === 'discord' ? <span className="h-5 w-5 animate-spin rounded-full border-2 border-[var(--gm-ink-faint)] border-t-[var(--gm-violet)]" /> : <DiscordIcon />}
+              Discord
+            </button>
+          </div>
+
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-[var(--gm-ink-faint)]/30" />
+            </div>
+            <div className="relative flex justify-center text-[11px] uppercase tracking-widest">
+              <span className="bg-[var(--gm-paper)] px-3 text-[var(--gm-ink-faint)]">ou cadastre com e-mail</span>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Step indicator */}
+      <div className="flex items-center gap-2 mb-8">
+        {STEPS.map((label, i) => (
+          <div key={label} className="flex items-center gap-2">
+            <div className={`flex h-7 w-7 items-center justify-center rounded-full border text-xs font-black transition-all ${
+              i < step
+                ? 'border-[var(--gm-violet)] bg-[var(--gm-violet)] text-[#1a1126]'
+                : i === step
+                  ? 'border-[var(--gm-violet)] text-[var(--gm-violet)]'
+                  : 'border-[var(--gm-ink-faint)]/40 text-[var(--gm-ink-faint)]'
+            }`}>
+              {i < step ? '✓' : i + 1}
+            </div>
+            <span className={`text-xs font-semibold uppercase tracking-wide ${
+              i <= step ? 'text-[var(--gm-ink)]' : 'text-[var(--gm-ink-faint)]'
+            }`}>{label}</span>
+            {i < STEPS.length - 1 && (
+              <span className="text-[var(--gm-ink-faint)]/40 mx-1 text-xs">─</span>
+            )}
+          </div>
+        ))}
       </div>
 
-      {/* Divider */}
-      <div className="relative mb-6">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-zinc-700" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-zinc-900 px-3 text-zinc-500">ou cadastre com e-mail</span>
-        </div>
-      </div>
-
-      {/* Register Form */}
       <form action={action} className="space-y-4">
-        {/* Username */}
-        <div>
-          <label htmlFor="reg-username" className="block text-sm font-medium text-zinc-300 mb-1.5">
-            Username
-          </label>
-          <input
-            id="reg-username"
-            name="username"
-            type="text"
-            autoComplete="username"
-            required
-            maxLength={30}
-            placeholder="seu_username"
-            onChange={(e) => checkUsername(e.target.value)}
-            className="w-full rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 aria-[invalid]:border-red-500"
-            aria-invalid={!!(state?.errors?.username || usernameStatus === 'taken' || usernameStatus === 'invalid')}
-            aria-describedby="reg-username-hint"
-          />
-          <p
-            id="reg-username-hint"
-            className={`mt-1.5 text-xs ${
-              state?.errors?.username
-                ? 'text-red-400'
-                : (usernameHint[usernameStatus]?.cls ?? 'text-zinc-500')
-            }`}
-          >
-            {state?.errors?.username?.[0] ??
-              usernameHint[usernameStatus]?.text ??
-              '3-30 caracteres, letras, números e _'}
-          </p>
-        </div>
+        {/* Always include hidden fields with collected values */}
+        <input type="hidden" name="username" value={fields.username} />
+        <input type="hidden" name="email" value={fields.email} />
+        <input type="hidden" name="password" value={fields.password} />
+        <input type="hidden" name="confirmPassword" value={fields.confirmPassword} />
 
-        {/* E-mail */}
-        <div>
-          <label htmlFor="reg-email" className="block text-sm font-medium text-zinc-300 mb-1.5">
-            E-mail
-          </label>
-          <input
-            id="reg-email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            placeholder="seu@email.com"
-            className="w-full rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 aria-[invalid]:border-red-500"
-            aria-invalid={!!state?.errors?.email}
-            aria-describedby={state?.errors?.email ? 'reg-email-error' : undefined}
-          />
-          {state?.errors?.email && (
-            <p id="reg-email-error" className="mt-1.5 text-xs text-red-400">
-              {state.errors.email[0]}
-            </p>
-          )}
-        </div>
+        {/* ── Step 0: Conta ──────────────────────────────────────────── */}
+        {step === 0 && (
+          <div className="space-y-4">
+            <div className="rank-chip inline-flex mb-2">STEP 1 · CONTA</div>
+            <div>
+              <label htmlFor="reg-username" className="block text-xs font-bold uppercase tracking-wide text-[var(--gm-ink-dim)] mb-1.5">
+                @ Username
+              </label>
+              <input
+                id="reg-username"
+                type="text"
+                autoComplete="username"
+                maxLength={30}
+                placeholder="seu_username"
+                value={fields.username}
+                onChange={(e) => { setFields(f => ({ ...f, username: e.target.value })); checkUsername(e.target.value) }}
+                className={inputCls}
+                aria-invalid={usernameStatus === 'taken' || usernameStatus === 'invalid'}
+              />
+              {usernameHint[usernameStatus] && (
+                <p className={`mt-1.5 text-xs ${usernameHint[usernameStatus]!.cls}`}>
+                  {usernameHint[usernameStatus]!.text}
+                </p>
+              )}
+            </div>
 
-        {/* Senha */}
-        <div>
-          <label htmlFor="reg-password" className="block text-sm font-medium text-zinc-300 mb-1.5">
-            Senha
-          </label>
-          <input
-            id="reg-password"
-            name="password"
-            type="password"
-            autoComplete="new-password"
-            required
-            placeholder="Mín. 8 caracteres, 1 letra, 1 número"
-            className="w-full rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 aria-[invalid]:border-red-500"
-            aria-invalid={!!state?.errors?.password}
-            aria-describedby={state?.errors?.password ? 'reg-password-error' : undefined}
-          />
-          {state?.errors?.password && (
-            <p id="reg-password-error" className="mt-1.5 text-xs text-red-400">
-              {state.errors.password[0]}
-            </p>
-          )}
-        </div>
+            <div>
+              <label htmlFor="reg-email" className="block text-xs font-bold uppercase tracking-wide text-[var(--gm-ink-dim)] mb-1.5">
+                E-mail
+              </label>
+              <input
+                id="reg-email"
+                type="email"
+                autoComplete="email"
+                placeholder="player@gamemarket.app"
+                value={fields.email}
+                onChange={(e) => setFields(f => ({ ...f, email: e.target.value }))}
+                className={inputCls}
+              />
+              {state?.errors?.email && (
+                <p className="mt-1.5 text-xs text-[var(--gm-rose)]">{state.errors.email[0]}</p>
+              )}
+            </div>
 
-        {/* Confirmar Senha */}
-        <div>
-          <label htmlFor="reg-confirm-password" className="block text-sm font-medium text-zinc-300 mb-1.5">
-            Confirmar Senha
-          </label>
-          <input
-            id="reg-confirm-password"
-            name="confirmPassword"
-            type="password"
-            autoComplete="new-password"
-            required
-            placeholder="Repita a senha"
-            className="w-full rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 aria-[invalid]:border-red-500"
-            aria-invalid={!!state?.errors?.confirmPassword}
-            aria-describedby={state?.errors?.confirmPassword ? 'reg-confirm-error' : undefined}
-          />
-          {state?.errors?.confirmPassword && (
-            <p id="reg-confirm-error" className="mt-1.5 text-xs text-red-400">
-              {state.errors.confirmPassword[0]}
-            </p>
-          )}
-        </div>
-
-        {/* Erro geral */}
-        {state?.message && !isSuccess && (
-          <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
-            {state.message}
+            <button
+              type="button"
+              disabled={!canAdvanceStep0()}
+              onClick={() => setStep(1)}
+              className="w-full rounded-lg bg-[var(--gm-violet)] px-4 py-3 text-sm font-black text-[#1a1126] transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              continuar →
+            </button>
           </div>
         )}
 
-        {/* Termos */}
-        <p className="text-xs text-zinc-500">
-          Ao criar uma conta, você concorda com nossos{' '}
-          <Link href="/termos" className="text-violet-400 hover:underline">Termos de Uso</Link>{' '}
-          e{' '}
-          <Link href="/privacidade" className="text-violet-400 hover:underline">Política de Privacidade</Link>.
-        </p>
+        {/* ── Step 1: Segurança ──────────────────────────────────────── */}
+        {step === 1 && (
+          <div className="space-y-4">
+            <div className="rank-chip inline-flex mb-2">STEP 2 · SEGURANÇA</div>
+            <div>
+              <label htmlFor="reg-password" className="block text-xs font-bold uppercase tracking-wide text-[var(--gm-ink-dim)] mb-1.5">
+                Senha
+              </label>
+              <input
+                id="reg-password"
+                type="password"
+                autoComplete="new-password"
+                placeholder="Mín. 8 caracteres"
+                value={fields.password}
+                onChange={(e) => setFields(f => ({ ...f, password: e.target.value }))}
+                className={inputCls}
+              />
+              {fields.password.length > 0 && (
+                <div className="mt-2">
+                  <div className="flex gap-1 mb-1">
+                    {[1,2,3,4].map(i => (
+                      <div key={i} className="flex-1 h-1 rounded-full transition-all" style={{
+                        background: i <= passwordStrength ? strengthColors[passwordStrength] : 'var(--gm-ink-faint)',
+                        opacity: i <= passwordStrength ? 1 : 0.3
+                      }} />
+                    ))}
+                  </div>
+                  {passwordStrength > 0 && (
+                    <p className="text-xs" style={{ color: strengthColors[passwordStrength] }}>
+                      Senha {strengthLabels[passwordStrength]}
+                    </p>
+                  )}
+                </div>
+              )}
+              {state?.errors?.password && (
+                <p className="mt-1.5 text-xs text-[var(--gm-rose)]">{state.errors.password[0]}</p>
+              )}
+            </div>
 
-        {/* Submit */}
-        <button
-          type="submit"
-          disabled={pending || usernameStatus === 'taken' || usernameStatus === 'invalid'}
-          className="relative w-full rounded-xl bg-violet-600 px-4 py-3 text-sm font-semibold text-white transition-all hover:bg-violet-500 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
-          aria-busy={pending}
-        >
-          {pending ? (
-            <span className="flex items-center justify-center gap-2">
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-              Criando conta…
-            </span>
-          ) : (
-            'Criar conta'
-          )}
-        </button>
+            <div>
+              <label htmlFor="reg-confirm" className="block text-xs font-bold uppercase tracking-wide text-[var(--gm-ink-dim)] mb-1.5">
+                Confirmar Senha
+              </label>
+              <input
+                id="reg-confirm"
+                type="password"
+                autoComplete="new-password"
+                placeholder="Repita a senha"
+                value={fields.confirmPassword}
+                onChange={(e) => setFields(f => ({ ...f, confirmPassword: e.target.value }))}
+                className={inputCls}
+                aria-invalid={fields.confirmPassword.length > 0 && fields.password !== fields.confirmPassword}
+              />
+              {fields.confirmPassword.length > 0 && fields.password !== fields.confirmPassword && (
+                <p className="mt-1.5 text-xs text-[var(--gm-rose)]">As senhas não coincidem</p>
+              )}
+              {fields.confirmPassword.length > 0 && fields.password === fields.confirmPassword && (
+                <p className="mt-1.5 text-xs text-[var(--gm-green)]">✓ Senhas coincidem</p>
+              )}
+            </div>
+
+            <div className="flex gap-3">
+              <button type="button" onClick={() => setStep(0)}
+                className="flex-1 rounded-lg border border-[var(--gm-ink-faint)]/40 px-4 py-3 text-sm font-semibold text-[var(--gm-ink-dim)] hover:border-[var(--gm-violet)]/50 hover:text-[var(--gm-ink)] transition-all">
+                ← voltar
+              </button>
+              <button type="button" disabled={!canAdvanceStep1()} onClick={() => setStep(2)}
+                className="flex-1 rounded-lg bg-[var(--gm-violet)] px-4 py-3 text-sm font-black text-[#1a1126] transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed">
+                continuar →
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ── Step 2: Confirmar ──────────────────────────────────────── */}
+        {step === 2 && (
+          <div className="space-y-4">
+            <div className="rank-chip inline-flex mb-2">STEP 3 · CONFIRMAR</div>
+
+            {/* Summary */}
+            <div className="rounded-xl border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-3)] p-4 space-y-3">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-[var(--gm-ink-dim)]">Username</span>
+                <span className="font-bold text-[var(--gm-violet)]">@{fields.username}</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-[var(--gm-ink-dim)]">E-mail</span>
+                <span className="font-semibold text-[var(--gm-ink)]">{fields.email}</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-[var(--gm-ink-dim)]">Senha</span>
+                <span className="font-semibold text-[var(--gm-green)]">✓ configurada</span>
+              </div>
+            </div>
+
+            {/* Welcome bonus */}
+            <div className="rounded-xl border border-[var(--gm-amber)]/30 bg-[var(--gm-amber)]/5 p-3 flex items-center gap-3">
+              <span className="text-2xl">🎁</span>
+              <div>
+                <p className="text-xs font-bold text-[var(--gm-amber)] uppercase tracking-wide">Welcome Bonus</p>
+                <p className="text-sm text-[var(--gm-ink)]">+50 pts ao confirmar o e-mail</p>
+              </div>
+            </div>
+
+            {state?.message && !isSuccess && (
+              <div className="rounded-lg border border-[var(--gm-rose)]/30 bg-[var(--gm-rose)]/10 px-4 py-3 text-sm text-[var(--gm-rose)]">
+                {state.message}
+              </div>
+            )}
+
+            <p className="text-xs text-[var(--gm-ink-faint)]">
+              Ao criar conta, você concorda com nossos{' '}
+              <Link href="/termos" className="text-[var(--gm-violet)] hover:underline">Termos</Link>{' '}
+              e{' '}
+              <Link href="/privacidade" className="text-[var(--gm-violet)] hover:underline">Política de Privacidade</Link>.
+            </p>
+
+            <div className="flex gap-3">
+              <button type="button" onClick={() => setStep(1)}
+                className="flex-1 rounded-lg border border-[var(--gm-ink-faint)]/40 px-4 py-3 text-sm font-semibold text-[var(--gm-ink-dim)] hover:border-[var(--gm-violet)]/50 hover:text-[var(--gm-ink)] transition-all">
+                ← voltar
+              </button>
+              <button type="submit" disabled={pending}
+                className="flex-1 rounded-lg bg-[var(--gm-violet)] px-4 py-3 text-sm font-black text-[#1a1126] transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-60 gm-glow"
+                aria-busy={pending}>
+                {pending ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#1a1126]/30 border-t-[#1a1126]" />
+                    Criando…
+                  </span>
+                ) : (
+                  'criar minha conta →'
+                )}
+              </button>
+            </div>
+          </div>
+        )}
       </form>
     </div>
   )

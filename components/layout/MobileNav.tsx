@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Menu, Search, X, ChevronRight, LayoutDashboard, PlusCircle, Gamepad2 } from 'lucide-react'
+import { Menu, Search, ChevronRight, LayoutDashboard, PlusCircle, Gamepad2 } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { Input } from '@/components/ui/input'
 import { LogoutButton } from '@/components/auth/LogoutButton'
@@ -28,39 +28,38 @@ export function MobileNav({ isAuthenticated, profile, sellerStatus = 'disabled' 
 
   if (showSearch) {
     return (
-      <div className="fixed inset-0 z-50 flex flex-col bg-zinc-950 p-4 animate-in fade-in">
+      <div className="fixed inset-0 z-50 flex flex-col bg-[var(--gm-paper)] p-4 animate-in fade-in">
         <div className="flex items-center gap-3">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--gm-ink-faint)]" />
             <Input
               autoFocus
               type="search"
               placeholder="Buscar..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-zinc-900 border-zinc-800 pl-10 pr-4 rounded-xl"
+              className="w-full bg-[var(--gm-paper-3)] border-[var(--gm-ink-faint)]/30 pl-10 pr-4 rounded-xl text-[var(--gm-ink)]"
             />
           </div>
-          <button 
+          <button
             onClick={() => setShowSearch(false)}
-            className="text-sm font-medium text-zinc-400 hover:text-white"
+            className="text-sm font-medium text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)]"
           >
             Cancelar
           </button>
         </div>
-        
-        {/* Mock Search Results Mobile */}
+
         {searchQuery.length >= 3 && (
           <div className="mt-6 flex flex-col gap-4">
-            <p className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">
+            <p className="text-xs font-semibold text-[var(--gm-ink-faint)] uppercase tracking-widest">
               Resultados para &quot;{searchQuery}&quot;
             </p>
             <div className="flex flex-col gap-3">
-              <Link href={`/busca?q=${searchQuery}`} onClick={() => setShowSearch(false)} className="flex items-center justify-between text-sm text-zinc-300">
+              <Link href={`/busca?q=${searchQuery}`} onClick={() => setShowSearch(false)} className="flex items-center justify-between text-sm text-[var(--gm-ink-dim)]">
                 <div className="flex flex-col">
-                  <span className="font-medium text-zinc-200">Ver todos anúncios</span>
+                  <span className="font-medium text-[var(--gm-ink)]">Ver todos anúncios</span>
                 </div>
-                <ChevronRight className="h-4 w-4 text-zinc-600" />
+                <ChevronRight className="h-4 w-4 text-[var(--gm-ink-faint)]" />
               </Link>
             </div>
           </div>
@@ -71,24 +70,24 @@ export function MobileNav({ isAuthenticated, profile, sellerStatus = 'disabled' 
 
   return (
     <div className="flex items-center gap-2 lg:hidden">
-      <button 
+      <button
         onClick={() => setShowSearch(true)}
-        className="p-2 text-zinc-400 hover:text-white transition-colors"
+        className="p-2 text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)] transition-colors"
       >
         <Search className="h-5 w-5" />
       </button>
 
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger className="p-2 text-zinc-400 hover:text-white transition-colors">
+        <SheetTrigger className="p-2 text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)] transition-colors">
             <Menu className="h-6 w-6" />
         </SheetTrigger>
-        <SheetContent side="right" className="w-[300px] border-zinc-800 bg-zinc-950 p-6 sm:w-[400px]">
+        <SheetContent side="right" className="w-[300px] border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper)] p-6 sm:w-[400px]">
           <SheetHeader className="text-left mb-8 hidden">
-            <SheetTitle className="text-zinc-100">Menu Principal</SheetTitle>
+            <SheetTitle className="text-[var(--gm-ink)]">Menu Principal</SheetTitle>
           </SheetHeader>
-          
+
           <div className="flex flex-col gap-8 h-full overflow-y-auto pb-6">
-            
+
             {/* User Area */}
             {isAuthenticated ? (
               <div className="flex flex-col gap-4">
@@ -97,33 +96,33 @@ export function MobileNav({ isAuthenticated, profile, sellerStatus = 'disabled' 
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-3 mb-2 hover:opacity-80 transition-opacity"
                 >
-                  <Avatar className="h-10 w-10 border border-zinc-800">
+                  <Avatar className="h-10 w-10 border border-[var(--gm-violet)]/40">
                     <AvatarImage src={profile?.avatar_url ?? ''} />
-                    <AvatarFallback className="bg-violet-600 font-bold text-white uppercase">
+                    <AvatarFallback className="bg-[var(--gm-violet)] font-bold text-[#1a1126] uppercase">
                       {displayName[0]}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col">
-                    <span className="text-sm font-semibold text-white">{displayName}</span>
-                    <span className="text-xs text-zinc-400">@{profile?.username}</span>
+                    <span className="text-sm font-semibold text-[var(--gm-ink)]">{displayName}</span>
+                    <span className="text-xs text-[var(--gm-ink-faint)]">@{profile?.username}</span>
                   </div>
                 </Link>
-                
+
                 <div className="grid grid-cols-2 gap-2">
-                  <Link 
-                    href="/painel" 
+                  <Link
+                    href="/painel"
                     onClick={() => setOpen(false)}
-                    className="flex flex-col items-center justify-center gap-2 rounded-xl bg-zinc-900 border border-zinc-800 p-3 text-zinc-300 hover:bg-zinc-800 transition-colors"
+                    className="flex flex-col items-center justify-center gap-2 rounded-xl bg-[var(--gm-paper-2)] border border-[var(--gm-ink-faint)]/20 p-3 text-[var(--gm-ink-dim)] hover:bg-[var(--gm-paper-3)] hover:text-[var(--gm-ink)] transition-colors"
                   >
-                    <LayoutDashboard className="h-5 w-5 text-violet-400" />
+                    <LayoutDashboard className="h-5 w-5 text-[var(--gm-violet)]" />
                     <span className="text-xs font-medium">Painel</span>
                   </Link>
-                  <Link 
-                    href={sellerStatus === 'approved' ? '/meus-anuncios/novo' : '/verificacao'} 
+                  <Link
+                    href={sellerStatus === 'approved' ? '/meus-anuncios/novo' : '/verificacao'}
                     onClick={() => setOpen(false)}
-                    className="flex flex-col items-center justify-center gap-2 rounded-xl bg-zinc-900 border border-zinc-800 p-3 text-zinc-300 hover:bg-zinc-800 transition-colors"
+                    className="flex flex-col items-center justify-center gap-2 rounded-xl bg-[var(--gm-paper-2)] border border-[var(--gm-ink-faint)]/20 p-3 text-[var(--gm-ink-dim)] hover:bg-[var(--gm-paper-3)] hover:text-[var(--gm-ink)] transition-colors"
                   >
-                    <PlusCircle className="h-5 w-5 text-green-400" />
+                    <PlusCircle className="h-5 w-5 text-[var(--gm-green)]" />
                     <span className="text-xs font-medium">{sellerStatus === 'approved' ? 'Anunciar' : 'Vender'}</span>
                   </Link>
                 </div>
@@ -133,57 +132,57 @@ export function MobileNav({ isAuthenticated, profile, sellerStatus = 'disabled' 
                 <Link
                   href="/login"
                   onClick={() => setOpen(false)}
-                  className="rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-3 text-center text-sm font-semibold text-white transition-all hover:bg-zinc-800"
+                  className="rounded-xl border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-2)] px-4 py-3 text-center text-sm font-semibold text-[var(--gm-ink)] transition-all hover:bg-[var(--gm-paper-3)]"
                 >
                   Entrar na conta
                 </Link>
                 <Link
                   href="/cadastro"
                   onClick={() => setOpen(false)}
-                  className="rounded-xl bg-violet-600 px-4 py-3 text-center text-sm font-semibold text-white transition-all hover:bg-violet-500"
+                  className="rounded-xl bg-[var(--gm-violet)] px-4 py-3 text-center text-sm font-semibold text-[#1a1126] transition-all hover:opacity-90"
                 >
                   Criar conta grátis
                 </Link>
               </div>
             )}
 
-            <div className="h-px bg-zinc-800/50" />
+            <div className="h-px bg-[var(--gm-ink-faint)]/20" />
 
             {/* Navigation Links */}
             <nav className="flex flex-col gap-1">
-              <span className="text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-2 px-2">Categorias</span>
-              <Link 
-                href="/categoria/jogos" 
+              <span className="text-xs font-semibold uppercase tracking-widest text-[var(--gm-ink-faint)] mb-2 px-2">Categorias</span>
+              <Link
+                href="/categoria/jogos"
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-3 rounded-lg px-2 py-3 text-sm font-medium text-zinc-300 hover:bg-zinc-900 hover:text-white transition-colors"
+                className="flex items-center gap-3 rounded-lg px-2 py-3 text-sm font-medium text-[var(--gm-ink-dim)] hover:bg-[var(--gm-paper-2)] hover:text-[var(--gm-ink)] transition-colors"
               >
-                <Gamepad2 className="h-5 w-5 text-zinc-400" />
+                <Gamepad2 className="h-5 w-5 text-[var(--gm-ink-faint)]" />
                 Jogos
               </Link>
-              <Link 
-                href="/categoria" 
+              <Link
+                href="/categoria"
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-3 rounded-lg px-2 py-3 text-sm font-medium text-zinc-300 hover:bg-zinc-900 hover:text-white transition-colors"
+                className="flex items-center gap-3 rounded-lg px-2 py-3 text-sm font-medium text-[var(--gm-ink-dim)] hover:bg-[var(--gm-paper-2)] hover:text-[var(--gm-ink)] transition-colors"
               >
-                <ChevronRight className="h-5 w-5 text-zinc-400" />
+                <ChevronRight className="h-5 w-5 text-[var(--gm-ink-faint)]" />
                 Todas as Categorias
               </Link>
             </nav>
 
-            <div className="h-px bg-zinc-800/50" />
-            
+            <div className="h-px bg-[var(--gm-ink-faint)]/20" />
+
             <nav className="flex flex-col gap-1">
-              <Link 
-                href="/blog" 
+              <Link
+                href="/blog"
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-3 rounded-lg px-2 py-3 text-sm font-medium text-zinc-300 hover:bg-zinc-900 hover:text-white transition-colors"
+                className="flex items-center gap-3 rounded-lg px-2 py-3 text-sm font-medium text-[var(--gm-ink-dim)] hover:bg-[var(--gm-paper-2)] hover:text-[var(--gm-ink)] transition-colors"
               >
                 Blog
               </Link>
-              <Link 
-                href="/suporte" 
+              <Link
+                href="/suporte"
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-3 rounded-lg px-2 py-3 text-sm font-medium text-zinc-300 hover:bg-zinc-900 hover:text-white transition-colors"
+                className="flex items-center gap-3 rounded-lg px-2 py-3 text-sm font-medium text-[var(--gm-ink-dim)] hover:bg-[var(--gm-paper-2)] hover:text-[var(--gm-ink)] transition-colors"
               >
                 Central de Ajuda
               </Link>
@@ -191,7 +190,7 @@ export function MobileNav({ isAuthenticated, profile, sellerStatus = 'disabled' 
 
             {isAuthenticated && (
               <div className="mt-auto pt-6">
-                <LogoutButton className="flex w-full items-center justify-center rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-500 transition-colors hover:bg-red-500/20">
+                <LogoutButton className="flex w-full items-center justify-center rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm font-semibold text-[var(--gm-rose)] transition-colors hover:bg-red-500/20">
                   Sair da conta
                 </LogoutButton>
               </div>

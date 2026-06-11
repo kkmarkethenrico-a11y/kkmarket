@@ -26,18 +26,18 @@ function tier(pct: number | null): 'gold' | 'blue' | 'gray' {
 
 const tierStyles = {
   gold: {
-    icon: 'text-yellow-400',
-    badge: 'bg-yellow-400/15 text-yellow-400 border-yellow-400/30',
+    icon: 'text-[var(--gm-amber)]',
+    badge: 'bg-[var(--gm-amber)]/15 text-[var(--gm-amber)] border-[var(--gm-amber)]/30',
     label: 'Excelente',
   },
   blue: {
-    icon: 'text-blue-400',
-    badge: 'bg-blue-400/15 text-blue-400 border-blue-400/30',
+    icon: 'text-[var(--gm-cyan)]',
+    badge: 'bg-[var(--gm-cyan)]/15 text-[var(--gm-cyan)] border-[var(--gm-cyan)]/30',
     label: 'Bom',
   },
   gray: {
-    icon: 'text-zinc-500',
-    badge: 'bg-zinc-500/15 text-zinc-400 border-zinc-500/30',
+    icon: 'text-[var(--gm-ink-faint)]',
+    badge: 'bg-[var(--gm-ink-faint)]/15 text-[var(--gm-ink-dim)] border-[var(--gm-ink-faint)]/30',
     label: 'Novo',
   },
 }
@@ -99,9 +99,9 @@ export function ReputationBadge({
       </div>
       {total > 0 && (
         <div className="flex gap-3 text-xs text-muted-foreground">
-          <span className="text-emerald-500">▲ {reviewsPositive}</span>
-          <span className="text-zinc-400">● {reviewsNeutral}</span>
-          <span className="text-red-500">▼ {reviewsNegative}</span>
+          <span className="text-[var(--gm-green)]">▲ {reviewsPositive}</span>
+          <span className="text-[var(--gm-ink-faint)]">● {reviewsNeutral}</span>
+          <span className="text-[var(--gm-rose)]">▼ {reviewsNegative}</span>
         </div>
       )}
     </div>

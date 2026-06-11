@@ -7,7 +7,6 @@ import type { AnnouncementWithRelations, Category } from '@/types'
 const PLAN_ORDER: Record<string, number> = { diamond: 3, gold: 2, silver: 1 }
 function planWeight(p: string) { return PLAN_ORDER[p] ?? 0 }
 
-// Fallback images from Unsplash for top-level categories (when image_url is null in DB)
 const CATEGORY_COVERS: Record<string, string> = {
   'jogos':          'https://images.unsplash.com/photo-1593118247619-e2d6f056869e?w=224&h=288&fit=crop&q=80',
   'redes-sociais':  'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=224&h=288&fit=crop&q=80',
@@ -16,16 +15,15 @@ const CATEGORY_COVERS: Record<string, string> = {
   'outros-digitais':'https://images.unsplash.com/photo-1518770660439-4636190af475?w=224&h=288&fit=crop&q=80',
 }
 
-// Popular games with cover images for the category slider
 const GAME_COVERS = [
-  { name: 'Free Fire',          slug: 'free-fire',          img: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co49wj.webp' },
-  { name: 'Valorant',           slug: 'valorant',           img: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co2mvt.webp' },
-  { name: 'Fortnite',           slug: 'fortnite',           img: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co6cl0.webp' },
-  { name: 'Minecraft',          slug: 'minecraft',          img: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co49x5.webp' },
-  { name: 'Roblox',             slug: 'roblox',             img: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co3o15.webp' },
-  { name: 'League of Legends',  slug: 'league-of-legends',  img: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co49wk.webp' },
-  { name: 'CS2',                slug: 'cs2',                img: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co7ef3.webp' },
-  { name: 'Genshin Impact',     slug: 'genshin-impact',     img: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co4lwn.webp' },
+  { name: 'Free Fire',         slug: 'free-fire',         img: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co49wj.webp' },
+  { name: 'Valorant',          slug: 'valorant',          img: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co2mvt.webp' },
+  { name: 'Fortnite',          slug: 'fortnite',          img: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co6cl0.webp' },
+  { name: 'Minecraft',         slug: 'minecraft',         img: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co49x5.webp' },
+  { name: 'Roblox',            slug: 'roblox',            img: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co3o15.webp' },
+  { name: 'League of Legends', slug: 'league-of-legends', img: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co49wk.webp' },
+  { name: 'CS2',               slug: 'cs2',               img: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co7ef3.webp' },
+  { name: 'Genshin Impact',    slug: 'genshin-impact',    img: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co4lwn.webp' },
 ]
 
 async function getData() {
@@ -41,34 +39,30 @@ async function getData() {
     announcement_images(url, is_cover, sort_order)
   `
 
-  // Featured (diamond plan, sorted by sale_count)
-  const { data: featuredRaw } = await supabase
-    .from('announcements')
-    .select(announcementSelect)
-    .eq('status', 'active')
-    .eq('plan', 'diamond')
-    .order('sale_count', { ascending: false })
-    .limit(6)
+  const [featuredRes, popularRes, newestRes, reviewsRes, postsRes, catsRes, sellersRes] = await Promise.all([
+    supabase.from('announcements').select(announcementSelect)
+      .eq('status', 'active').eq('plan', 'diamond')
+      .order('sale_count', { ascending: false }).limit(6),
+    supabase.from('announcements').select(announcementSelect)
+      .eq('status', 'active')
+      .order('plan', { ascending: false })
+      .order('sale_count', { ascending: false }).limit(12),
+    supabase.from('announcements').select(announcementSelect)
+      .eq('status', 'active').order('created_at', { ascending: false }).limit(12),
+    supabase.from('order_reviews').select('id, type, message, created_at, profiles!reviewer_id(username)')
+      .eq('type', 'positive').order('created_at', { ascending: false }).limit(6),
+    supabase.from('blog_posts').select('id, title, slug, cover_url, created_at')
+      .eq('is_published', true).order('created_at', { ascending: false }).limit(4),
+    supabase.from('categories').select('id, name, slug, image_url, icon')
+      .is('parent_id', null).eq('status', true)
+      .order('sort_order', { ascending: true }).limit(8),
+    supabase.from('profiles').select('id, username, display_name, avatar_url')
+      .eq('status', 'active')
+      .order('last_seen_at', { ascending: false })
+      .limit(8),
+  ])
 
-  // Most popular (all plans, sorted by sale_count)
-  const { data: popularRaw } = await supabase
-    .from('announcements')
-    .select(announcementSelect)
-    .eq('status', 'active')
-    .order('plan', { ascending: false })
-    .order('sale_count', { ascending: false })
-    .limit(12)
-
-  // Newest
-  const { data: newestRaw } = await supabase
-    .from('announcements')
-    .select(announcementSelect)
-    .eq('status', 'active')
-    .order('created_at', { ascending: false })
-    .limit(12)
-
-  // Collect unique seller user_ids and fetch their stats in one query
-  const allRaw = [...(featuredRaw ?? []), ...(popularRaw ?? []), ...(newestRaw ?? [])]
+  const allRaw = [...(featuredRes.data ?? []), ...(popularRes.data ?? []), ...(newestRes.data ?? [])]
   const sellerIds = [...new Set(allRaw.map((a) => a.user_id))]
   const { data: statsData } = sellerIds.length
     ? await supabase
@@ -78,153 +72,216 @@ async function getData() {
     : { data: [] as { user_id: string; avg_response_time_minutes: number | null; reviews_positive: number; reviews_neutral: number; reviews_negative: number }[] }
 
   const statsMap = new Map((statsData ?? []).map((s) => [s.user_id, s]))
-
   function mergeStats(raw: typeof allRaw) {
-    return raw.map((ann) => ({
-      ...ann,
-      user_stats: statsMap.get(ann.user_id) ?? null,
-    }))
+    return raw.map((ann) => ({ ...ann, user_stats: statsMap.get(ann.user_id) ?? null }))
   }
 
-  // Recent reviews — using actual schema columns
-  const { data: reviews } = await supabase
-    .from('order_reviews')
-    .select('id, type, message, created_at, profiles!reviewer_id(username)')
-    .eq('type', 'positive')
-    .order('created_at', { ascending: false })
-    .limit(8)
-
-  // Blog posts
-  const { data: posts } = await supabase
-    .from('blog_posts')
-    .select('id, title, slug, cover_url, created_at')
-    .eq('is_published', true)
-    .order('created_at', { ascending: false })
-    .limit(4)
-
-  // Top-level categories
-  const { data: cats } = await supabase
-    .from('categories')
-    .select('id, name, slug, image_url, icon')
-    .is('parent_id', null)
-    .eq('status', true)
-    .order('sort_order', { ascending: true })
-    .limit(8)
-
   return {
-    featured: mergeStats(featuredRaw ?? []) as unknown as AnnouncementWithRelations[],
-    popular: mergeStats(popularRaw ?? []).sort(
+    featured: mergeStats(featuredRes.data ?? []) as unknown as AnnouncementWithRelations[],
+    popular: mergeStats(popularRes.data ?? []).sort(
       (a, b) => planWeight((b as any).plan) - planWeight((a as any).plan)
     ) as unknown as AnnouncementWithRelations[],
-    newest: mergeStats(newestRaw ?? []) as unknown as AnnouncementWithRelations[],
-    reviews: reviews ?? [],
-    posts: posts ?? [],
-    categories: (cats ?? []) as Category[],
+    newest: mergeStats(newestRes.data ?? []) as unknown as AnnouncementWithRelations[],
+    reviews: reviewsRes.data ?? [],
+    posts: postsRes.data ?? [],
+    categories: (catsRes.data ?? []) as Category[],
+    sellers: (sellersRes.data ?? []) as { id: string; username: string; display_name: string | null; avatar_url: string | null }[],
   }
 }
 
+// ── Section heading component ──────────────────────────────────────────────
+function SectionHead({ title, href, hrefLabel = 'ver mais →' }: { title: string; href?: string; hrefLabel?: string }) {
+  return (
+    <div className="mb-6 flex items-center justify-between">
+      <h2 className="text-lg font-black tracking-tight text-[var(--gm-ink)] uppercase">
+        {title}
+      </h2>
+      {href && (
+        <Link href={href} className="text-xs font-semibold text-[var(--gm-violet)] hover:text-[var(--gm-cyan)] transition-colors uppercase tracking-wide">
+          {hrefLabel}
+        </Link>
+      )}
+    </div>
+  )
+}
+
 export default async function HomePage() {
-  const { featured, popular, newest, reviews, posts, categories } = await getData()
+  const { featured, popular, newest, reviews, posts, categories, sellers } = await getData()
+
+  const categoryItems = categories.length > 0
+    ? categories.map((cat) => ({ name: cat.name, slug: cat.slug, img: cat.image_url ?? CATEGORY_COVERS[cat.slug] ?? null, href: `/categoria/${cat.slug}` }))
+    : GAME_COVERS.map((g) => ({ name: g.name, slug: g.slug, img: g.img, href: `/categoria/jogos/${g.slug}` }))
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen text-[var(--gm-ink)]">
 
-      {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden border-b border-zinc-800/40 py-20">
+      {/* ── Stories row ───────────────────────────────────────────────────── */}
+      {sellers.length > 0 && (
+        <section className="border-b border-[var(--gm-ink-faint)]/20 py-4">
+          <div className="container mx-auto px-4">
+            <div className="flex gap-4 overflow-x-auto pb-1 scrollbar-hide">
+              {/* "seu drop" placeholder */}
+              <Link href="/meus-anuncios/novo" className="flex flex-col items-center gap-1.5 shrink-0">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-[var(--gm-violet)]/50 bg-[var(--gm-violet)]/5 text-xl text-[var(--gm-violet)] hover:border-[var(--gm-violet)] transition-colors">
+                  +
+                </div>
+                <span className="text-[9px] font-bold text-[var(--gm-violet)] uppercase tracking-wide">seu drop</span>
+              </Link>
+              {sellers.map((s) => {
+                const name = s.display_name ?? s.username
+                const initials = name.slice(0, 2).toUpperCase()
+                return (
+                  <Link key={s.id} href={`/perfil/${s.username}`} className="flex flex-col items-center gap-1.5 shrink-0 group">
+                    <div className="relative">
+                      {s.avatar_url ? (
+                        <Image
+                          src={s.avatar_url}
+                          alt={name}
+                          width={56}
+                          height={56}
+                          className="h-14 w-14 rounded-full object-cover ring-2 ring-[var(--gm-violet)]/40 group-hover:ring-[var(--gm-violet)] transition-all"
+                        />
+                      ) : (
+                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--gm-violet)]/15 text-sm font-black text-[var(--gm-violet)] ring-2 ring-[var(--gm-violet)]/40 group-hover:ring-[var(--gm-violet)] transition-all uppercase">
+                          {initials}
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-[9px] font-bold text-[var(--gm-ink-dim)] max-w-[56px] truncate text-center group-hover:text-[var(--gm-ink)] transition-colors">
+                      {s.username}
+                    </span>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── Hero ──────────────────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden border-b border-[var(--gm-ink-faint)]/30 py-20">
+        {/* Background glow */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-32 left-1/2 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-violet-600/10 blur-3xl" />
+          <div className="absolute -top-40 left-1/2 h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-[var(--gm-violet)]/8 blur-3xl" />
+          <div className="absolute top-10 right-1/4 h-64 w-64 rounded-full bg-[var(--gm-cyan)]/5 blur-3xl" />
         </div>
-        <div className="container mx-auto px-4 text-center">
-          <p className="mb-3 text-sm font-medium uppercase tracking-widest text-violet-400">
-            O marketplace de jogos digitais
-          </p>
-          <h1 className="mb-4 text-5xl font-black leading-tight tracking-tight md:text-6xl">
-            comprar e vender
+
+        <div className="container mx-auto px-4 text-center relative">
+          <div className="inline-flex items-center gap-2 rank-chip mb-6">
+            ◆ O MARKETPLACE DE JOGOS DIGITAIS
+          </div>
+          <h1 className="mb-4 text-5xl font-black leading-tight tracking-tight md:text-6xl text-[var(--gm-ink)]">
+            comprar e{' '}
+            <span className="text-[var(--gm-violet)]" style={{ textShadow: '0 0 30px rgba(167,139,250,0.4)' }}>
+              vender
+            </span>
           </h1>
-          <p className="mb-8 text-lg text-zinc-400">
-            contas, jogos, gift cards, gold, itens digitais e mais!
+          <p className="mb-8 text-base text-[var(--gm-ink-dim)] max-w-md mx-auto">
+            contas · jogos · gift cards · gold · itens digitais e mais
           </p>
-          <Link
-            href="/como-funciona"
-            className="inline-flex items-center gap-2 rounded-full bg-violet-600 px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-violet-500 active:scale-[0.97]"
-          >
-            Como funciona?
-          </Link>
+          <div className="flex items-center justify-center gap-3 flex-wrap">
+            <Link
+              href="/como-funciona"
+              className="inline-flex items-center gap-2 rounded-lg bg-[var(--gm-violet)] px-7 py-3 text-sm font-bold text-[#1a1126] transition-all hover:opacity-90 active:scale-95 gm-glow"
+            >
+              COMO FUNCIONA?
+            </Link>
+            <Link
+              href="/buscar"
+              className="inline-flex items-center gap-2 rounded-lg border border-[var(--gm-ink-faint)]/60 px-7 py-3 text-sm font-bold text-[var(--gm-ink-dim)] hover:border-[var(--gm-violet)]/50 hover:text-[var(--gm-ink)] transition-all"
+            >
+              explorar →
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* ── Category slider ──────────────────────────────────────────────── */}
-      <section className="border-b border-zinc-800/40 py-10">
+      {/* ── Quests / Missões HUD ──────────────────────────────────────────── */}
+      <section className="border-b border-[var(--gm-ink-faint)]/30 py-8">
         <div className="container mx-auto px-4">
-          <h2 className="mb-6 text-xl font-bold text-zinc-100">Categorias Populares</h2>
-          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-            {(categories.length > 0
-              ? categories.map((cat) => ({
-                  name: cat.name,
-                  slug: cat.slug,
-                  img: cat.image_url ?? CATEGORY_COVERS[cat.slug] ?? null,
-                  href: `/categoria/${cat.slug}`,
-                }))
-              : GAME_COVERS.map((g) => ({
-                  name: g.name,
-                  slug: g.slug,
-                  img: g.img,
-                  href: `/categoria/jogos/${g.slug}`,
-                }))
-            ).map((item) => (
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            {/* Missão diária */}
+            <div className="rounded-xl border border-[var(--gm-violet)]/30 bg-[var(--gm-violet)]/5 p-4 flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wide text-[var(--gm-violet)]">🎯 Missão Diária</span>
+                <span className="rank-chip text-[9px]">+25 pts</span>
+              </div>
+              <p className="text-sm font-semibold text-[var(--gm-ink)]">Explore o marketplace hoje</p>
+              <div className="xp-bar">
+                <div className="xp-bar-fill" style={{ width: '0%' }} />
+              </div>
+            </div>
+
+            {/* Desafio */}
+            <div className="rounded-xl border border-[var(--gm-amber)]/30 bg-[var(--gm-amber)]/5 p-4 flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wide text-[var(--gm-amber)]">⚔ Desafio Semanal</span>
+                <span className="rank-chip gold text-[9px]">+100 pts</span>
+              </div>
+              <p className="text-sm font-semibold text-[var(--gm-ink)]">Faça sua primeira compra</p>
+              <div className="xp-bar">
+                <div className="xp-bar-fill" style={{ width: '0%', background: 'var(--gm-amber)' }} />
+              </div>
+            </div>
+
+            {/* Ranking */}
+            <Link
+              href="/ranking"
+              className="rounded-xl border border-[var(--gm-ink-faint)]/40 bg-[var(--gm-paper-3)] p-4 flex flex-col items-center justify-center gap-2 hover:border-[var(--gm-violet)]/50 transition-colors"
+            >
+              <span className="text-3xl">🏆</span>
+              <span className="text-xs font-bold uppercase tracking-wide text-[var(--gm-ink-dim)]">Ver Ranking</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Categorias ────────────────────────────────────────────────────── */}
+      <section className="border-b border-[var(--gm-ink-faint)]/30 py-10">
+        <div className="container mx-auto px-4">
+          <SectionHead title="Categorias Populares" href="/categorias" hrefLabel="ver todas →" />
+          <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+            {categoryItems.map((item) => (
               <Link
                 key={item.slug}
                 href={item.href}
-                className="group relative h-36 w-28 shrink-0 overflow-hidden rounded-xl border border-zinc-800"
+                className="group relative h-32 w-24 shrink-0 overflow-hidden rounded-xl border border-[var(--gm-ink-faint)]/40 hover:border-[var(--gm-violet)]/60 transition-colors"
               >
                 {item.img ? (
                   <Image
                     src={item.img}
                     alt={item.name}
                     fill
-                    sizes="112px"
+                    sizes="96px"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 ) : (
-                  <div className="flex h-full items-center justify-center bg-zinc-800 text-3xl">🎮</div>
+                  <div className="flex h-full items-center justify-center bg-[var(--gm-paper-3)] text-3xl">🎮</div>
                 )}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-2">
-                  <p className="text-center text-[11px] font-semibold leading-tight text-white">{item.name}</p>
+                  <p className="text-center text-[10px] font-bold leading-tight text-white">{item.name}</p>
                 </div>
+                {/* Violet glow on hover */}
+                <div className="absolute inset-0 ring-1 ring-[var(--gm-violet)]/0 group-hover:ring-[var(--gm-violet)]/40 rounded-xl transition-all" />
               </Link>
             ))}
 
-            {/* Ver todas */}
             <Link
               href="/categorias"
-              className="flex h-36 w-28 shrink-0 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-zinc-700 text-zinc-400 hover:border-violet-500 hover:text-violet-400 transition-colors"
+              className="flex h-32 w-24 shrink-0 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-[var(--gm-ink-faint)]/40 text-[var(--gm-ink-faint)] hover:border-[var(--gm-violet)]/50 hover:text-[var(--gm-violet)] transition-colors"
             >
-              <span className="text-2xl">＋</span>
-              <span className="text-[11px] font-medium">Ver todas</span>
-            </Link>
-          </div>
-
-          <div className="mt-6 flex justify-center">
-            <Link
-              href="/categorias"
-              className="rounded-full border border-zinc-700 px-6 py-2 text-xs font-bold uppercase tracking-wider text-zinc-400 hover:border-zinc-500 hover:text-zinc-200 transition-colors"
-            >
-              Ver todas categorias
+              <span className="text-xl">＋</span>
+              <span className="text-[10px] font-bold">Ver todas</span>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ── Em destaque ─────────────────────────────────────────────────── */}
+      {/* ── Em destaque ───────────────────────────────────────────────────── */}
       {featured.length > 0 && (
-        <section className="border-b border-zinc-800/40 py-12">
+        <section className="border-b border-[var(--gm-ink-faint)]/30 py-12">
           <div className="container mx-auto px-4">
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-zinc-100">Em destaque</h2>
-              <Link href="/buscar?order=best_sellers" className="text-sm text-violet-400 hover:text-violet-300 transition-colors">
-                Ver mais →
-              </Link>
-            </div>
+            <SectionHead title="◆ Em Destaque" href="/buscar?order=best_sellers" />
             <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
               {featured.map((ann) => (
                 <AnnouncementCard key={ann.id} ann={ann} />
@@ -234,16 +291,11 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── Mais populares ─────────────────────────────────────────────── */}
+      {/* ── Mais populares ────────────────────────────────────────────────── */}
       {popular.length > 0 && (
-        <section className="border-b border-zinc-800/40 py-12">
+        <section className="border-b border-[var(--gm-ink-faint)]/30 py-12">
           <div className="container mx-auto px-4">
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-zinc-100">Mais populares</h2>
-              <Link href="/buscar?order=best_sellers" className="text-sm text-violet-400 hover:text-violet-300 transition-colors">
-                Ver mais →
-              </Link>
-            </div>
+            <SectionHead title="🔥 Mais Populares" href="/buscar?order=best_sellers" />
             <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
               {popular.map((ann) => (
                 <AnnouncementCard key={ann.id} ann={ann} />
@@ -253,26 +305,20 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── Avaliações recentes ─────────────────────────────────────────── */}
+      {/* ── Avaliações recentes ────────────────────────────────────────────── */}
       {reviews.length > 0 && (
-        <section className="border-b border-zinc-800/40 py-12">
+        <section className="border-b border-[var(--gm-ink-faint)]/30 py-12">
           <div className="container mx-auto px-4">
-            <h2 className="mb-6 text-xl font-bold text-zinc-100">Avaliações recentes</h2>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <SectionHead title="⭐ Avaliações Recentes" />
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {reviews.map((r: any) => (
-                <div key={r.id} className="rounded-2xl border border-zinc-800/60 bg-zinc-900/40 p-4 flex flex-col gap-2">
-                  <div className="flex items-center gap-2 text-sm text-green-400 font-medium">
+                <div key={r.id} className="rounded-xl border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-2)] p-4 flex flex-col gap-2 hover:border-[var(--gm-green)]/40 transition-colors">
+                  <div className="flex items-center gap-2 text-xs font-bold text-[var(--gm-green)] uppercase tracking-wide">
                     <span>👍</span>
-                    <span className="truncate">{r.comment} — <strong className="text-zinc-200">{r.buyer?.username}</strong></span>
+                    <span className="truncate">
+                      {r.comment} — <strong className="text-[var(--gm-ink)]">{r.profiles?.username}</strong>
+                    </span>
                   </div>
-                  {r.announcement && (
-                    <Link
-                      href={`/anuncio/${r.announcement.slug}`}
-                      className="text-xs text-violet-400 hover:text-violet-300 line-clamp-2 font-medium uppercase"
-                    >
-                      {r.announcement.title}
-                    </Link>
-                  )}
                 </div>
               ))}
             </div>
@@ -280,24 +326,19 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── Blog posts ─────────────────────────────────────────────────── */}
+      {/* ── Blog posts ──────────────────────────────────────────────────────── */}
       {posts.length > 0 && (
-        <section className="border-b border-zinc-800/40 py-12">
+        <section className="border-b border-[var(--gm-ink-faint)]/30 py-12">
           <div className="container mx-auto px-4">
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-zinc-100">Últimos posts no blog</h2>
-              <Link href="/blog" className="text-sm text-violet-400 hover:text-violet-300 transition-colors">
-                Ver mais artigos →
-              </Link>
-            </div>
+            <SectionHead title="📖 Blog" href="/blog" hrefLabel="ver artigos →" />
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {posts.map((p: any) => (
                 <Link
                   key={p.id}
                   href={`/blog/${p.slug}`}
-                  className="group overflow-hidden rounded-2xl border border-zinc-800/60 bg-zinc-900/40 hover:border-zinc-700 transition-colors"
+                  className="group overflow-hidden rounded-xl border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-2)] hover:border-[var(--gm-violet)]/50 transition-colors"
                 >
-                  <div className="relative aspect-video overflow-hidden bg-zinc-800">
+                  <div className="relative aspect-video overflow-hidden bg-[var(--gm-paper-3)]">
                     {p.cover_url ? (
                       <Image
                         src={p.cover_url}
@@ -307,11 +348,11 @@ export default async function HomePage() {
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-4xl text-zinc-700">📝</div>
+                      <div className="flex h-full items-center justify-center text-4xl text-[var(--gm-ink-faint)]">📝</div>
                     )}
                   </div>
                   <div className="p-3">
-                    <p className="line-clamp-2 text-sm font-semibold text-zinc-200 group-hover:text-white">{p.title}</p>
+                    <p className="line-clamp-2 text-sm font-semibold text-[var(--gm-ink)] group-hover:text-white transition-colors">{p.title}</p>
                   </div>
                 </Link>
               ))}
@@ -320,16 +361,11 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── Outros anúncios (newest) ─────────────────────────────────────── */}
+      {/* ── Outros anúncios (newest) ─────────────────────────────────────────── */}
       {newest.length > 0 && (
-        <section className="border-b border-zinc-800/40 py-12">
+        <section className="border-b border-[var(--gm-ink-faint)]/30 py-12">
           <div className="container mx-auto px-4">
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-zinc-100">Outros anúncios</h2>
-              <Link href="/buscar?order=newest" className="text-sm text-violet-400 hover:text-violet-300 transition-colors">
-                Ver mais →
-              </Link>
-            </div>
+            <SectionHead title="🆕 Recém Chegados" href="/buscar?order=newest" />
             <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
               {newest.map((ann) => (
                 <AnnouncementCard key={ann.id} ann={ann} />
@@ -339,19 +375,22 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── Trust badges ────────────────────────────────────────────────── */}
+      {/* ── Trust badges ─────────────────────────────────────────────────────── */}
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {[
-              { icon: '🔒', title: 'Compra segura', desc: 'Entrega garantida ou o seu dinheiro de volta.' },
-              { icon: '💬', title: 'Suporte 24 horas', desc: 'Equipe pronta para te atender sempre que precisar.' },
-              { icon: '🎁', title: 'Programa de recompensa', desc: 'Seja recompensado pelas suas compras e vendas.' },
+              { icon: '🔒', title: 'Compra segura',         desc: 'Entrega garantida ou o seu dinheiro de volta.',      color: 'var(--gm-green)' },
+              { icon: '💬', title: 'Suporte 24 horas',       desc: 'Equipe pronta para te atender sempre que precisar.', color: 'var(--gm-cyan)'  },
+              { icon: '🎁', title: 'Programa de recompensa', desc: 'Seja recompensado pelas suas compras e vendas.',      color: 'var(--gm-violet)'},
             ].map((b) => (
-              <div key={b.title} className="rounded-2xl border border-zinc-800/60 bg-zinc-900/30 p-6 text-center">
+              <div
+                key={b.title}
+                className="rounded-xl border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-2)] p-6 text-center hover:border-[var(--gm-violet)]/40 transition-colors"
+              >
                 <div className="mb-3 text-3xl">{b.icon}</div>
-                <h3 className="mb-1 text-sm font-bold text-zinc-200">{b.title}</h3>
-                <p className="text-xs text-zinc-500">{b.desc}</p>
+                <h3 className="mb-1 text-sm font-bold" style={{ color: b.color }}>{b.title}</h3>
+                <p className="text-xs text-[var(--gm-ink-dim)]">{b.desc}</p>
               </div>
             ))}
           </div>

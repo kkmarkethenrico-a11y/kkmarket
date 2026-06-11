@@ -44,27 +44,28 @@ function CartCheckoutModal({
 
   if (allDone) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/80 backdrop-blur-sm">
-        <div className="w-full max-w-md rounded-3xl border border-zinc-800 bg-zinc-950 p-8 text-center">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--gm-paper)]/90 backdrop-blur-sm">
+        <div className="w-full max-w-md rounded-2xl border border-[var(--gm-violet)]/30 bg-[var(--gm-paper-2)] p-8 text-center">
           <p className="text-4xl mb-4">🎉</p>
-          <h2 className="text-xl font-bold text-white mb-2">
+          <div className="rank-chip inline-flex mb-4">ACHIEVEMENT DESBLOQUEADO</div>
+          <h2 className="text-xl font-black text-[var(--gm-ink)] mb-2">
             {items.length === 1 ? 'Pedido criado!' : 'Todos os pedidos criados!'}
           </h2>
-          <p className="text-sm text-zinc-500 mb-6">
+          <p className="text-sm text-[var(--gm-ink-dim)] mb-6">
             Acompanhe o status em Minhas Compras.
           </p>
           <div className="flex flex-col gap-3">
             <Link
               href="/minhas-compras"
               onClick={onClose}
-              className="w-full rounded-2xl bg-violet-600 py-3 text-center text-sm font-bold text-white hover:bg-violet-500 transition-colors"
+              className="w-full rounded-lg bg-[var(--gm-violet)] py-3 text-center text-sm font-black text-[#1a1126] hover:opacity-90 transition-all gm-glow"
             >
               Ver Minhas Compras
             </Link>
             <button
               type="button"
               onClick={onClose}
-              className="text-sm text-zinc-500 hover:text-white transition-colors"
+              className="text-xs text-[var(--gm-ink-faint)] hover:text-[var(--gm-ink)] transition-colors"
             >
               Fechar
             </button>
@@ -76,25 +77,25 @@ function CartCheckoutModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-zinc-950/80 backdrop-blur-sm sm:items-center"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-[var(--gm-paper)]/80 backdrop-blur-sm sm:items-center"
       onClick={(e) => e.target === e.currentTarget && onClose()}
       role="dialog"
       aria-modal="true"
       aria-label="Checkout"
     >
-      <div className="w-full max-w-md rounded-t-3xl border border-zinc-800 bg-zinc-950 p-6 sm:rounded-3xl max-h-[90dvh] overflow-y-auto">
+      <div className="w-full max-w-md rounded-t-2xl border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-2)] p-6 sm:rounded-2xl max-h-[90dvh] overflow-y-auto">
         {/* Header */}
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-bold text-white">
+            <h2 className="text-base font-black text-[var(--gm-ink)]">
               {items.length > 1 ? `Item ${step + 1} de ${items.length}` : 'Confirmar Compra'}
             </h2>
-            <p className="text-xs text-zinc-500 truncate max-w-[250px]">{current.title}</p>
+            <p className="text-xs text-[var(--gm-ink-faint)] truncate max-w-[250px]">{current.title}</p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-zinc-500 hover:text-white transition-colors"
+            className="text-[var(--gm-ink-faint)] hover:text-[var(--gm-ink)] transition-colors"
           >
             ✕
           </button>
@@ -102,47 +103,40 @@ function CartCheckoutModal({
 
         {/* Barra de progresso (multi-item) */}
         {items.length > 1 && (
-          <div className="flex gap-1 mb-4">
-            {items.map((_, i) => (
-              <div
-                key={i}
-                className={`h-1 flex-1 rounded-full transition-colors ${
-                  i < step ? 'bg-green-500' : i === step ? 'bg-violet-500' : 'bg-zinc-800'
-                }`}
-              />
-            ))}
+          <div className="xp-bar mb-4">
+            <div className="xp-bar-fill" style={{ width: `${((step) / items.length) * 100}%` }} />
           </div>
         )}
 
         {/* Item atual */}
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-4 mb-4 flex items-center gap-3">
+        <div className="rounded-xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-3)] p-4 mb-4 flex items-center gap-3">
           {current.imageUrl ? (
             <Image
               src={current.imageUrl}
               alt={current.title}
               width={48}
               height={48}
-              className="rounded-xl object-cover shrink-0"
+              className="rounded-lg object-cover shrink-0"
             />
           ) : (
-            <div className="h-12 w-12 rounded-xl bg-zinc-700 flex items-center justify-center text-xl shrink-0">
+            <div className="h-12 w-12 rounded-lg bg-[var(--gm-paper-2)] flex items-center justify-center text-xl shrink-0 border border-[var(--gm-ink-faint)]/20">
               🎮
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-white truncate">{current.title}</p>
+            <p className="text-sm font-bold text-[var(--gm-ink)] truncate">{current.title}</p>
             {current.selectedItemLabel && (
-              <p className="text-xs text-zinc-500">{current.selectedItemLabel}</p>
+              <p className="text-xs text-[var(--gm-ink-faint)]">{current.selectedItemLabel}</p>
             )}
           </div>
-          <span className="text-lg font-bold text-green-400 shrink-0">
+          <span className="text-base font-black text-[var(--gm-green)] shrink-0">
             R$ {(current.price * current.quantity).toFixed(2).replace('.', ',')}
           </span>
         </div>
 
         {/* Erro */}
         {errorMsg && (
-          <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+          <div className="mb-4 rounded-lg border border-[var(--gm-rose)]/30 bg-[var(--gm-rose)]/10 px-4 py-3 text-sm text-[var(--gm-rose)]">
             {errorMsg}
           </div>
         )}
@@ -153,22 +147,22 @@ function CartCheckoutModal({
         {/* Resultado Boleto */}
         {orderId && paymentData?.boleto && (
           <div className="flex flex-col items-center gap-3">
-            <p className="text-sm text-zinc-400 text-center">Boleto gerado com sucesso!</p>
+            <p className="text-sm text-[var(--gm-ink-dim)] text-center">Boleto gerado com sucesso!</p>
             <a
               href={paymentData.boleto.boleto_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full rounded-xl bg-amber-600 py-3 text-center text-sm font-bold text-white hover:bg-amber-500 transition-colors"
+              className="w-full rounded-lg bg-[var(--gm-amber)] py-3 text-center text-sm font-black text-[#0d0d12] hover:opacity-90 transition-colors"
             >
               Abrir boleto
             </a>
-            <div className="w-full rounded-xl bg-zinc-900 border border-zinc-800 p-3">
-              <p className="text-xs text-zinc-500 mb-1">Código de barras</p>
-              <code className="text-xs text-zinc-300 break-all select-all">
+            <div className="w-full rounded-lg border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-3)] p-3">
+              <p className="text-[10px] text-[var(--gm-ink-faint)] mb-1">Código de barras</p>
+              <code className="text-xs text-[var(--gm-ink-dim)] break-all select-all">
                 {paymentData.boleto.boleto_barcode}
               </code>
             </div>
-            <p className="text-xs text-zinc-500">Vencimento: {paymentData.boleto.boleto_exp}</p>
+            <p className="text-xs text-[var(--gm-ink-faint)]">Vencimento: {paymentData.boleto.boleto_exp}</p>
           </div>
         )}
 
@@ -176,8 +170,8 @@ function CartCheckoutModal({
         {orderId && paymentData?.method === 'credit_card' && (
           <div className="text-center py-4">
             <p className="text-2xl mb-2">✅</p>
-            <p className="text-sm font-semibold text-green-400">Pagamento aprovado!</p>
-            <p className="text-xs text-zinc-500 mt-1">Pedido #{orderId.slice(0, 8)}</p>
+            <p className="text-sm font-black text-[var(--gm-green)]">Pagamento aprovado!</p>
+            <p className="text-xs text-[var(--gm-ink-faint)] mt-1">Pedido #{orderId.slice(0, 8)}</p>
           </div>
         )}
 
@@ -198,7 +192,7 @@ function CartCheckoutModal({
             <button
               type="button"
               onClick={onClose}
-              className="mt-4 w-full rounded-xl border border-zinc-700 py-3 text-sm font-medium text-zinc-300 hover:border-zinc-600 transition-colors"
+              className="mt-4 w-full rounded-lg border border-[var(--gm-ink-faint)]/40 py-3 text-sm font-bold text-[var(--gm-ink-dim)] hover:border-[var(--gm-violet)]/50 hover:text-[var(--gm-ink)] transition-colors"
             >
               Fechar
             </button>
@@ -206,7 +200,7 @@ function CartCheckoutModal({
             <button
               type="button"
               onClick={handleNext}
-              className="mt-4 w-full rounded-2xl bg-violet-600 py-3 text-sm font-bold text-white hover:bg-violet-500 transition-colors"
+              className="mt-4 w-full rounded-lg bg-[var(--gm-violet)] py-3 text-sm font-black text-[#1a1126] hover:opacity-90 transition-all gm-glow"
             >
               Próximo item →
             </button>
@@ -225,14 +219,14 @@ export function CartPageClient() {
   if (items.length === 0) {
     return (
       <div className="container mx-auto px-4 py-20 flex flex-col items-center gap-6 text-center">
-        <ShoppingBag className="h-16 w-16 text-zinc-700" />
-        <h1 className="text-2xl font-bold text-white">Seu carrinho está vazio</h1>
-        <p className="text-zinc-400 max-w-sm">
+        <ShoppingBag className="h-16 w-16 text-[var(--gm-ink-faint)]" />
+        <h1 className="text-2xl font-black text-[var(--gm-ink)]">Carrinho vazio</h1>
+        <p className="text-sm text-[var(--gm-ink-dim)] max-w-sm">
           Explore o marketplace e adicione produtos ao carrinho para comprá-los.
         </p>
         <Link
           href="/buscar"
-          className="flex items-center gap-2 rounded-full bg-violet-600 px-6 py-3 text-sm font-semibold text-white hover:bg-violet-500 transition-colors"
+          className="flex items-center gap-2 rounded-lg bg-[var(--gm-violet)] px-6 py-3 text-sm font-black text-[#1a1126] hover:opacity-90 transition-all gm-glow"
         >
           <ArrowLeft className="h-4 w-4" />
           Explorar produtos
@@ -245,12 +239,15 @@ export function CartPageClient() {
     <>
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-white">
-            Carrinho ({totalItems()} {totalItems() === 1 ? 'item' : 'itens'})
-          </h1>
+          <div>
+            <div className="rank-chip mb-2 inline-flex">🛒 CARRINHO</div>
+            <h1 className="text-2xl font-black text-[var(--gm-ink)]">
+              {totalItems()} {totalItems() === 1 ? 'item' : 'itens'}
+            </h1>
+          </div>
           <button
             onClick={clearCart}
-            className="text-sm text-zinc-500 hover:text-red-400 transition-colors"
+            className="text-xs text-[var(--gm-ink-faint)] hover:text-[var(--gm-rose)] transition-colors"
           >
             Limpar carrinho
           </button>
@@ -258,24 +255,30 @@ export function CartPageClient() {
 
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Lista de itens */}
-          <div className="lg:col-span-2 flex flex-col gap-4">
+          <div className="lg:col-span-2 flex flex-col gap-3">
+            {/* Bonus callout */}
+            <div className="rounded-xl border border-[var(--gm-amber)]/30 bg-[var(--gm-amber)]/5 px-4 py-3 flex items-center gap-3">
+              <span className="text-lg">🎉</span>
+              <p className="text-xs font-bold text-[var(--gm-amber)]">+{Math.round(totalPrice() * 0.1)} pts grátis se finalizar agora</p>
+            </div>
+
             {items.map((item) => (
               <div
                 key={`${item.announcementId}-${item.selectedItemId ?? ''}`}
-                className="flex gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/50 p-4"
+                className="flex gap-4 rounded-xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-2)] p-4"
               >
                 {/* Imagem */}
-                <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-zinc-800">
+                <div className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--gm-paper-3)]">
                   {item.imageUrl ? (
                     <Image
                       src={item.imageUrl}
                       alt={item.title}
-                      width={80}
-                      height={80}
+                      width={56}
+                      height={56}
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center text-zinc-600">
+                    <div className="flex h-full w-full items-center justify-center text-[var(--gm-ink-faint)]">
                       🎮
                     </div>
                   )}
@@ -285,14 +288,14 @@ export function CartPageClient() {
                 <div className="flex flex-1 flex-col gap-1 min-w-0">
                   <Link
                     href={`/anuncio/${item.announcementSlug}`}
-                    className="truncate font-semibold text-white hover:text-violet-400 transition-colors"
+                    className="truncate text-sm font-bold text-[var(--gm-ink)] hover:text-[var(--gm-violet)] transition-colors"
                   >
                     {item.title}
                   </Link>
                   {item.selectedItemLabel && (
-                    <p className="text-xs text-zinc-500">{item.selectedItemLabel}</p>
+                    <p className="text-xs text-[var(--gm-ink-faint)]">{item.selectedItemLabel}</p>
                   )}
-                  <p className="text-sm font-bold text-green-400">
+                  <p className="text-base font-black text-[var(--gm-green)]">
                     R$ {(item.price * item.quantity).toFixed(2).replace('.', ',')}
                   </p>
                 </div>
@@ -301,7 +304,7 @@ export function CartPageClient() {
                 <div className="flex flex-col items-end gap-2">
                   <button
                     onClick={() => removeItem(item.announcementId, item.selectedItemId)}
-                    className="text-zinc-600 hover:text-red-400 transition-colors"
+                    className="text-[var(--gm-ink-faint)] hover:text-[var(--gm-rose)] transition-colors"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -310,18 +313,18 @@ export function CartPageClient() {
                       onClick={() =>
                         updateQuantity(item.announcementId, item.quantity - 1, item.selectedItemId)
                       }
-                      className="flex h-6 w-6 items-center justify-center rounded-full border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white transition-colors"
+                      className="flex h-6 w-6 items-center justify-center rounded-lg border border-[var(--gm-ink-faint)]/40 text-[var(--gm-ink-dim)] hover:border-[var(--gm-violet)]/50 hover:text-[var(--gm-ink)] transition-colors"
                     >
                       <Minus className="h-3 w-3" />
                     </button>
-                    <span className="w-6 text-center text-sm font-medium text-white">
+                    <span className="w-5 text-center text-sm font-bold text-[var(--gm-ink)]">
                       {item.quantity}
                     </span>
                     <button
                       onClick={() =>
                         updateQuantity(item.announcementId, item.quantity + 1, item.selectedItemId)
                       }
-                      className="flex h-6 w-6 items-center justify-center rounded-full border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white transition-colors"
+                      className="flex h-6 w-6 items-center justify-center rounded-lg border border-[var(--gm-ink-faint)]/40 text-[var(--gm-ink-dim)] hover:border-[var(--gm-violet)]/50 hover:text-[var(--gm-ink)] transition-colors"
                     >
                       <Plus className="h-3 w-3" />
                     </button>
@@ -329,44 +332,56 @@ export function CartPageClient() {
                 </div>
               </div>
             ))}
+
+            <Link
+              href="/buscar"
+              className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-[var(--gm-ink-faint)]/30 py-3 text-sm text-[var(--gm-ink-faint)] hover:border-[var(--gm-violet)]/40 hover:text-[var(--gm-ink)] transition-all"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              continuar comprando
+            </Link>
           </div>
 
           {/* Resumo */}
-          <div className="h-fit rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 flex flex-col gap-4">
-            <h2 className="font-bold text-white text-lg">Resumo do pedido</h2>
+          <div className="h-fit rounded-xl border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-2)] p-5 flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xs font-black uppercase tracking-widest text-[var(--gm-ink-faint)]">resumo</h2>
+            </div>
 
-            <div className="flex flex-col gap-2 text-sm">
-              <div className="flex justify-between text-zinc-400">
-                <span>Subtotal ({totalItems()} {totalItems() === 1 ? 'item' : 'itens'})</span>
-                <span className="text-white">R$ {totalPrice().toFixed(2).replace('.', ',')}</span>
+            <div className="flex flex-col gap-2 text-sm border-b border-[var(--gm-ink-faint)]/20 pb-4">
+              <div className="flex justify-between text-[var(--gm-ink-dim)]">
+                <span>subtotal ({totalItems()} {totalItems() === 1 ? 'item' : 'itens'})</span>
+                <span className="text-[var(--gm-ink)] font-semibold">R$ {totalPrice().toFixed(2).replace('.', ',')}</span>
               </div>
             </div>
 
-            <div className="border-t border-zinc-800 pt-4 flex justify-between font-bold">
-              <span className="text-white">Total</span>
-              <span className="text-green-400 text-xl">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-bold text-[var(--gm-ink)]">total</span>
+              <span className="text-2xl font-black text-[var(--gm-green)]">
                 R$ {totalPrice().toFixed(2).replace('.', ',')}
               </span>
             </div>
 
-            <p className="rounded-xl bg-zinc-800/40 px-4 py-2.5 text-xs text-zinc-500 text-center">
+            {/* XP bar bonus */}
+            <div className="rounded-lg border border-[var(--gm-violet)]/20 bg-[var(--gm-violet)]/5 p-3">
+              <p className="text-[10px] font-bold text-[var(--gm-violet)] uppercase tracking-wide mb-1.5">
+                🎁 +{Math.round(totalPrice() * 0.1)} pts ao comprar
+              </p>
+              <div className="xp-bar">
+                <div className="xp-bar-fill" style={{ width: '65%' }} />
+              </div>
+            </div>
+
+            <p className="text-[10px] text-[var(--gm-ink-faint)] text-center">
               🔒 Pagamento seguro via Mercado Pago · Escrow até confirmação
             </p>
 
             <button
               onClick={() => setCheckoutOpen(true)}
-              className="w-full rounded-2xl bg-green-600 py-4 text-sm font-bold text-white shadow-lg shadow-green-600/20 hover:bg-green-500 transition-all active:scale-[0.98]"
+              className="w-full rounded-lg bg-[var(--gm-violet)] py-4 text-sm font-black text-[#1a1126] hover:opacity-90 transition-all active:scale-[0.98] gm-glow"
             >
-              Finalizar Compra
+              finalizar →
             </button>
-
-            <Link
-              href="/buscar"
-              className="flex items-center justify-center gap-2 text-sm text-zinc-500 hover:text-white transition-colors"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Continuar comprando
-            </Link>
           </div>
         </div>
       </div>

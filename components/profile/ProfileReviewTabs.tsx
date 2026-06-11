@@ -38,9 +38,9 @@ const TABS: { id: RoleTab; label: string }[] = [
 const PAGE_SIZE = 10
 
 const REVIEW_ICON = {
-  positive: <ThumbsUp   className="h-4 w-4 text-emerald-500" />,
-  neutral:  <Minus      className="h-4 w-4 text-zinc-400"    />,
-  negative: <ThumbsDown className="h-4 w-4 text-red-500"     />,
+  positive: <ThumbsUp   className="h-4 w-4 text-[var(--gm-green)]" />,
+  neutral:  <Minus      className="h-4 w-4 text-[var(--gm-ink-faint)]" />,
+  negative: <ThumbsDown className="h-4 w-4 text-[var(--gm-rose)]"  />,
 }
 
 function formatDate(iso: string) {
@@ -64,7 +64,7 @@ function SmallAvatar({ src, name }: { src: string | null; name: string }) {
     )
   }
   return (
-    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-700 text-xs font-semibold text-zinc-300">
+    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--gm-violet)]/20 text-xs font-semibold text-[var(--gm-violet)]">
       {name.slice(0, 2).toUpperCase()}
     </div>
   )
@@ -144,7 +144,7 @@ export function ProfileReviewTabs({
   return (
     <div className="space-y-4">
       {/* Tabs */}
-      <div className="flex gap-1 rounded-lg bg-zinc-900 p-1">
+      <div className="flex gap-1 rounded-lg bg-[var(--gm-paper-2)] p-1">
         {TABS.map((t) => (
           <button
             key={t.id}
@@ -152,8 +152,8 @@ export function ProfileReviewTabs({
             className={cn(
               'flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
               activeTab === t.id
-                ? 'bg-zinc-700 text-white'
-                : 'text-zinc-400 hover:text-zinc-200',
+                ? 'bg-[var(--gm-violet)] text-[#1a1126]'
+                : 'text-[var(--gm-ink-faint)] hover:text-[var(--gm-ink)]',
             )}
           >
             {t.label}
@@ -163,17 +163,17 @@ export function ProfileReviewTabs({
 
       {/* Resumo (só na aba "todas") */}
       {activeTab === 'all' && total > 0 && (
-        <div className="flex flex-wrap gap-4 rounded-lg bg-zinc-800/60 px-4 py-3 text-sm">
-          <span className="text-emerald-400 font-medium">
+        <div className="flex flex-wrap gap-4 rounded-lg bg-[var(--gm-paper-3)] px-4 py-3 text-sm">
+          <span className="text-[var(--gm-green)] font-medium">
             ▲ {reviewsPositive} positiva{reviewsPositive !== 1 ? 's' : ''}
           </span>
-          <span className="text-zinc-400">
+          <span className="text-[var(--gm-ink-dim)]">
             ● {reviewsNeutral} neutra{reviewsNeutral !== 1 ? 's' : ''}
           </span>
-          <span className="text-red-400">
+          <span className="text-[var(--gm-rose)]">
             ▼ {reviewsNegative} negativa{reviewsNegative !== 1 ? 's' : ''}
           </span>
-          <span className="ml-auto text-zinc-500 text-xs self-center">
+          <span className="ml-auto text-[var(--gm-ink-faint)] text-xs self-center">
             {total} avaliações no total
           </span>
         </div>
@@ -181,7 +181,7 @@ export function ProfileReviewTabs({
 
       {/* Lista */}
       {current.length === 0 && !loading && (
-        <p className="py-8 text-center text-sm text-zinc-500">
+        <p className="py-8 text-center text-sm text-[var(--gm-ink-faint)]">
           Nenhuma avaliação para esta categoria.
         </p>
       )}
@@ -198,23 +198,23 @@ export function ProfileReviewTabs({
                   ? 'border-emerald-500/20 bg-emerald-500/5'
                   : r.type === 'negative'
                   ? 'border-red-500/20 bg-red-500/5'
-                  : 'border-zinc-700/40 bg-zinc-800/40',
+                  : 'border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-3)]/60',
               )}
             >
               <SmallAvatar src={r.profiles?.avatar_url ?? null} name={name} />
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   {REVIEW_ICON[r.type]}
-                  <span className="text-sm font-medium text-zinc-200">{name}</span>
-                  <span className="rounded-full bg-zinc-700/60 px-1.5 py-0.5 text-[10px] text-zinc-400">
+                  <span className="text-sm font-medium text-[var(--gm-ink)]">{name}</span>
+                  <span className="rounded-full bg-[var(--gm-paper-3)] px-1.5 py-0.5 text-[10px] text-[var(--gm-ink-faint)]">
                     {r.role === 'buyer' ? 'comprador' : 'vendedor'}
                   </span>
-                  <span className="ml-auto text-xs text-zinc-500">
+                  <span className="ml-auto text-xs text-[var(--gm-ink-faint)]">
                     {formatDate(r.created_at)}
                   </span>
                 </div>
                 {r.message && (
-                  <p className="mt-1 text-sm text-zinc-400 break-words">{r.message}</p>
+                  <p className="mt-1 text-sm text-[var(--gm-ink-dim)] break-words">{r.message}</p>
                 )}
               </div>
             </li>
@@ -227,7 +227,7 @@ export function ProfileReviewTabs({
           <button
             onClick={loadMore}
             disabled={loading}
-            className="rounded-md border border-zinc-700 px-5 py-1.5 text-sm text-zinc-400 hover:bg-zinc-800 disabled:opacity-50 transition-colors"
+            className="rounded-md border border-[var(--gm-ink-faint)]/40 px-5 py-1.5 text-sm text-[var(--gm-ink-dim)] hover:bg-[var(--gm-paper-3)] hover:text-[var(--gm-ink)] disabled:opacity-50 transition-colors"
           >
             {loading ? 'Carregando…' : 'Carregar mais'}
           </button>

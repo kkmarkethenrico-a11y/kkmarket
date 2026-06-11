@@ -20,46 +20,46 @@ const topCategories = [
 export function CategoryMegaMenu() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center gap-1.5 text-sm font-medium text-zinc-300 hover:text-white transition-colors outline-none focus-visible:text-violet-400">
+      <DropdownMenuTrigger className="flex items-center gap-1.5 text-sm font-medium text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)] transition-colors outline-none focus-visible:text-[var(--gm-violet)]">
           Categorias
           <ChevronDown className="h-4 w-4 opacity-50" />
       </DropdownMenuTrigger>
-      
-      <DropdownMenuContent 
-        className="w-[600px] p-4 bg-zinc-950/95 backdrop-blur-xl border-zinc-800" 
-        align="start" 
+
+      <DropdownMenuContent
+        className="w-[600px] p-4 bg-[var(--gm-paper)]/95 backdrop-blur-xl border-[var(--gm-ink-faint)]/20"
+        align="start"
         sideOffset={20}
       >
         <div className="grid grid-cols-3 gap-6">
           {/* Main category column */}
-          <div className="col-span-1 border-r border-zinc-800/50 pr-4 flex flex-col gap-1">
+          <div className="col-span-1 border-r border-[var(--gm-ink-faint)]/20 pr-4 flex flex-col gap-1">
             {topCategories.map(cat => (
-              <DropdownMenuItem key={cat.slug} className="rounded-lg cursor-pointer focus:bg-zinc-800/60 focus:text-white">
-                <Link href={`/categoria/${cat.slug}`} className="flex items-center gap-3 py-2 px-3 text-sm font-medium text-zinc-300 w-full">
-                  <cat.icon className="h-4 w-4 text-violet-500" />
+              <DropdownMenuItem key={cat.slug} className="rounded-lg cursor-pointer focus:bg-[var(--gm-paper-3)] focus:text-[var(--gm-ink)]">
+                <Link href={`/categoria/${cat.slug}`} className="flex items-center gap-3 py-2 px-3 text-sm font-medium text-[var(--gm-ink-dim)] w-full">
+                  <cat.icon className="h-4 w-4 text-[var(--gm-violet)]" />
                   {cat.name}
                 </Link>
               </DropdownMenuItem>
             ))}
           </div>
-          
+
           {/* Sub-categories grid view */}
           <div className="col-span-2 flex flex-col">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-3 px-2">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--gm-ink-faint)] mb-3 px-2">
               Jogos Populares
             </h4>
             <div className="grid grid-cols-2 gap-1">
               {topCategories[0].items?.map(game => (
-                <DropdownMenuItem key={game} className="rounded-lg cursor-pointer focus:bg-zinc-800/60 p-0">
-                  <Link href={`/categoria/jogos/${game.toLowerCase().replace(/ /g, '-')}`} className="text-sm text-zinc-300 py-2 px-3 w-full">
+                <DropdownMenuItem key={game} className="rounded-lg cursor-pointer focus:bg-[var(--gm-paper-3)] p-0">
+                  <Link href={`/categoria/jogos/${game.toLowerCase().replace(/ /g, '-')}`} className="text-sm text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)] py-2 px-3 w-full">
                     {game}
                   </Link>
                 </DropdownMenuItem>
               ))}
             </div>
-            
-            <DropdownMenuItem className="mt-4 rounded-lg cursor-pointer bg-violet-600/10 focus:bg-violet-600/20 text-violet-400 focus:text-violet-300 p-0">
-              <Link href="/categoria/jogos" className="flex items-center justify-center py-2.5 font-medium border border-violet-500/20 w-full">
+
+            <DropdownMenuItem className="mt-4 rounded-lg cursor-pointer bg-[var(--gm-violet)]/10 focus:bg-[var(--gm-violet)]/20 text-[var(--gm-violet)] focus:text-[var(--gm-violet)] p-0">
+              <Link href="/categoria/jogos" className="flex items-center justify-center py-2.5 font-medium border border-[var(--gm-violet)]/20 w-full">
                 Ver todos os jogos
               </Link>
             </DropdownMenuItem>
