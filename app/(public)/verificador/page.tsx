@@ -57,30 +57,30 @@ export default async function VerificadorPage() {
     .order('name', { ascending: true })
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto max-w-4xl px-4 py-12">
 
         <header className="mb-8 text-center">
-          <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-violet-500/10 ring-1 ring-violet-500/30">
+          <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/30">
             <span className="text-3xl">🛡️</span>
           </div>
-          <h1 className="text-3xl font-bold text-white sm:text-4xl">
+          <h1 className="text-3xl font-bold text-foreground sm:text-4xl">
             Verificador de Contas
           </h1>
-          <p className="mx-auto mt-3 max-w-2xl text-sm text-zinc-400 sm:text-base">
+          <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
             Antes de comprar uma conta de jogo, cheque grátis contra nosso banco
             antifraude público. Identificadores marcados aqui têm histórico de
-            <span className="font-semibold text-red-300"> recuperação fraudulenta </span>
-            ou <span className="font-semibold text-amber-300">comportamento suspeito</span>.
+            <span className="font-semibold text-red-500"> recuperação fraudulenta </span>
+            ou <span className="font-semibold text-amber-500">comportamento suspeito</span>.
           </p>
         </header>
 
         <VerifierClient games={games ?? []} />
 
         <section className="mt-16 space-y-8">
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-900/30 p-6">
-            <h2 className="mb-3 text-xl font-bold text-white">Por que verificar antes de comprar?</h2>
-            <p className="text-sm leading-relaxed text-zinc-400">
+          <div className="rounded-2xl border border-border bg-card/60 p-6">
+            <h2 className="mb-3 text-xl font-bold text-foreground">Por que verificar antes de comprar?</h2>
+            <p className="text-sm leading-relaxed text-muted-foreground">
               O golpe mais comum em marketplaces de contas é a <strong>recuperação fraudulenta</strong>:
               o vendedor entrega o login, recebe o pagamento e, alguns dias depois, usa o sistema
               de recuperação de senha para retomar a conta. O comprador fica sem o produto e sem
@@ -89,13 +89,13 @@ export default async function VerificadorPage() {
             </p>
           </div>
 
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-900/30 p-6">
-            <h2 className="mb-4 text-xl font-bold text-white">Perguntas frequentes</h2>
+          <div className="rounded-2xl border border-border bg-card/60 p-6">
+            <h2 className="mb-4 text-xl font-bold text-foreground">Perguntas frequentes</h2>
             <dl className="space-y-4">
               {FAQ.map((item) => (
-                <div key={item.q} className="border-b border-zinc-800/60 pb-4 last:border-b-0 last:pb-0">
-                  <dt className="font-semibold text-zinc-100">{item.q}</dt>
-                  <dd className="mt-1.5 text-sm leading-relaxed text-zinc-400">{item.a}</dd>
+                <div key={item.q} className="border-b border-border pb-4 last:border-b-0 last:pb-0">
+                  <dt className="font-semibold text-foreground">{item.q}</dt>
+                  <dd className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{item.a}</dd>
                 </div>
               ))}
             </dl>

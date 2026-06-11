@@ -11,7 +11,7 @@ import {
 import type { Category, AnnouncementWithRelations } from '@/types'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-type PageParams = { tipo: string; slug: string }
+type PageParams = { slug: string; subslug: string }
 type SearchParams = { min_price?: string; max_price?: string; order?: string; page?: string }
 
 type Props = {
@@ -33,12 +33,12 @@ export async function generateMetadata(
   { params }: Props,
   _parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const { tipo, slug } = await params
+  const { slug, subslug } = await params
   const supabase        = await createClient()
   const { data }        = await supabase
     .from('categories')
     .select('name, seo_title, seo_description')
-    .eq('slug', slug)
+    .eq('slug', subslug)
     .single()
 
   if (!data) return { title: 'Categoria — GameMarket' }
@@ -51,7 +51,7 @@ export async function generateMetadata(
     title,
     description,
     // Canonical strips ?page=N and other query params
-    alternates: { canonical: `${baseUrl}/categoria/${tipo}/${slug}` },
+    alternates: { canonical: `${baseUrl}/categoria/${slug}/${subslug}` },
     openGraph: {
       title,
       description,
@@ -68,7 +68,7 @@ export async function generateMetadata(
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default async function CategoryPage({ params, searchParams }: Props) {
-  const { tipo, slug } = await params
+  const { slug, subslug } = await params
   const sp             = await searchParams
 
   const page      = Math.max(1, parseInt(sp.page ?? '1', 10))
@@ -79,11 +79,11 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const supabase = await createClient()
 
   // ─── Fetch category tree ────────────────────────────────────────────────
-  // Parent (root) by slug=tipo
+  // Parent (root) by slug=slug
   const { data: parentCat } = await supabase
     .from('categories')
     .select('*')
-    .eq('slug', tipo)
+    .eq('slug', slug)
     .eq('status', true)
     .single()
 
@@ -93,7 +93,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const { data: currentCat } = await supabase
     .from('categories')
     .select('*')
-    .eq('slug', slug)
+    .eq('slug', subslug)
     .eq('parent_id', parentCat.id)
     .eq('status', true)
     .single()
@@ -142,19 +142,19 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   switch (order) {
     case 'newest':
       query = query.order('plan',       { ascending: false })
-                   .order('created_at', { ascending: false })
+                 .order('created_at', { ascending: false })
       break
     case 'price_asc':
       query = query.order('plan',       { ascending: false })
-                   .order('unit_price', { ascending: true,  nullsFirst: false })
+                 .order('unit_price', { ascending: true,  nullsFirst: false })
       break
     case 'price_desc':
       query = query.order('plan',       { ascending: false })
-                   .order('unit_price', { ascending: false, nullsFirst: false })
+                 .order('unit_price', { ascending: false, nullsFirst: false })
       break
     default: // best_sellers
       query = query.order('plan',       { ascending: false })
-                   .order('sale_count', { ascending: false })
+                 .order('sale_count', { ascending: false })
       break
   }
 
@@ -187,18 +187,18 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
   // ─── Render ─────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto px-4 py-8">
         
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-sm text-zinc-500">
-          <Link href="/" className="hover:text-zinc-300 transition-colors">Home</Link>
+        <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
+          <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
           <span>/</span>
-          <Link href={`/categoria/${tipo}`} className="hover:text-zinc-300 transition-colors capitalize">
+          <Link href={`/categoria/${slug}`} className="hover:text-foreground transition-colors capitalize">
             {(parentCat as Category).name}
           </Link>
           <span>/</span>
-          <span className="text-zinc-200 font-medium">{(currentCat as Category).name}</span>
+          <span className="text-foreground font-medium">{(currentCat as Category).name}</span>
         </nav>
 
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
@@ -207,8 +207,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           <CategorySidebar
             parent={parentCat as Category}
             subcategories={subcategories}
-            activeSlug={slug}
-            tipo={tipo}
+            activeSlug={subslug}
+            tipo={slug}
           />
 
           {/* ─── Main content ─────────────────────────────────────── */}

@@ -166,14 +166,14 @@ export default async function TopCategoryPage({ params, searchParams }: Props) {
 
   // ─── Render ─────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto px-4 py-8">
 
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-sm text-zinc-500">
-          <Link href="/" className="hover:text-zinc-300 transition-colors">Home</Link>
+        <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
+          <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
           <span>/</span>
-          <span className="text-zinc-200 font-medium">{(topCat as Category).name}</span>
+          <span className="text-foreground font-medium">{(topCat as Category).name}</span>
         </nav>
 
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
@@ -211,7 +211,7 @@ export default async function TopCategoryPage({ params, searchParams }: Props) {
                   <Link
                     key={sub.id}
                     href={`/categoria/${slug}/${sub.slug}`}
-                    className="rounded-full border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-300 hover:border-violet-500 hover:text-violet-300 transition-colors"
+                    className="rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground hover:border-primary hover:text-primary transition-colors"
                   >
                     {sub.name}
                   </Link>
@@ -254,13 +254,13 @@ function EmptyState({
   slug: string
 }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-dashed border-zinc-800 py-16 text-center">
+    <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-dashed border-border py-16 text-center">
       <span className="text-5xl">🔍</span>
       <div>
-        <p className="text-lg font-semibold text-zinc-300">
+        <p className="text-lg font-semibold text-foreground">
           Nenhum anúncio em {catName} ainda
         </p>
-        <p className="mt-1 text-sm text-zinc-600">
+        <p className="mt-1 text-sm text-muted-foreground">
           Seja o primeiro a anunciar nesta categoria!
         </p>
       </div>
@@ -270,7 +270,7 @@ function EmptyState({
             <Link
               key={sub.id}
               href={`/categoria/${slug}/${sub.slug}`}
-              className="rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1.5 text-xs text-zinc-400 hover:text-violet-300 hover:border-violet-500 transition-colors"
+              className="rounded-full border border-border bg-card/60 px-3 py-1.5 text-xs text-muted-foreground hover:text-primary hover:border-primary transition-colors"
             >
               {sub.name}
             </Link>

@@ -113,22 +113,22 @@ export default async function RankingPage() {
   const list = sellers.length > 0 ? sellers : fallbackSellers
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto max-w-4xl px-4 py-12 space-y-8">
 
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-extrabold text-white">🏆 Ranking de Vendedores</h1>
-          <p className="text-zinc-400 text-sm max-w-lg mx-auto">
+          <h1 className="text-3xl font-extrabold text-foreground">🏆 Ranking de Vendedores</h1>
+          <p className="text-muted-foreground text-sm max-w-lg mx-auto">
             Classificação baseada em avaliações recebidas de compradores. Mínimo de 3 avaliações para aparecer no ranking.
           </p>
         </div>
 
         {/* Fórmula */}
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4 text-center text-xs text-zinc-500">
+        <div className="rounded-2xl border border-border bg-card p-4 text-center text-xs text-muted-foreground">
           Score = (Positivas × 100 + Neutras × 50) ÷ Total de avaliações
           <span className="mx-2">·</span>
-          <span className="text-zinc-400">Empate desempatado por número de vendas</span>
+          <span className="text-foreground">Empate desempatado por número de vendas</span>
         </div>
 
         {/* Pódio top 3 */}
@@ -140,7 +140,7 @@ export default async function RankingPage() {
               const borderColor = actualRank === 1
                 ? 'border-yellow-500/40 bg-yellow-500/5'
                 : actualRank === 2
-                ? 'border-zinc-500/40 bg-zinc-800/40'
+                ? 'border-border bg-card'
                 : 'border-amber-700/40 bg-amber-900/10'
               return (
                 <Link
@@ -155,22 +155,22 @@ export default async function RankingPage() {
                       alt={seller.username}
                       width={56}
                       height={56}
-                      className="rounded-full object-cover ring-2 ring-zinc-700"
+                      className="rounded-full object-cover ring-2 ring-border"
                     />
                   ) : (
-                    <div className="h-14 w-14 rounded-full bg-zinc-700 flex items-center justify-center text-xl font-bold text-zinc-300">
+                    <div className="h-14 w-14 rounded-full bg-muted flex items-center justify-center text-xl font-bold text-muted-foreground">
                       {seller.username[0].toUpperCase()}
                     </div>
                   )}
                   <div>
-                    <p className="text-sm font-bold text-white truncate max-w-[90px]">
+                    <p className="text-sm font-bold text-foreground truncate max-w-[90px]">
                       {seller.display_name ?? seller.username}
                       {seller.is_vip && <span className="ml-1 text-amber-400">★</span>}
                     </p>
-                    <p className="text-xs text-zinc-500">@{seller.username}</p>
+                    <p className="text-xs text-muted-foreground">@{seller.username}</p>
                   </div>
-                  <p className="text-lg font-black text-white">{fmtScore(seller.reputation_score ?? 0)}</p>
-                  <p className="text-xs text-zinc-500">{seller.total_reviews} aval.</p>
+                  <p className="text-lg font-black text-foreground">{fmtScore(seller.reputation_score ?? 0)}</p>
+                  <p className="text-xs text-muted-foreground">{seller.total_reviews} aval.</p>
                 </Link>
               )
             })}
@@ -181,12 +181,12 @@ export default async function RankingPage() {
         {list.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 gap-3 text-center">
             <span className="text-5xl">🎯</span>
-            <p className="text-zinc-300 font-semibold">Nenhum vendedor no ranking ainda</p>
-            <p className="text-zinc-500 text-sm">São necessárias pelo menos 3 avaliações para aparecer aqui.</p>
+            <p className="text-foreground font-semibold">Nenhum vendedor no ranking ainda</p>
+            <p className="text-muted-foreground text-sm">São necessárias pelo menos 3 avaliações para aparecer aqui.</p>
           </div>
         ) : (
           <div className="space-y-2">
-            <h2 className="text-sm font-semibold text-zinc-500 uppercase tracking-wider px-1">Classificação completa</h2>
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider px-1">Classificação completa</h2>
             {list.map((seller, idx) => {
               const rank = idx + 1
               const score = seller.reputation_score ?? 0
@@ -197,7 +197,7 @@ export default async function RankingPage() {
                 <Link
                   key={seller.user_id}
                   href={`/perfil/${seller.username}`}
-                  className="flex items-center gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 px-4 py-3 hover:border-zinc-600 transition-colors group"
+                  className="flex items-center gap-4 rounded-2xl border border-border bg-card/60 px-4 py-3 hover:border-primary/50 transition-colors group"
                 >
                   {/* Posição */}
                   <div className="w-8 text-center shrink-0">
@@ -215,7 +215,7 @@ export default async function RankingPage() {
                         className="rounded-full object-cover"
                       />
                     ) : (
-                      <div className="h-10 w-10 rounded-full bg-zinc-700 flex items-center justify-center text-sm font-bold text-zinc-300">
+                      <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-bold text-muted-foreground">
                         {seller.username[0].toUpperCase()}
                       </div>
                     )}
@@ -224,15 +224,15 @@ export default async function RankingPage() {
                   {/* Info */}
                   <div className="flex-1 min-w-0 space-y-1">
                     <div className="flex items-center gap-2">
-                      <p className="font-semibold text-white text-sm truncate group-hover:text-violet-300 transition-colors">
+                      <p className="font-semibold text-foreground text-sm truncate group-hover:text-primary transition-colors">
                         {seller.display_name ?? seller.username}
                         {seller.is_vip && <span className="ml-1 text-amber-400 text-xs">★ VIP</span>}
                       </p>
-                      <span className="text-xs text-zinc-600 shrink-0">@{seller.username}</span>
+                      <span className="text-xs text-muted-foreground shrink-0">@{seller.username}</span>
                     </div>
                     <ScoreBar score={score} />
-                    <div className="flex gap-3 text-xs text-zinc-500">
-                      <span className="text-emerald-400">{posPct}% positivas</span>
+                    <div className="flex gap-3 text-xs text-muted-foreground">
+                      <span className="text-emerald-500 font-medium">{posPct}% positivas</span>
                       <span>·</span>
                       <span>{total} avaliações</span>
                       <span>·</span>
@@ -242,8 +242,8 @@ export default async function RankingPage() {
 
                   {/* Score */}
                   <div className="text-right shrink-0">
-                    <p className="text-xl font-black text-white">{fmtScore(score)}</p>
-                    <p className="text-[10px] text-zinc-600">/ 100</p>
+                    <p className="text-xl font-black text-foreground">{fmtScore(score)}</p>
+                    <p className="text-[10px] text-muted-foreground">/ 100</p>
                   </div>
                 </Link>
               )
@@ -252,14 +252,14 @@ export default async function RankingPage() {
         )}
 
         {/* CTA */}
-        <div className="rounded-2xl border border-violet-500/20 bg-violet-500/5 p-6 text-center space-y-3">
-          <p className="text-sm font-semibold text-violet-300">Quer aparecer aqui?</p>
-          <p className="text-xs text-zinc-500">
+        <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 text-center space-y-3">
+          <p className="text-sm font-semibold text-primary">Quer aparecer aqui?</p>
+          <p className="text-xs text-muted-foreground">
             Complete vendas, entregue com qualidade e peça avaliações aos seus compradores.
           </p>
           <Link
             href="/meus-anuncios"
-            className="inline-flex rounded-xl bg-violet-600 px-5 py-2 text-sm font-semibold text-white hover:bg-violet-500 transition-colors"
+            className="inline-flex rounded-xl bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
           >
             Gerenciar anúncios
           </Link>
