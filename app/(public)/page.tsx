@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { AnnouncementCard } from '@/components/marketplace/AnnouncementCard'
 import type { AnnouncementWithRelations, Category } from '@/types'
+import { Gamepad2, Share2, Bot, Code, Box, Flame, Crosshair, Sparkles, Pickaxe, Blocks, Sword } from 'lucide-react'
 
 const PLAN_ORDER: Record<string, number> = { diamond: 3, gold: 2, silver: 1 }
 function planWeight(p: string) { return PLAN_ORDER[p] ?? 0 }
@@ -241,30 +242,33 @@ export default async function HomePage() {
         <div className="container mx-auto px-4">
           <SectionHead title="Categorias Populares" href="/categorias" hrefLabel="ver todas →" />
           <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-            {categoryItems.map((item) => (
-              <Link
-                key={item.slug}
-                href={item.href}
-                className="group relative h-32 w-24 shrink-0 overflow-hidden rounded-xl border border-[var(--gm-ink-faint)]/40 hover:border-[var(--gm-violet)]/60 transition-colors"
-              >
-                {item.img ? (
-                  <Image
-                    src={item.img}
-                    alt={item.name}
-                    fill
-                    sizes="96px"
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center bg-[var(--gm-paper-3)] text-3xl">🎮</div>
-                )}
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-2">
-                  <p className="text-center text-[10px] font-bold leading-tight text-white">{item.name}</p>
-                </div>
-                {/* Violet glow on hover */}
-                <div className="absolute inset-0 ring-1 ring-[var(--gm-violet)]/0 group-hover:ring-[var(--gm-violet)]/40 rounded-xl transition-all" />
-              </Link>
-            ))}
+            {categoryItems.map((item) => {
+              // Select appropriate icon
+              let Icon = Gamepad2
+              if (item.slug === 'redes-sociais') Icon = Share2
+              else if (item.slug === 'bots') Icon = Bot
+              else if (item.slug === 'scripts') Icon = Code
+              else if (item.slug === 'outros-digitais') Icon = Box
+              else if (item.slug === 'free-fire') Icon = Flame
+              else if (item.slug === 'valorant' || item.slug === 'cs2') Icon = Crosshair
+              else if (item.slug === 'fortnite' || item.slug === 'genshin-impact') Icon = Sparkles
+              else if (item.slug === 'minecraft') Icon = Pickaxe
+              else if (item.slug === 'roblox') Icon = Blocks
+              else if (item.slug === 'league-of-legends') Icon = Sword
+
+              return (
+                <Link
+                  key={item.slug}
+                  href={item.href}
+                  className="group relative flex h-28 w-24 shrink-0 flex-col items-center justify-center gap-3 overflow-hidden rounded-xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-3)] hover:border-[var(--gm-violet)]/50 hover:bg-[var(--gm-violet)]/5 transition-all shadow-sm"
+                >
+                  <div className="text-[var(--gm-ink-dim)] group-hover:text-[var(--gm-violet)] transition-colors duration-300 transform group-hover:scale-110">
+                    <Icon className="h-8 w-8" strokeWidth={1.5} />
+                  </div>
+                  <p className="text-center text-[10px] font-bold leading-tight text-[var(--gm-ink)] px-2">{item.name}</p>
+                </Link>
+              )
+            })}
 
             <Link
               href="/categorias"
