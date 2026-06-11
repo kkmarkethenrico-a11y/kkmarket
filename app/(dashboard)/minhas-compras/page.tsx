@@ -79,25 +79,25 @@ export default async function MinhasComprasPage({ searchParams }: PageProps) {
   const { data: orders } = await query
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <div className="min-h-screen text-[var(--gm-ink)]">
       <div className="container mx-auto max-w-5xl px-4 py-8 space-y-6">
 
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-white">Minhas Compras</h1>
-          <p className="text-sm text-zinc-500 mt-0.5">Acompanhe seus pedidos e histórico de compras</p>
+          <h1 className="text-2xl font-bold text-[var(--gm-ink)]">Minhas Compras</h1>
+          <p className="text-sm text-[var(--gm-ink-dim)] mt-0.5">Acompanhe seus pedidos e histórico de compras</p>
         </div>
 
         {/* Tabs */}
-        <div className="flex flex-wrap gap-1 rounded-xl border border-zinc-800 bg-zinc-900/50 p-1 w-fit">
+        <div className="flex flex-wrap gap-1 rounded-xl border border-border bg-card p-1 w-fit">
           {TABS.map((t) => (
             <Link
               key={t.value}
               href={`/minhas-compras?tab=${t.value}`}
               className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-all ${
                 tab === t.value
-                  ? 'bg-violet-600 text-white shadow'
-                  : 'text-zinc-400 hover:text-zinc-200'
+                  ? 'bg-primary text-primary-foreground shadow'
+                  : 'text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)]'
               }`}
             >
               {t.label}
@@ -109,15 +109,15 @@ export default async function MinhasComprasPage({ searchParams }: PageProps) {
         {!orders?.length ? (
           <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
             <span className="text-5xl">🛍️</span>
-            <p className="text-zinc-300 text-lg font-semibold">Nenhuma compra encontrada</p>
-            <p className="text-zinc-500 text-sm">
+            <p className="text-[var(--gm-ink)] text-lg font-semibold">Nenhuma compra encontrada</p>
+            <p className="text-[var(--gm-ink-dim)] text-sm">
               {tab === 'all'
                 ? 'Você ainda não realizou nenhuma compra.'
                 : `Nenhuma compra com status "${TABS.find((t) => t.value === tab)?.label}".`}
             </p>
             <Link
               href="/"
-              className="mt-2 rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-violet-500 transition-colors"
+              className="mt-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-colors"
             >
               Explorar anúncios
             </Link>
@@ -136,20 +136,20 @@ export default async function MinhasComprasPage({ searchParams }: PageProps) {
               } | null
               const images = ann?.announcement_images ?? []
               const cover = images.find((i) => i.is_cover) ?? images[0]
-              const statusCfg = STATUS_CONFIG[order.status] ?? { label: order.status, cls: 'bg-zinc-700 text-zinc-300 border-zinc-700' }
+              const statusCfg = STATUS_CONFIG[order.status] ?? { label: order.status, cls: 'bg-muted text-[var(--gm-ink-dim)] border-border' }
 
               return (
                 <Link
                   key={order.id}
                   href={`/minhas-compras/${order.id}`}
-                  className="flex gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 hover:border-zinc-600 transition-colors group"
+                  className="flex gap-4 rounded-2xl border border-border bg-card p-4 hover:border-primary transition-colors group"
                 >
                   {/* Thumbnail */}
-                  <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-zinc-800">
+                  <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-muted">
                     {cover?.url ? (
                       <Image src={cover.url} alt={ann?.title ?? ''} fill className="object-cover" sizes="80px" />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-2xl text-zinc-700">🎮</div>
+                      <div className="flex h-full items-center justify-center text-2xl text-[var(--gm-ink-dim)]">🎮</div>
                     )}
                   </div>
 
@@ -157,10 +157,10 @@ export default async function MinhasComprasPage({ searchParams }: PageProps) {
                   <div className="flex flex-1 flex-col justify-between min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
-                        <p className="font-semibold text-white truncate group-hover:text-violet-300 transition-colors">
+                        <p className="font-semibold text-[var(--gm-ink)] truncate group-hover:text-primary transition-colors">
                           {ann?.title ?? '—'}
                         </p>
-                        <p className="text-xs text-zinc-500 mt-0.5">
+                        <p className="text-xs text-[var(--gm-ink-dim)] mt-0.5">
                           Vendido por @{seller?.username ?? '—'}
                           {order.payment_method
                             ? ` · ${PAYMENT_LABELS[order.payment_method] ?? order.payment_method}`
@@ -172,8 +172,8 @@ export default async function MinhasComprasPage({ searchParams }: PageProps) {
                       </span>
                     </div>
                     <div className="flex items-center justify-between mt-2">
-                      <p className="text-base font-bold text-white">{fmtBRL(Number(order.amount))}</p>
-                      <p className="text-xs text-zinc-600">{fmtDate(order.created_at)}</p>
+                      <p className="text-base font-bold text-[var(--gm-ink)]">{fmtBRL(Number(order.amount))}</p>
+                      <p className="text-xs text-[var(--gm-ink-dim)]/70">{fmtDate(order.created_at)}</p>
                     </div>
                   </div>
                 </Link>

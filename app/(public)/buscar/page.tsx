@@ -127,19 +127,19 @@ export default async function BuscarPage({
   }
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen text-[var(--gm-ink)]">
 
       {/* ── Hero / barra de busca ─────────────────────────────────────── */}
-      <section className="relative overflow-hidden border-b border-zinc-800/40 py-14">
+      <section className="relative overflow-hidden border-b border-border/40 py-14">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-32 left-1/2 h-[400px] w-[700px] -translate-x-1/2 rounded-full bg-violet-600/8 blur-3xl" />
+          <div className="absolute -top-32 left-1/2 h-[400px] w-[700px] -translate-x-1/2 rounded-full bg-[var(--gm-violet)]/8 blur-3xl" />
         </div>
         <div className="container mx-auto flex flex-col items-center gap-6 px-4 text-center">
           <h1 className="text-3xl font-black tracking-tight md:text-4xl">
             {q ? (
               <>
                 Resultados para{' '}
-                <span className="text-violet-400">&ldquo;{q}&rdquo;</span>
+                <span className="text-[var(--gm-violet)]">&ldquo;{q}&rdquo;</span>
               </>
             ) : (
               'Buscar anúncios'
@@ -149,7 +149,7 @@ export default async function BuscarPage({
 
           {/* Contagem */}
           {q && (
-            <p className="text-sm text-zinc-500">
+            <p className="text-sm text-[var(--gm-ink-dim)]">
               {total === 0
                 ? 'Nenhum resultado encontrado'
                 : `${total.toLocaleString('pt-BR')} resultado${total !== 1 ? 's' : ''} encontrado${total !== 1 ? 's' : ''}`}
@@ -159,9 +159,9 @@ export default async function BuscarPage({
       </section>
 
       {/* ── Filtros de ordenação ──────────────────────────────────────── */}
-      <section className="border-b border-zinc-800/40 bg-zinc-950/60 py-3">
+      <section className="border-b border-border/40 bg-card/60 py-3">
         <div className="container mx-auto flex flex-wrap items-center gap-2 px-4">
-          <span className="mr-1 text-xs font-semibold uppercase tracking-widest text-zinc-500">
+          <span className="mr-1 text-xs font-semibold uppercase tracking-widest text-[var(--gm-ink-dim)]">
             Ordenar:
           </span>
           {ORDER_OPTIONS.map(({ value, label, icon: Icon }) => {
@@ -173,8 +173,8 @@ export default async function BuscarPage({
                 href={href}
                 className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
                   active
-                    ? 'bg-violet-600 text-white'
-                    : 'border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-zinc-200'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'border border-border text-[var(--gm-ink-dim)] hover:border-primary hover:text-[var(--gm-ink)]'
                 }`}
               >
                 <Icon className="h-3.5 w-3.5" />
@@ -192,12 +192,12 @@ export default async function BuscarPage({
             <div className="flex flex-col items-center gap-6 py-24 text-center">
               <span className="text-6xl">🔍</span>
               <div>
-                <p className="mb-2 text-xl font-bold text-zinc-200">
+                <p className="mb-2 text-xl font-bold text-[var(--gm-ink)]">
                   {q ? `Nenhum anúncio para "${q}"` : 'Nenhum anúncio disponível'}
                 </p>
-                <p className="text-sm text-zinc-500">
+                <p className="text-sm text-[var(--gm-ink-dim)]">
                   Tente palavras diferentes ou explore as{' '}
-                  <Link href="/categorias" className="text-violet-400 hover:text-violet-300 underline">
+                  <Link href="/categorias" className="text-[var(--gm-violet)] hover:opacity-80 underline">
                     categorias
                   </Link>
                   .
@@ -205,7 +205,7 @@ export default async function BuscarPage({
               </div>
               <Link
                 href="/"
-                className="rounded-xl bg-violet-600 px-6 py-2.5 text-sm font-bold text-white hover:bg-violet-500 transition-colors"
+                className="rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90 transition-colors"
               >
                 Voltar à página inicial
               </Link>
@@ -224,7 +224,7 @@ export default async function BuscarPage({
                   {page > 1 && (
                     <Link
                       href={buildUrl({ page: String(page - 1) })}
-                      className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-medium text-zinc-300 hover:border-zinc-500 hover:text-white transition-colors"
+                      className="rounded-xl border border-border px-4 py-2 text-sm font-medium text-[var(--gm-ink-dim)] hover:border-primary hover:text-[var(--gm-ink)] transition-colors"
                     >
                       ← Anterior
                     </Link>
@@ -248,8 +248,8 @@ export default async function BuscarPage({
                         href={buildUrl({ page: String(p) })}
                         className={`h-9 w-9 rounded-xl text-center text-sm font-semibold leading-9 transition-colors ${
                           active
-                            ? 'bg-violet-600 text-white'
-                            : 'border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white'
+                            ? 'bg-primary text-primary-foreground'
+                            : 'border border-border text-[var(--gm-ink-dim)] hover:border-primary hover:text-[var(--gm-ink)]'
                         }`}
                       >
                         {p}
@@ -260,7 +260,7 @@ export default async function BuscarPage({
                   {page < totalPages && (
                     <Link
                       href={buildUrl({ page: String(page + 1) })}
-                      className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-medium text-zinc-300 hover:border-zinc-500 hover:text-white transition-colors"
+                      className="rounded-xl border border-border px-4 py-2 text-sm font-medium text-[var(--gm-ink-dim)] hover:border-primary hover:text-[var(--gm-ink)] transition-colors"
                     >
                       Próxima →
                     </Link>
@@ -273,9 +273,9 @@ export default async function BuscarPage({
       </section>
 
       {/* ── Atalhos por categoria ─────────────────────────────────────── */}
-      <section className="border-t border-zinc-800/40 py-10">
+      <section className="border-t border-border/40 py-10">
         <div className="container mx-auto px-4 text-center">
-          <p className="mb-4 text-sm text-zinc-500">Explore por categoria</p>
+          <p className="mb-4 text-sm text-[var(--gm-ink-dim)]">Explore por categoria</p>
           <div className="flex flex-wrap justify-center gap-2">
             {[
               { label: 'Jogos',         href: '/categoria/jogos' },
@@ -288,7 +288,7 @@ export default async function BuscarPage({
               <Link
                 key={href}
                 href={href}
-                className="rounded-full border border-zinc-700 px-4 py-1.5 text-xs font-semibold text-zinc-400 transition-colors hover:border-violet-500 hover:text-violet-400"
+                className="rounded-full border border-border px-4 py-1.5 text-xs font-semibold text-[var(--gm-ink-dim)] transition-colors hover:border-primary hover:text-primary"
               >
                 {label}
               </Link>

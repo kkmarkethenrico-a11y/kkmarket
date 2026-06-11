@@ -82,100 +82,100 @@
 
 /* ── kkmarket palette raw tokens ──────────────────────────────────────────── */
 :root {
-  /* kkmarket dark cyber-luxury theme (default) */
-  --gm-paper:    #030712;   /* Deepest midnight space background */
-  --gm-paper-2:  #080f1e;   /* Dark navy card */
-  --gm-paper-3:  #0f172a;   /* Hover / Active / Input bg */
-  --gm-ink:      #ffffff;   /* Pure white primary text */
-  --gm-ink-dim:  #94a3b8;   /* Slate-400 secondary text */
-  --gm-ink-faint:#1e293b;   /* Slate-800 borders + faint lines */
-  --gm-violet:   #FF9D00;   /* Gold/yellow */
-  --gm-cyan:     #00A2FF;   /* Cyber-cyan */
+  /* kkmarket light cyber-luxury theme (default) */
+  --gm-paper:    #f3f6fa;   /* Elegant light ice-blue/slate background */
+  --gm-paper-2:  #ffffff;   /* Pure white cards */
+  --gm-paper-3:  #e2e8f0;   /* Hover / Input background */
+  --gm-ink:      #0b1329;   /* Deep luxury navy primary text (high contrast) */
+  --gm-ink-dim:  #475569;   /* Slate-600 secondary text */
+  --gm-ink-faint:#cbd5e1;   /* Slate-300 borders + faint lines */
+  --gm-violet:   #FF9D00;   /* Gold/yellow accent */
+  --gm-cyan:     #0088FF;   /* Cyber-cyan (slightly darker for light background contrast) */
   --gm-green:    #10b981;
   --gm-amber:    #FFC000;
   --gm-rose:     #fb7185;
 
-  /* shadcn variables mapped to premium cyber luxury */
-  --background:  #030712;
-  --foreground:  #ffffff;
-  --card:        #080f1e;
-  --card-foreground: #ffffff;
-  --popover:     #080f1e;
-  --popover-foreground: #ffffff;
+  /* shadcn variables mapped to premium light cyber-luxury */
+  --background:  #f3f6fa;
+  --foreground:  #0b1329;
+  --card:        #ffffff;
+  --card-foreground: #0b1329;
+  --popover:     #ffffff;
+  --popover-foreground: #0b1329;
   --primary:     #FF9D00;
-  --primary-foreground: #030712;
-  --secondary:   #0f172a;
-  --secondary-foreground: #ffffff;
-  --muted:       #0f172a;
-  --muted-foreground: #94a3b8;
-  --accent:      #0f172a;
+  --primary-foreground: #ffffff;
+  --secondary:   #e2e8f0;
+  --secondary-foreground: #0b1329;
+  --muted:       #e2e8f0;
+  --muted-foreground: #475569;
+  --accent:      #e2e8f0;
   --accent-foreground: #FF9D00;
   --destructive: #ef4444;
-  --border:      rgba(0, 162, 255, 0.15); /* Thin cyan neon border tint */
-  --input:       #0f172a;
-  --ring:        #00A2FF;
+  --border:      rgba(0, 136, 255, 0.15); /* Thin cyan neon border tint */
+  --input:       #e2e8f0;
+  --ring:        #0088FF;
   --chart-1:     #FF9D00;
-  --chart-2:     #00A2FF;
+  --chart-2:     #0088FF;
   --chart-3:     #10b981;
   --chart-4:     #FFC000;
   --chart-5:     #ef4444;
   --radius:      0.75rem;
 
-  --sidebar:     #080f1e;
-  --sidebar-foreground: #ffffff;
+  --sidebar:     #ffffff;
+  --sidebar-foreground: #0b1329;
   --sidebar-primary: #FF9D00;
-  --sidebar-primary-foreground: #030712;
-  --sidebar-accent: #0f172a;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: rgba(0, 162, 255, 0.1);
-  --sidebar-ring: #00A2FF;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e2e8f0;
+  --sidebar-accent-foreground: #0b1329;
+  --sidebar-border: rgba(0, 136, 255, 0.1);
+  --sidebar-ring: #0088FF;
 }
 
 .dark {
-  /* Identical to :root to prevent any light/dark mismatch */
-  --gm-paper:    #030712;
-  --gm-paper-2:  #080f1e;
-  --gm-paper-3:  #0f172a;
-  --gm-ink:      #ffffff;
-  --gm-ink-dim:  #94a3b8;
-  --gm-ink-faint:#1e293b;
+  /* Identical to :root to guarantee consistent light cyber-luxury across any theme toggles */
+  --gm-paper:    #f3f6fa;
+  --gm-paper-2:  #ffffff;
+  --gm-paper-3:  #e2e8f0;
+  --gm-ink:      #0b1329;
+  --gm-ink-dim:  #475569;
+  --gm-ink-faint:#cbd5e1;
   --gm-violet:   #FF9D00;
-  --gm-cyan:     #00A2FF;
+  --gm-cyan:     #0088FF;
   --gm-green:    #10b981;
   --gm-amber:    #FFC000;
   --gm-rose:     #fb7185;
 
-  --background:  #030712;
-  --foreground:  #ffffff;
-  --card:        #080f1e;
-  --card-foreground: #ffffff;
-  --popover:     #080f1e;
-  --popover-foreground: #ffffff;
+  --background:  #f3f6fa;
+  --foreground:  #0b1329;
+  --card:        #ffffff;
+  --card-foreground: #0b1329;
+  --popover:     #ffffff;
+  --popover-foreground: #0b1329;
   --primary:     #FF9D00;
-  --primary-foreground: #030712;
-  --secondary:   #0f172a;
-  --secondary-foreground: #ffffff;
-  --muted:       #0f172a;
-  --muted-foreground: #94a3b8;
-  --accent:      #0f172a;
+  --primary-foreground: #ffffff;
+  --secondary:   #e2e8f0;
+  --secondary-foreground: #0b1329;
+  --muted:       #e2e8f0;
+  --muted-foreground: #475569;
+  --accent:      #e2e8f0;
   --accent-foreground: #FF9D00;
   --destructive: #ef4444;
-  --border:      rgba(0, 162, 255, 0.15);
-  --input:       #0f172a;
-  --ring:        #00A2FF;
+  --border:      rgba(0, 136, 255, 0.15);
+  --input:       #e2e8f0;
+  --ring:        #0088FF;
   --chart-1:     #FF9D00;
-  --chart-2:     #00A2FF;
+  --chart-2:     #0088FF;
   --chart-3:     #10b981;
   --chart-4:     #FFC000;
   --chart-5:     #ef4444;
-  --sidebar:     #080f1e;
-  --sidebar-foreground: #ffffff;
+  --sidebar:     #ffffff;
+  --sidebar-foreground: #0b1329;
   --sidebar-primary: #FF9D00;
-  --sidebar-primary-foreground: #030712;
-  --sidebar-accent: #0f172a;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: rgba(0, 162, 255, 0.1);
-  --sidebar-ring: #00A2FF;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e2e8f0;
+  --sidebar-accent-foreground: #0b1329;
+  --sidebar-border: rgba(0, 136, 255, 0.1);
+  --sidebar-ring: #0088FF;
 }
 
 @layer base {
