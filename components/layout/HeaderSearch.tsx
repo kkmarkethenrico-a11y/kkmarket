@@ -67,16 +67,16 @@ export function HeaderSearch() {
           onFocus={() => {
             if (query.length >= 3) setIsOpen(true)
           }}
-          className="w-full bg-zinc-900/50 pl-10 pr-4 border-zinc-800 focus-visible:border-violet-500 focus-visible:ring-violet-500/20 rounded-full text-sm transition-all"
+          className="w-full bg-card/50 pl-10 pr-4 border-border focus-visible:border-primary focus-visible:ring-primary/20 rounded-full text-sm transition-all"
         />
       </div>
 
       {isOpen && query.length >= 3 && (
-        <div className="absolute top-full mt-2 w-full overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950/95 shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-top-2 z-50">
+        <div className="absolute top-full mt-2 w-full overflow-hidden rounded-xl border border-border bg-card/95 shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-top-2 z-50">
           <div className="flex max-h-[70vh] flex-col overflow-y-auto p-2">
             
             {/* Announcements */}
-            <div className="px-2 py-1.5 text-xs font-semibold text-zinc-500 uppercase tracking-widest">
+            <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-widest">
               Anúncios
             </div>
             <div className="mb-2 flex flex-col">
@@ -84,14 +84,14 @@ export function HeaderSearch() {
                 <Link
                   key={item.id}
                   href={`/anuncio/${item.id}`}
-                  className="flex items-center justify-between rounded-lg px-2 py-2 hover:bg-zinc-800/60 transition-colors"
+                  className="flex items-center justify-between rounded-lg px-2 py-2 hover:bg-accent/60 transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
                   <div className="flex flex-col">
-                    <span className="text-sm font-medium text-zinc-200">{item.title}</span>
-                    <span className="text-xs text-zinc-500">{item.game}</span>
+                    <span className="text-sm font-medium text-foreground">{item.title}</span>
+                    <span className="text-xs text-muted-foreground">{item.game}</span>
                   </div>
-                  <span className="text-sm font-bold text-green-400">
+                  <span className="text-sm font-bold text-emerald-400">
                     R$ {item.price.toFixed(2)}
                   </span>
                 </Link>
@@ -99,7 +99,7 @@ export function HeaderSearch() {
             </div>
 
             {/* Categories */}
-            <div className="px-2 py-1.5 text-xs font-semibold text-zinc-500 uppercase tracking-widest border-t border-zinc-800/50 pt-3">
+            <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-widest border-t border-border/50 pt-3">
               Categorias
             </div>
             <div className="mb-2 flex gap-2 px-2 py-1 flex-wrap">
@@ -109,7 +109,7 @@ export function HeaderSearch() {
                   href={`/categoria/${cat.slug}`}
                   onClick={() => setIsOpen(false)}
                 >
-                  <Badge variant="secondary" className="hover:bg-violet-600/20 hover:text-violet-400 transition-colors border-zinc-800 text-zinc-400">
+                  <Badge variant="secondary" className="hover:bg-primary/20 hover:text-primary transition-colors border-border text-muted-foreground">
                     {cat.name}
                   </Badge>
                 </Link>
@@ -117,7 +117,7 @@ export function HeaderSearch() {
             </div>
 
             {/* Users */}
-            <div className="px-2 py-1.5 text-xs font-semibold text-zinc-500 uppercase tracking-widest border-t border-zinc-800/50 pt-3">
+            <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-widest border-t border-border/50 pt-3">
               Vendedores
             </div>
             <div className="flex flex-col mb-1">
@@ -125,16 +125,16 @@ export function HeaderSearch() {
                 <Link
                   key={user.id}
                   href={`/perfil/${user.username}`}
-                  className="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-zinc-800/60 transition-colors"
+                  className="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-accent/60 transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
                   <Avatar className="h-7 w-7">
                     <AvatarImage src={user.avatar || ''} />
-                    <AvatarFallback className="text-[10px] bg-violet-600">
+                    <AvatarFallback className="text-[10px] bg-primary text-primary-foreground">
                       {user.username[0].toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="text-sm font-medium text-zinc-300">@{user.username}</span>
+                  <span className="text-sm font-medium text-muted-foreground">@{user.username}</span>
                 </Link>
               ))}
             </div>
@@ -144,7 +144,7 @@ export function HeaderSearch() {
           <Link
             href={`/busca?q=${encodeURIComponent(query)}`}
             onClick={() => setIsOpen(false)}
-            className="block border-t border-zinc-800 bg-zinc-900/50 p-3 text-center text-xs font-medium text-violet-400 hover:text-violet-300 hover:bg-zinc-900 transition-colors"
+            className="block border-t border-border bg-muted/50 p-3 text-center text-xs font-medium text-primary hover:text-primary/80 hover:bg-muted transition-colors"
           >
             Ver todos os resultados para &quot;{query}&quot;
           </Link>

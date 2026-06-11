@@ -51,7 +51,7 @@ export function Footer() {
               <ul className="space-y-2.5">
                 {links.map((l) => (
                   <li key={l.href}>
-                    <Link href={l.href} className="text-sm text-[var(--gm-ink-faint)] hover:text-[var(--gm-ink)] transition-colors">
+                    <Link href={l.href} className="text-sm text-[var(--gm-ink-dim)] hover:text-[var(--gm-violet)] transition-colors">
                       {l.label}
                     </Link>
                   </li>
@@ -63,7 +63,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-[var(--gm-ink-faint)]/15">
-        <div className="container mx-auto flex flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-[var(--gm-ink-faint)] sm:flex-row">
+        <div className="container mx-auto flex flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-[var(--gm-ink-dim)] sm:flex-row">
           <span>Copyright © GameMarket {new Date().getFullYear()}</span>
           <span>Plataforma de marketplace de produtos digitais</span>
         </div>

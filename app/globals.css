@@ -82,91 +82,100 @@
 
 /* ── kkmarket palette raw tokens ──────────────────────────────────────────── */
 :root {
-  /* kkmarket light theme (default) */
-  --gm-paper:    #f8fafc;   /* slate-50 background */
-  --gm-paper-2:  #ffffff;   /* white card background */
-  --gm-paper-3:  #f1f5f9;   /* slate-100 inputs/dropdowns */
-  --gm-ink:      #0f172a;   /* slate-900 primary text */
-  --gm-ink-dim:  #64748b;   /* slate-500 secondary text */
-  --gm-ink-faint:#cbd5e1;   /* slate-300 borders + faint lines */
-  --gm-violet:   #FF9D00;
-  --gm-cyan:     #00A2FF;
-  --gm-green:    #34d399;
+  /* kkmarket dark cyber-luxury theme (default) */
+  --gm-paper:    #030712;   /* Deepest midnight space background */
+  --gm-paper-2:  #080f1e;   /* Dark navy card */
+  --gm-paper-3:  #0f172a;   /* Hover / Active / Input bg */
+  --gm-ink:      #ffffff;   /* Pure white primary text */
+  --gm-ink-dim:  #94a3b8;   /* Slate-400 secondary text */
+  --gm-ink-faint:#1e293b;   /* Slate-800 borders + faint lines */
+  --gm-violet:   #FF9D00;   /* Gold/yellow */
+  --gm-cyan:     #00A2FF;   /* Cyber-cyan */
+  --gm-green:    #10b981;
   --gm-amber:    #FFC000;
   --gm-rose:     #fb7185;
 
-  /* shadcn light theme variables */
-  --background:  #f8fafc;
-  --foreground:  #0f172a;
-  --card:        #ffffff;
-  --card-foreground: #0f172a;
-  --popover:     #ffffff;
-  --popover-foreground: #0f172a;
+  /* shadcn variables mapped to premium cyber luxury */
+  --background:  #030712;
+  --foreground:  #ffffff;
+  --card:        #080f1e;
+  --card-foreground: #ffffff;
+  --popover:     #080f1e;
+  --popover-foreground: #ffffff;
   --primary:     #FF9D00;
-  --primary-foreground: #ffffff;
-  --secondary:   #f1f5f9;
-  --secondary-foreground: #0f172a;
-  --muted:       #f1f5f9;
-  --muted-foreground: #64748b;
-  --accent:      #f1f5f9;
+  --primary-foreground: #030712;
+  --secondary:   #0f172a;
+  --secondary-foreground: #ffffff;
+  --muted:       #0f172a;
+  --muted-foreground: #94a3b8;
+  --accent:      #0f172a;
   --accent-foreground: #FF9D00;
   --destructive: #ef4444;
-  --border:      #e2e8f0;
-  --input:       #f1f5f9;
-  --ring:        #FF9D00;
+  --border:      rgba(0, 162, 255, 0.15); /* Thin cyan neon border tint */
+  --input:       #0f172a;
+  --ring:        #00A2FF;
   --chart-1:     #FF9D00;
   --chart-2:     #00A2FF;
-  --chart-3:     #34d399;
+  --chart-3:     #10b981;
   --chart-4:     #FFC000;
   --chart-5:     #ef4444;
+  --radius:      0.75rem;
+
+  --sidebar:     #080f1e;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #FF9D00;
+  --sidebar-primary-foreground: #030712;
+  --sidebar-accent: #0f172a;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(0, 162, 255, 0.1);
+  --sidebar-ring: #00A2FF;
 }
 
 .dark {
-  /* kkmarket dark theme raw tokens */
-  --gm-paper:    #020617;
-  --gm-paper-2:  #070f1e;
-  --gm-paper-3:  #0a162d;
-  --gm-ink:      #f5f3ef;
+  /* Identical to :root to prevent any light/dark mismatch */
+  --gm-paper:    #030712;
+  --gm-paper-2:  #080f1e;
+  --gm-paper-3:  #0f172a;
+  --gm-ink:      #ffffff;
   --gm-ink-dim:  #94a3b8;
-  --gm-ink-faint:#334155;
+  --gm-ink-faint:#1e293b;
   --gm-violet:   #FF9D00;
   --gm-cyan:     #00A2FF;
-  --gm-green:    #34d399;
+  --gm-green:    #10b981;
   --gm-amber:    #FFC000;
   --gm-rose:     #fb7185;
 
-  /* kkmarket dark theme — maps kkmarket tokens to shadcn variables */
-  --background:  #020617;
-  --foreground:  #f5f3ef;
-  --card:        #070f1e;
-  --card-foreground: #f5f3ef;
-  --popover:     #070f1e;
-  --popover-foreground: #f5f3ef;
+  --background:  #030712;
+  --foreground:  #ffffff;
+  --card:        #080f1e;
+  --card-foreground: #ffffff;
+  --popover:     #080f1e;
+  --popover-foreground: #ffffff;
   --primary:     #FF9D00;
-  --primary-foreground: #020617;
-  --secondary:   #0a162d;
-  --secondary-foreground: #f5f3ef;
-  --muted:       #0a162d;
+  --primary-foreground: #030712;
+  --secondary:   #0f172a;
+  --secondary-foreground: #ffffff;
+  --muted:       #0f172a;
   --muted-foreground: #94a3b8;
-  --accent:      #0a162d;
+  --accent:      #0f172a;
   --accent-foreground: #FF9D00;
-  --destructive: #fb7185;
-  --border: rgba(0, 162, 255, 0.15);
-  --input:  rgba(0, 162, 255, 0.1);
-  --ring:   #FF9D00;
-  --chart-1: #FF9D00;
-  --chart-2: #00A2FF;
-  --chart-3: #34d399;
-  --chart-4: #FFC000;
-  --chart-5: #fb7185;
-  --sidebar: #070f1e;
-  --sidebar-foreground: #f5f3ef;
+  --destructive: #ef4444;
+  --border:      rgba(0, 162, 255, 0.15);
+  --input:       #0f172a;
+  --ring:        #00A2FF;
+  --chart-1:     #FF9D00;
+  --chart-2:     #00A2FF;
+  --chart-3:     #10b981;
+  --chart-4:     #FFC000;
+  --chart-5:     #ef4444;
+  --sidebar:     #080f1e;
+  --sidebar-foreground: #ffffff;
   --sidebar-primary: #FF9D00;
-  --sidebar-primary-foreground: #020617;
-  --sidebar-accent: #0a162d;
-  --sidebar-accent-foreground: #f5f3ef;
+  --sidebar-primary-foreground: #030712;
+  --sidebar-accent: #0f172a;
+  --sidebar-accent-foreground: #ffffff;
   --sidebar-border: rgba(0, 162, 255, 0.1);
-  --sidebar-ring: #FF9D00;
+  --sidebar-ring: #00A2FF;
 }
 
 @layer base {
@@ -180,18 +189,12 @@
     @apply font-sans;
   }
 }
-body {
+body, .dark body {
   background-image:
-    radial-gradient(circle at 1px 1px, rgba(0,0,0,0.012) 1px, transparent 0);
+    radial-gradient(circle at 1px 1px, rgba(0, 162, 255, 0.05) 1px, transparent 0);
   background-size: 24px 24px;
   background-attachment: fixed;
-}
-
-.dark body {
-  background-image:
-    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.018) 1px, transparent 0);
-  background-size: 24px 24px;
-  background-attachment: fixed;
+  background-color: var(--background);
 }
 
 /* ── Input placeholder brightness ────────────────────────────────────────── */
