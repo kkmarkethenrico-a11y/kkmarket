@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { Settings } from 'lucide-react'
+import { Settings, Star, Package, Zap, Check, Mail, Smartphone, IdCard, Wallet, Trophy, Diamond, Flame, Target } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { ProfileReviewTabs } from '@/components/profile/ProfileReviewTabs'
 import { ProfileActions } from '@/components/profile/ProfileActions'
@@ -101,16 +101,16 @@ export default async function PublicProfilePage({ params }: Props) {
     : `${Math.round(respTime / 60)}h`
 
   const badges = [
-    hasEmail && '✉️',
-    hasPhone && '📱',
-    hasIdentity && '🪪',
-    profile.is_vip && '⭐',
-    profile.role === 'seller' && '💰',
-    totalSales >= 50 && '🏆',
-    totalSales >= 100 && '◆',
-    (stats?.reviews_positive ?? 0) >= 10 && '🔥',
-    (stats?.reviews_positive ?? 0) >= 50 && '🎯',
-  ].filter(Boolean) as string[]
+    hasEmail && <Mail className="h-4 w-4" />,
+    hasPhone && <Smartphone className="h-4 w-4" />,
+    hasIdentity && <IdCard className="h-4 w-4" />,
+    profile.is_vip && <Star className="h-4 w-4 text-[var(--gm-amber)]" />,
+    profile.role === 'seller' && <Wallet className="h-4 w-4 text-[var(--gm-green)]" />,
+    totalSales >= 50 && <Trophy className="h-4 w-4 text-[var(--gm-amber)]" />,
+    totalSales >= 100 && <Diamond className="h-4 w-4 text-[var(--gm-violet)]" />,
+    (stats?.reviews_positive ?? 0) >= 10 && <Flame className="h-4 w-4 text-[var(--gm-amber)]" />,
+    (stats?.reviews_positive ?? 0) >= 50 && <Target className="h-4 w-4 text-[var(--gm-violet)]" />,
+  ].filter(Boolean) as React.ReactNode[]
 
   const anns = (announcements ?? []) as unknown as Array<{
     id: string; title: string; slug: string
@@ -182,13 +182,13 @@ export default async function PublicProfilePage({ params }: Props) {
               {/* Stats 2x2 */}
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { icon: '⭐', value: positiveRatio !== null ? `${positiveRatio}%` : '—', label: 'avaliações' },
-                  { icon: '📦', value: String(totalSales), label: 'vendas' },
-                  { icon: '⚡', value: respLabel, label: 'resp.' },
-                  { icon: '✓',  value: `${totalReviews > 0 ? positiveRatio ?? '—' : '—'}%`, label: 'ok' },
+                  { icon: <Star className="h-5 w-5" />, value: positiveRatio !== null ? `${positiveRatio}%` : '—', label: 'avaliações' },
+                  { icon: <Package className="h-5 w-5" />, value: String(totalSales), label: 'vendas' },
+                  { icon: <Zap className="h-5 w-5" />, value: respLabel, label: 'resp.' },
+                  { icon: <Check className="h-5 w-5" />,  value: `${totalReviews > 0 ? positiveRatio ?? '—' : '—'}%`, label: 'ok' },
                 ].map((s) => (
-                  <div key={s.label} className="flex flex-col items-center gap-1 rounded-lg border border-[var(--gm-ink-faint)]/20 p-2">
-                    <span className="text-base">{s.icon}</span>
+                  <div key={s.label} className="flex flex-col items-center gap-1 rounded-lg border border-[var(--gm-ink-faint)]/20 p-2 text-[var(--gm-ink-dim)]">
+                    {s.icon}
                     <span className="text-sm font-black text-[var(--gm-ink)]">{s.value}</span>
                     <span className="text-[9px] text-[var(--gm-ink-faint)] uppercase tracking-wide">{s.label}</span>
                   </div>
@@ -203,9 +203,9 @@ export default async function PublicProfilePage({ params }: Props) {
               {/* Verificações */}
               {(hasEmail || hasPhone || hasIdentity) && (
                 <div className="flex flex-wrap gap-1.5 justify-center">
-                  {hasEmail    && <span className="rank-chip text-[9px]">✉️ email</span>}
-                  {hasPhone    && <span className="rank-chip green text-[9px]">📱 tel</span>}
-                  {hasIdentity && <span className="rank-chip text-[9px]">🪪 id</span>}
+                  {hasEmail    && <span className="rank-chip text-[9px]"><Mail className="inline h-3 w-3 mr-1" /> email</span>}
+                  {hasPhone    && <span className="rank-chip green text-[9px]"><Smartphone className="inline h-3 w-3 mr-1" /> tel</span>}
+                  {hasIdentity && <span className="rank-chip text-[9px]"><IdCard className="inline h-3 w-3 mr-1" /> id</span>}
                 </div>
               )}
 

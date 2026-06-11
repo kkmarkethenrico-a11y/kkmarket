@@ -9,7 +9,7 @@ import {
 import {
   TrendingUp, ShoppingBag, CreditCard, Star,
   ArrowUpRight, ChevronUp, ChevronDown, ChevronsUpDown,
-  Wallet, Lock, Loader2,
+  Wallet, Lock, Loader2, Trophy, Zap, Target, Package, Hourglass, RefreshCcw, Megaphone
 } from 'lucide-react'
 import { toast } from 'sonner'
 import type { AnalyticsData, AnnouncementPerf } from '@/app/api/analytics/seller/route'
@@ -195,26 +195,26 @@ export default function DashboardClient({
 
   // Activity feed from orders
   const activityFeed = recentOrders.map((o) => ({
-    icon: o.status === 'completed' ? '📦' : o.status === 'paid' ? '⏳' : '🔄',
+    icon: o.status === 'completed' ? <Package className="h-4 w-4" /> : o.status === 'paid' ? <Hourglass className="h-4 w-4" /> : <RefreshCcw className="h-4 w-4" />,
     title: o.announcements?.title ?? 'Pedido',
     sub: o.status === 'completed' ? '✓ entregue' : o.status === 'paid' ? '⏳ processando' : o.status,
     cls: o.status === 'completed' ? 'text-[var(--gm-green)]' : 'text-[var(--gm-amber)]',
   }))
 
   // Achievements derived from milestones
-  const achievements: { icon: string; unlocked: boolean }[] = [
-    { icon: '🏆', unlocked: totalSales >= 1 },
-    { icon: '⚡', unlocked: totalPurchases >= 1 },
-    { icon: '🔒', unlocked: false },
-    { icon: '★',  unlocked: pointsBalance >= 50 },
-    { icon: '💰', unlocked: walletBalance > 0 },
-    { icon: '🎯', unlocked: totalSales >= 10 },
-    { icon: '?',  unlocked: false },
-    { icon: '?',  unlocked: false },
-    { icon: '?',  unlocked: false },
-    { icon: '?',  unlocked: false },
-    { icon: '?',  unlocked: false },
-    { icon: '?',  unlocked: false },
+  const achievements: { icon: React.ReactNode; unlocked: boolean }[] = [
+    { icon: <Trophy className="h-4 w-4" />, unlocked: totalSales >= 1 },
+    { icon: <Zap className="h-4 w-4" />, unlocked: totalPurchases >= 1 },
+    { icon: <Lock className="h-4 w-4" />, unlocked: false },
+    { icon: <Star className="h-4 w-4" />,  unlocked: pointsBalance >= 50 },
+    { icon: <Wallet className="h-4 w-4" />, unlocked: walletBalance > 0 },
+    { icon: <Target className="h-4 w-4" />, unlocked: totalSales >= 10 },
+    { icon: <Lock className="h-4 w-4" />,  unlocked: false },
+    { icon: <Lock className="h-4 w-4" />,  unlocked: false },
+    { icon: <Lock className="h-4 w-4" />,  unlocked: false },
+    { icon: <Lock className="h-4 w-4" />,  unlocked: false },
+    { icon: <Lock className="h-4 w-4" />,  unlocked: false },
+    { icon: <Lock className="h-4 w-4" />,  unlocked: false },
   ]
 
   const unlockedCount = achievements.filter((a) => a.unlocked).length
@@ -275,10 +275,10 @@ export default function DashboardClient({
         {/* ── Quick Stats HUD ─────────────────────────────────────────────── */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { icon: '💰', label: 'CARTEIRA', value: fmtBRL(walletBalance), sub: 'saque ↗', cls: 'text-[var(--gm-green)]', href: '/minhas-retiradas' },
-            { icon: '📦', label: 'PEDIDOS',  value: String(totalPurchases), sub: 'como comprador', cls: 'text-[var(--gm-ink)]', href: '/minhas-compras' },
-            { icon: '🏆', label: 'PONTOS',   value: String(pointsBalance), sub: `Lv ${level}`, cls: 'text-[var(--gm-violet)]', href: '/kks-points' },
-            { icon: '📢', label: 'VENDAS',   value: String(totalSales), sub: 'total acumulado', cls: 'text-[var(--gm-cyan)]', href: '/minhas-vendas' },
+            { icon: <Wallet className="h-6 w-6" />, label: 'CARTEIRA', value: fmtBRL(walletBalance), sub: 'saque ↗', cls: 'text-[var(--gm-green)]', href: '/minhas-retiradas' },
+            { icon: <Package className="h-6 w-6" />, label: 'PEDIDOS',  value: String(totalPurchases), sub: 'como comprador', cls: 'text-[var(--gm-ink)]', href: '/minhas-compras' },
+            { icon: <Trophy className="h-6 w-6" />, label: 'PONTOS',   value: String(pointsBalance), sub: `Lv ${level}`, cls: 'text-[var(--gm-violet)]', href: '/kks-points' },
+            { icon: <Megaphone className="h-6 w-6" />, label: 'VENDAS',   value: String(totalSales), sub: 'total acumulado', cls: 'text-[var(--gm-cyan)]', href: '/minhas-vendas' },
           ].map((s) => (
             <Link key={s.label} href={s.href}
               className="rounded-xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-2)] p-4 flex flex-col gap-2 hover:border-[var(--gm-violet)]/40 transition-colors">

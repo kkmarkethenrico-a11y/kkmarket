@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { Zap, Package, Gift } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Programa de Pontos — KKmarket',
@@ -21,18 +22,18 @@ export default function ProgramaPontosPage() {
           <h2 className="text-2xl font-bold mb-6">Como Ganhar XP?</h2>
           
           <div className="grid gap-6 md:grid-cols-3 mb-10">
-            <div className="p-5 rounded-xl bg-[var(--gm-paper-2)] border border-[var(--gm-ink-faint)]/10 text-center">
-              <span className="text-3xl mb-3 block">⚡</span>
+            <div className="p-5 rounded-xl bg-[var(--gm-paper-2)] border border-[var(--gm-ink-faint)]/10 text-center flex flex-col items-center">
+              <Zap className="h-10 w-10 mb-4 text-[var(--gm-amber)]" strokeWidth={1.5} />
               <h3 className="font-bold mb-2">Comprando</h3>
               <p className="text-xs text-[var(--gm-ink-dim)]">Ganhe pontos e XP por cada R$ gasto em nosso site de forma automática.</p>
             </div>
-            <div className="p-5 rounded-xl bg-[var(--gm-paper-2)] border border-[var(--gm-ink-faint)]/10 text-center">
-              <span className="text-3xl mb-3 block">📦</span>
+            <div className="p-5 rounded-xl bg-[var(--gm-paper-2)] border border-[var(--gm-ink-faint)]/10 text-center flex flex-col items-center">
+              <Package className="h-10 w-10 mb-4 text-[var(--gm-cyan)]" strokeWidth={1.5} />
               <h3 className="font-bold mb-2">Vendendo</h3>
               <p className="text-xs text-[var(--gm-ink-dim)]">Complete uma venda e receba recompensas de XP para subir o Nível da sua conta.</p>
             </div>
-            <div className="p-5 rounded-xl bg-[var(--gm-paper-2)] border border-[var(--gm-ink-faint)]/10 text-center">
-              <span className="text-3xl mb-3 block">🎁</span>
+            <div className="p-5 rounded-xl bg-[var(--gm-paper-2)] border border-[var(--gm-ink-faint)]/10 text-center flex flex-col items-center">
+              <Gift className="h-10 w-10 mb-4 text-[var(--gm-violet)]" strokeWidth={1.5} />
               <h3 className="font-bold mb-2">Missões Diárias</h3>
               <p className="text-xs text-[var(--gm-ink-dim)]">Acesse o painel e resgate seus KKs Points diários através de missões de login.</p>
             </div>
