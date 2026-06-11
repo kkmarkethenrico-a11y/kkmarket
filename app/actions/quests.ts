@@ -31,7 +31,7 @@ export async function exchangePointsAction(pointsToExchange: number) {
   }
 
   revalidatePath('/painel')
-  revalidatePath('/gg-points')
+  revalidatePath('/kks-points')
 
   return { success: true, message: 'Conversão realizada com sucesso!' }
 }

@@ -86,12 +86,12 @@ export async function Header() {
           {/* Ações */}
           <div className="flex items-center gap-3">
 
-            {/* GG Points + XP HUD — only when logged in */}
+            {/* KKs Points + XP HUD — only when logged in */}
             {user && (
               <Link
-                href="/gg-points"
+                href="/kks-points"
                 className="hidden lg:flex flex-col items-end gap-0.5 group"
-                title="Seus GG Points"
+                title="Seus KKs Points"
               >
                 <div className="flex items-center gap-1.5">
                   <span className="rank-chip text-[9px]">Lv {userLevel}</span>

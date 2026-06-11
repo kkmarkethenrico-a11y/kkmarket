@@ -23,7 +23,7 @@ const navItems = [
   { href: '/minhas-compras',   label: 'Minhas compras',   icon: ShoppingBag },
   { href: '/minhas-vendas',    label: 'Minhas vendas',    icon: TrendingUp },
   { href: '/minhas-retiradas', label: 'Retiradas',        icon: Banknote },
-  { href: '/gg-points',        label: 'Pontos GG',        icon: Coins },
+  { href: '/kks-points',        label: 'KKs Points',        icon: Coins },
   { href: '/wishlist',         label: 'Lista de desejos', icon: Heart },
   { href: '/notificacoes',     label: 'Notificações',     icon: Bell },
   { href: '/verificacao',      label: 'Verificação',      icon: ShieldCheck },

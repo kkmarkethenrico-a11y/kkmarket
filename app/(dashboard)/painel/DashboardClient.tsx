@@ -275,7 +275,7 @@ export default function DashboardClient({
           {[
             { icon: '💰', label: 'CARTEIRA', value: fmtBRL(walletBalance), sub: 'saque ↗', cls: 'text-[var(--gm-green)]', href: '/minhas-retiradas' },
             { icon: '📦', label: 'PEDIDOS',  value: String(totalPurchases), sub: 'como comprador', cls: 'text-[var(--gm-ink)]', href: '/minhas-compras' },
-            { icon: '🏆', label: 'PONTOS',   value: String(pointsBalance), sub: `Lv ${level}`, cls: 'text-[var(--gm-violet)]', href: '/gg-points' },
+            { icon: '🏆', label: 'PONTOS',   value: String(pointsBalance), sub: `Lv ${level}`, cls: 'text-[var(--gm-violet)]', href: '/kks-points' },
             { icon: '📢', label: 'VENDAS',   value: String(totalSales), sub: 'total acumulado', cls: 'text-[var(--gm-cyan)]', href: '/minhas-vendas' },
           ].map((s) => (
             <Link key={s.label} href={s.href}

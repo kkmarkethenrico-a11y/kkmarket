@@ -123,13 +123,13 @@ Deno.serve(async (req) => {
         await admin.from('notifications').insert({
           user_id: order.buyer_id,
           type:    'system',
-          title:   `+${buyerPts} GG Points! 🎮`,
-          message: `Você ganhou ${buyerPts} GG Points pela compra de "${ann?.title ?? 'Produto'}". Expiram em 180 dias.`,
+          title:   `+${buyerPts} KKs Points! 🎮`,
+          message: `Você ganhou ${buyerPts} KKs Points pela compra de "${ann?.title ?? 'Produto'}". Expiram em 180 dias.`,
           data:    { order_id: order.id, points: buyerPts },
         })
       }
 
-      // f. GG Points: seller earns points IF plan Gold/Diamond AND buyer rated positively
+      // f. KKs Points: seller earns points IF plan Gold/Diamond AND buyer rated positively
       if (ann?.plan === 'gold' || ann?.plan === 'diamond') {
         const { data: review } = await admin
           .from('order_reviews')
@@ -155,8 +155,8 @@ Deno.serve(async (req) => {
             await admin.from('notifications').insert({
               user_id: order.seller_id,
               type:    'system',
-              title:   `+${sellerPts} GG Points! 🎮`,
-              message: `Você ganhou ${sellerPts} GG Points pela venda de "${ann?.title ?? 'Produto'}" com avaliação positiva.`,
+              title:   `+${sellerPts} KKs Points! 🎮`,
+              message: `Você ganhou ${sellerPts} KKs Points pela venda de "${ann?.title ?? 'Produto'}" com avaliação positiva.`,
               data:    { order_id: order.id, points: sellerPts },
             })
           }

@@ -32,7 +32,7 @@ function formatDate(iso: string) {
   })
 }
 
-export default async function GGPointsPage() {
+export default async function KKsPointsPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
@@ -90,10 +90,10 @@ export default async function GGPointsPage() {
         <nav className="mb-6 flex items-center gap-2 text-sm text-[var(--gm-ink-dim)]">
           <Link href="/painel" className="hover:text-[var(--gm-ink)]">Painel</Link>
           <span>/</span>
-          <span className="font-medium text-[var(--gm-ink)]">GG Points</span>
+          <span className="font-medium text-[var(--gm-ink)]">KKs Points</span>
         </nav>
 
-        <h1 className="mb-6 text-2xl font-bold text-[var(--gm-ink)]">GG Points 🎮</h1>
+        <h1 className="mb-6 text-2xl font-bold text-[var(--gm-ink)]">KKs Points 🎮</h1>
 
         {/* ── Balance card ──────────────────────────────────────────────── */}
         <div className="mb-6 grid gap-4 sm:grid-cols-3">
