@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { AnnouncementCard } from '@/components/marketplace/AnnouncementCard'
 import type { AnnouncementWithRelations, Category } from '@/types'
-import { Gamepad2, Share2, Bot, Code, Box, Flame, Crosshair, Sparkles, Pickaxe, Blocks, Sword, Target, Trophy, Star, ShieldCheck, HeadphonesIcon, Gift } from 'lucide-react'
+import { Gamepad2, Share2, Bot, Code, Box, Flame, Crosshair, Sparkles, Pickaxe, Blocks, Sword, Target, Trophy, Star, ShieldCheck, HeadphonesIcon, Gift, ThumbsUp, BookOpen, Newspaper } from 'lucide-react'
 
 const PLAN_ORDER: Record<string, number> = { diamond: 3, gold: 2, silver: 1 }
 function planWeight(p: string) { return PLAN_ORDER[p] ?? 0 }
@@ -318,7 +318,7 @@ export default async function HomePage() {
               {reviews.map((r: any) => (
                 <div key={r.id} className="rounded-xl border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-2)] p-4 flex flex-col gap-2 hover:border-[var(--gm-green)]/40 transition-colors">
                   <div className="flex items-center gap-2 text-xs font-bold text-[var(--gm-green)] uppercase tracking-wide">
-                    <span>👍</span>
+                    <ThumbsUp className="h-4 w-4" />
                     <span className="truncate">
                       {r.comment} — <strong className="text-[var(--gm-ink)]">{r.profiles?.username}</strong>
                     </span>
@@ -334,7 +334,7 @@ export default async function HomePage() {
       {posts.length > 0 && (
         <section className="border-b border-[var(--gm-ink-faint)]/30 py-12">
           <div className="container mx-auto px-4">
-            <SectionHead title="📖 Blog" href="/blog" hrefLabel="ver artigos →" />
+            <SectionHead title={<span className="flex items-center gap-2"><BookOpen className="h-5 w-5 text-[var(--gm-violet)]" /> Blog</span>} href="/blog" hrefLabel="ver artigos →" />
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {posts.map((p: any) => (
                 <Link
@@ -352,7 +352,9 @@ export default async function HomePage() {
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-4xl text-[var(--gm-ink-faint)]">📝</div>
+                      <div className="flex h-full items-center justify-center text-[var(--gm-ink-faint)]">
+                        <Newspaper className="h-10 w-10 opacity-50" />
+                      </div>
                     )}
                   </div>
                   <div className="p-3">
@@ -369,7 +371,7 @@ export default async function HomePage() {
       {newest.length > 0 && (
         <section className="border-b border-[var(--gm-ink-faint)]/30 py-12">
           <div className="container mx-auto px-4">
-            <SectionHead title="🆕 Recém Chegados" href="/buscar?order=newest" />
+            <SectionHead title={<span className="flex items-center gap-2"><Sparkles className="h-5 w-5 text-[var(--gm-cyan)]" /> Recém Chegados</span>} href="/buscar?order=newest" />
             <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
               {newest.map((ann) => (
                 <AnnouncementCard key={ann.id} ann={ann} />
