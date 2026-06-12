@@ -114,7 +114,14 @@ export default async function HomePage() {
     : GAME_COVERS.map((g) => ({ name: g.name, slug: g.slug, img: g.img, href: `/categoria/jogos/${g.slug}` }))
 
   return (
-    <div className="min-h-screen text-[var(--gm-ink)]">
+    <div className="min-h-screen text-[var(--gm-ink)] relative overflow-hidden">
+
+      {/* ── Background Glowing Orbs (Cyber Luxury) ─────────────────────────── */}
+      <div className="pointer-events-none fixed inset-0 z-[-1] overflow-hidden opacity-60">
+        <div className="absolute top-[-10%] left-[-10%] h-[500px] w-[500px] rounded-full bg-[var(--gm-cyan)]/20 blur-[120px] will-change-transform" />
+        <div className="absolute top-[20%] right-[-10%] h-[600px] w-[600px] rounded-full bg-[var(--gm-violet)]/20 blur-[140px] will-change-transform" />
+        <div className="absolute bottom-[-10%] left-[20%] h-[500px] w-[500px] rounded-full bg-[var(--gm-green)]/15 blur-[120px] will-change-transform" />
+      </div>
 
       {/* ── Stories row ───────────────────────────────────────────────────── */}
       {sellers.length > 0 && (
