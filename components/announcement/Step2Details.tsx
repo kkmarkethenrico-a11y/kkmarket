@@ -1,5 +1,7 @@
 'use client'
 
+import { Zap } from 'lucide-react'
+
 import { useState, useId } from 'react'
 import { useWizardStore, PLANS, type Plan, type ItemVariation } from './wizard-store'
 import type { Category } from '@/types'
@@ -424,7 +426,9 @@ export function Step2Details({ category }: Step2Props) {
           />
         </button>
         <div>
-          <p className="text-sm font-medium text-zinc-200">⚡ Ativar Entrega Automática</p>
+          <p className="flex items-center gap-1.5 text-sm font-medium text-zinc-200">
+            <Zap className="h-4 w-4 text-violet-400" /> Ativar Entrega Automática
+          </p>
           <p className="mt-1 text-xs text-zinc-500">
             Cadastre suas credenciais e o comprador as receberá instantaneamente após o pagamento, sem necessidade de intervenção manual.
           </p>

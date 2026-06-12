@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useWizardStore, PLANS } from './wizard-store'
 import { createClient } from '@/lib/supabase/client'
 import type { Category } from '@/types'
+import { CheckCircle2, Zap, Clock } from 'lucide-react'
 
 interface Step4Props {
   categories: Category[]
@@ -84,7 +85,7 @@ export function Step4Review({ categories }: Step4Props) {
     return (
       <div className="flex flex-col items-center justify-center gap-6 py-16 text-center">
         <div className="flex h-20 w-20 items-center justify-center rounded-full bg-green-500/20">
-          <span className="text-4xl">✅</span>
+          <CheckCircle2 className="h-10 w-10 text-green-500" />
         </div>
         <div>
           <h2 className="text-2xl font-bold text-white">Anúncio enviado!</h2>
@@ -177,8 +178,8 @@ export function Step4Review({ categories }: Step4Props) {
           {/* Meta badges */}
           <div className="flex flex-wrap gap-2">
             {draft.has_auto_delivery && (
-              <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs font-medium text-green-400">
-                ⚡ Entrega automática
+              <span className="flex items-center gap-1.5 rounded-full bg-green-500/20 px-3 py-1 text-xs font-medium text-green-400">
+                <Zap className="h-3 w-3" /> Entrega automática
               </span>
             )}
             <span className="rounded-full bg-zinc-800 px-3 py-1 text-xs text-zinc-400">
@@ -197,7 +198,7 @@ export function Step4Review({ categories }: Step4Props) {
               { label: 'Modelo',    value: draft.model === 'normal' ? 'Normal' : 'Dinâmico (Variações)' },
               { label: 'Plano',     value: `${plan.badge} ${plan.label} — taxa ${(plan.fee * 100).toFixed(0)}%` },
               { label: 'Imagens',   value: `1 capa + ${draft.gallery_previews.length} extras` },
-              { label: 'Entrega',   value: draft.has_auto_delivery ? 'Automática ⚡' : 'Manual' },
+              { label: 'Entrega',   value: draft.has_auto_delivery ? <span className="flex items-center gap-1"><Zap className="h-3 w-3 text-violet-400" /> Automática</span> : 'Manual' },
             ].map(({ label, value }) => (
               <tr key={label}>
                 <td className="py-2.5 pr-4 font-medium text-zinc-500">{label}</td>
@@ -209,8 +210,9 @@ export function Step4Review({ categories }: Step4Props) {
       </div>
 
       {/* ⚠ Moderação aviso */}
-      <div className="rounded-2xl border border-yellow-500/20 bg-yellow-500/5 px-5 py-4 text-sm text-yellow-300">
-        ⏱ Após publicar, seu anúncio entrará em análise pela equipe KKmarket (até 6 horas). Você receberá uma notificação quando for aprovado ou rejeitado.
+      <div className="flex items-start gap-3 rounded-2xl border border-yellow-500/20 bg-yellow-500/5 px-5 py-4 text-sm text-yellow-300">
+        <Clock className="mt-0.5 h-5 w-5 shrink-0 text-yellow-500" />
+        <p>Após publicar, seu anúncio entrará em análise pela equipe KKmarket (até 6 horas). Você receberá uma notificação quando for aprovado ou rejeitado.</p>
       </div>
 
       {error && (

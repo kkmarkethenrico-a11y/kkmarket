@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useWizardStore } from './wizard-store'
 import type { Category } from '@/types'
+import { Gamepad2, Share2, Bot, Code, Box, FolderOpen } from 'lucide-react'
 
 interface Step1Props {
   categories: Category[]
@@ -53,7 +54,11 @@ export function Step1Category({ categories }: Step1Props) {
                   : 'border-zinc-800 bg-zinc-900/50 text-zinc-300 hover:border-zinc-700 hover:text-white'
               }`}
             >
-              <span className="text-2xl">{catEmoji(cat.slug)}</span>
+              <div className={`flex h-10 w-10 items-center justify-center rounded-xl transition-all ${
+                localRoot === cat.id ? 'bg-violet-600/30' : 'bg-zinc-950/50 shadow-inner'
+              }`}>
+                {catIcon(cat.slug)}
+              </div>
               <span>{cat.name}</span>
             </button>
           ))}
@@ -105,13 +110,13 @@ export function Step1Category({ categories }: Step1Props) {
   )
 }
 
-function catEmoji(slug: string): string {
-  const map: Record<string, string> = {
-    jogos: '🎮',
-    'redes-sociais': '📱',
-    bots: '🤖',
-    scripts: '💻',
-    'outros-digitais': '📦',
+function catIcon(slug: string) {
+  switch (slug) {
+    case 'jogos': return <Gamepad2 className="h-5 w-5 text-violet-400" />
+    case 'redes-sociais': return <Share2 className="h-5 w-5 text-cyan-400" />
+    case 'bots': return <Bot className="h-5 w-5 text-green-400" />
+    case 'scripts': return <Code className="h-5 w-5 text-amber-400" />
+    case 'outros-digitais': return <Box className="h-5 w-5 text-zinc-300" />
+    default: return <FolderOpen className="h-5 w-5 text-zinc-500" />
   }
-  return map[slug] ?? '📂'
 }
