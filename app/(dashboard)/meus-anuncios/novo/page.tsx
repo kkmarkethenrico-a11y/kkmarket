@@ -53,17 +53,17 @@ export default async function NovoAnuncioPage() {
 
   if (error || !categories) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-950">
+      <div className="flex min-h-[500px] items-center justify-center bg-[var(--gm-paper)]">
         <p className="text-sm text-red-400">Erro ao carregar categorias. Tente novamente.</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 px-4 py-10">
+    <div className="min-h-screen bg-[var(--gm-paper)] px-4 py-10">
       <div className="mx-auto max-w-3xl mb-8">
-        <h1 className="text-2xl font-bold text-white">Criar novo anúncio</h1>
-        <p className="mt-1 text-sm text-zinc-400">
+        <h1 className="text-2xl font-bold text-[var(--gm-ink)]">Criar novo anúncio</h1>
+        <p className="mt-1 text-sm text-[var(--gm-ink-faint)]">
           Preencha as informações do seu produto em 4 passos simples.
         </p>
       </div>

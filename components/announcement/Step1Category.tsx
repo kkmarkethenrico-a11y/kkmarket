@@ -36,7 +36,7 @@ export function Step1Category({ categories }: Step1Props) {
     <div className="flex flex-col gap-8">
       {/* Root categories */}
       <div>
-        <h2 className="mb-4 text-lg font-semibold text-zinc-100">
+        <h2 className="mb-4 text-lg font-semibold text-[var(--gm-ink)]">
           Escolha a categoria principal
         </h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
@@ -50,12 +50,12 @@ export function Step1Category({ categories }: Step1Props) {
               }}
               className={`flex flex-col items-center justify-center gap-2 rounded-2xl border p-4 text-sm font-medium transition-all ${
                 localRoot === cat.id
-                  ? 'border-violet-500 bg-violet-600/20 text-violet-300 shadow-lg shadow-violet-500/10'
-                  : 'border-zinc-800 bg-zinc-900/50 text-zinc-300 hover:border-zinc-700 hover:text-white'
+                  ? 'border-[var(--gm-violet)] bg-[var(--gm-violet)]/10 text-[var(--gm-violet)] shadow-lg shadow-[var(--gm-violet)]/10'
+                  : 'border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-2)] text-[var(--gm-ink)] hover:border-[var(--gm-violet)]/50 hover:text-[var(--gm-violet)]'
               }`}
             >
               <div className={`flex h-10 w-10 items-center justify-center rounded-xl transition-all ${
-                localRoot === cat.id ? 'bg-violet-600/30' : 'bg-zinc-950/50 shadow-inner'
+                localRoot === cat.id ? 'bg-[var(--gm-violet)]/20' : 'bg-[var(--gm-paper-3)]'
               }`}>
                 {catIcon(cat.slug)}
               </div>
@@ -68,7 +68,7 @@ export function Step1Category({ categories }: Step1Props) {
       {/* Subcategories */}
       {localRoot && subcategories.length > 0 && (
         <div>
-          <h2 className="mb-4 text-lg font-semibold text-zinc-100">
+          <h2 className="mb-4 text-lg font-semibold text-[var(--gm-ink)]">
             Escolha o jogo / subcategoria
           </h2>
           <div className="grid max-h-72 grid-cols-2 gap-2 overflow-y-auto pr-1 sm:grid-cols-3 md:grid-cols-4">
@@ -79,8 +79,8 @@ export function Step1Category({ categories }: Step1Props) {
                 onClick={() => setLocalSub(sub.id)}
                 className={`rounded-xl border px-3 py-2.5 text-left text-sm font-medium transition-all ${
                   localSub === sub.id
-                    ? 'border-violet-500 bg-violet-600/20 text-violet-300'
-                    : 'border-zinc-800 bg-zinc-900/40 text-zinc-300 hover:border-zinc-700 hover:text-white'
+                    ? 'border-[var(--gm-violet)] bg-[var(--gm-violet)]/10 text-[var(--gm-violet)]'
+                    : 'border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-2)] text-[var(--gm-ink)] hover:border-[var(--gm-violet)]/50 hover:text-[var(--gm-violet)]'
                 }`}
               >
                 {sub.name}
@@ -91,7 +91,7 @@ export function Step1Category({ categories }: Step1Props) {
       )}
 
       {localRoot && subcategories.length === 0 && (
-        <p className="rounded-xl bg-zinc-900 px-4 py-3 text-sm text-zinc-400">
+        <p className="rounded-xl bg-[var(--gm-paper-2)] px-4 py-3 text-sm text-[var(--gm-ink-faint)]">
           Esta categoria não possui subcategorias. Selecione outra.
         </p>
       )}
@@ -101,7 +101,7 @@ export function Step1Category({ categories }: Step1Props) {
           type="button"
           disabled={!canAdvance}
           onClick={handleAdvance}
-          className="rounded-xl bg-violet-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-xl bg-[var(--gm-violet)] px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-[var(--gm-violet)]/80 disabled:cursor-not-allowed disabled:opacity-40"
         >
           Próximo →
         </button>

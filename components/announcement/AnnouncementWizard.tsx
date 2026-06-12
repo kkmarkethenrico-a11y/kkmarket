@@ -35,14 +35,14 @@ export function AnnouncementWizard({ categories }: AnnouncementWizardProps) {
             return (
               <div key={n} className="flex flex-1 flex-col items-center gap-2">
                 <div className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold ring-2 transition-all ${
-                  done    ? 'bg-violet-600 text-white ring-violet-600' :
-                  current ? 'bg-violet-600/20 text-violet-400 ring-violet-500' :
-                            'bg-zinc-900 text-zinc-600 ring-zinc-800'
+                  done    ? 'bg-[var(--gm-violet)] text-white ring-[var(--gm-violet)]' :
+                  current ? 'bg-[var(--gm-violet)]/20 text-[var(--gm-violet)] ring-[var(--gm-violet)]/50' :
+                            'bg-[var(--gm-paper-3)] text-[var(--gm-ink-faint)] ring-[var(--gm-ink-faint)]/30'
                 }`}>
                   {done ? '✓' : n}
                 </div>
                 <span className={`hidden text-xs font-medium sm:block ${
-                  current ? 'text-violet-300' : done ? 'text-zinc-400' : 'text-zinc-600'
+                  current ? 'text-[var(--gm-violet)]' : done ? 'text-[var(--gm-ink)]' : 'text-[var(--gm-ink-faint)]'
                 }`}>
                   {label}
                 </span>
@@ -66,20 +66,20 @@ export function AnnouncementWizard({ categories }: AnnouncementWizardProps) {
         </div>
 
         {/* Linear progress */}
-        <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--gm-ink-faint)]/20">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-violet-600 to-violet-400 transition-all duration-500"
+            className="h-full rounded-full bg-gradient-to-r from-[var(--gm-violet)] to-violet-400 transition-all duration-500"
             style={{ width: `${((step - 1) / (STEPS.length - 1)) * 100}%` }}
           />
         </div>
 
-        <p className="text-center text-xs text-zinc-500">
+        <p className="text-center text-xs text-[var(--gm-ink-faint)]">
           Passo {step} de {STEPS.length} — {STEPS[step - 1].label}
         </p>
       </div>
 
       {/* ─── Step content ──────────────────────────────────────────────────── */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-950/50 p-6 shadow-xl backdrop-blur-sm sm:p-8">
+      <div className="rounded-2xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper)] p-6 shadow-xl sm:p-8">
         {step === 1 && <Step1Category categories={categories} />}
         {step === 2 && <Step2Details  category={currentCategory} />}
         {step === 3 && <Step3Images />}

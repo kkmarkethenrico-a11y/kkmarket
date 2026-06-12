@@ -75,14 +75,14 @@ function DropZone({
   return (
     <div className="flex flex-col gap-2">
       {preview ? (
-        <div className="relative overflow-hidden rounded-2xl border border-zinc-700">
+        <div className="relative overflow-hidden rounded-2xl border border-[var(--gm-ink-faint)]/30">
           <div className="relative aspect-video w-full">
             <Image src={preview} alt="Preview" fill className="object-cover" />
           </div>
           <button
             type="button"
             onClick={onClear}
-            className="absolute right-2 top-2 rounded-full bg-zinc-900/80 px-3 py-1 text-xs font-medium text-white backdrop-blur hover:bg-red-500/80"
+            className="absolute right-2 top-2 rounded-full bg-[var(--gm-paper-2)]/80 px-3 py-1 text-xs font-medium text-[var(--gm-ink)] backdrop-blur hover:bg-red-500/80"
           >
             Remover
           </button>
@@ -94,13 +94,13 @@ function DropZone({
           onDrop={handleDrop}
           onClick={() => inputRef.current?.click()}
           className={`flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed py-12 transition-all ${
-            dragging ? 'border-violet-500 bg-violet-600/10' : 'border-zinc-700 bg-zinc-900/40 hover:border-zinc-600'
+            dragging ? 'border-[var(--gm-violet)] bg-[var(--gm-violet)]/10' : 'border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-2)]/40 hover:border-zinc-600'
           }`}
         >
           <span className="text-3xl">🖼</span>
           <div className="text-center">
-            <p className="text-sm font-medium text-zinc-300">{label}</p>
-            <p className="mt-1 text-xs text-zinc-500">
+            <p className="text-sm font-medium text-[var(--gm-ink)]">{label}</p>
+            <p className="mt-1 text-xs text-[var(--gm-ink-faint)]/80">
               Arraste ou clique · JPEG, PNG, WebP · máx. {maxSize / 1024 / 1024} MB
             </p>
           </div>
@@ -214,9 +214,9 @@ export function Step3Images() {
     <div className="flex flex-col gap-8">
       {/* Cover */}
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-zinc-300">
+        <label className="text-sm font-medium text-[var(--gm-ink)]">
           Foto de capa <span className="text-red-400">*</span>
-          <span className="ml-2 text-xs text-zinc-500">Proporção 16:9 recomendada · máx. 2 MB</span>
+          <span className="ml-2 text-xs text-[var(--gm-ink-faint)]/80">Proporção 16:9 recomendada · máx. 2 MB</span>
         </label>
         <DropZone
           label="Arraste a imagem de capa aqui"
@@ -231,15 +231,15 @@ export function Step3Images() {
       {/* Gallery */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium text-zinc-300">
+          <label className="text-sm font-medium text-[var(--gm-ink)]">
             Imagens adicionais
-            <span className="ml-2 text-xs text-zinc-500">(máx. {MAX_GALLERY})</span>
+            <span className="ml-2 text-xs text-[var(--gm-ink-faint)]/80">(máx. {MAX_GALLERY})</span>
           </label>
           <button
             type="button"
             disabled={galleryPreviews.length >= MAX_GALLERY}
             onClick={() => galleryInputRef.current?.click()}
-            className="rounded-lg border border-dashed border-zinc-700 px-3 py-1.5 text-xs text-zinc-400 transition-all hover:border-zinc-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-lg border border-dashed border-[var(--gm-ink-faint)]/30 px-3 py-1.5 text-xs text-[var(--gm-ink-faint)] transition-all hover:border-zinc-600 hover:text-[var(--gm-ink)] disabled:cursor-not-allowed disabled:opacity-40"
           >
             + Adicionar ({galleryPreviews.length}/{MAX_GALLERY})
           </button>
@@ -256,15 +256,15 @@ export function Step3Images() {
         {galleryPreviews.length > 0 && (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {galleryPreviews.map((src, idx) => (
-              <div key={idx} className="group relative overflow-hidden rounded-xl border border-zinc-800">
+              <div key={idx} className="group relative overflow-hidden rounded-xl border border-[var(--gm-ink-faint)]/20">
                 <div className="relative aspect-square">
                   <Image src={src} alt={`Imagem ${idx + 1}`} fill className="object-cover" />
                 </div>
-                <div className="absolute inset-0 flex items-center justify-center gap-2 bg-zinc-950/60 opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="absolute inset-0 flex items-center justify-center gap-2 bg-[var(--gm-paper)]/60 opacity-0 transition-opacity group-hover:opacity-100">
                   <button type="button" onClick={() => idx > 0 && moveGallery(idx, idx - 1)} disabled={idx === 0}
                     className="rounded-full bg-zinc-800 p-1 text-xs disabled:opacity-30">◀</button>
                   <button type="button" onClick={() => removeGallery(idx)}
-                    className="rounded-full bg-red-500/80 p-1 text-xs text-white">✕</button>
+                    className="rounded-full bg-red-500/80 p-1 text-xs text-[var(--gm-ink)]">✕</button>
                   <button type="button" onClick={() => idx < galleryPreviews.length - 1 && moveGallery(idx, idx + 1)} disabled={idx === galleryPreviews.length - 1}
                     className="rounded-full bg-zinc-800 p-1 text-xs disabled:opacity-30">▶</button>
                 </div>
@@ -279,11 +279,11 @@ export function Step3Images() {
       {/* Navigation */}
       <div className="flex justify-between">
         <button type="button" onClick={prevStep}
-          className="rounded-xl border border-zinc-700 px-5 py-3 text-sm font-medium text-zinc-300 hover:border-zinc-600 hover:text-white">
+          className="rounded-xl border border-[var(--gm-ink-faint)]/30 px-5 py-3 text-sm font-medium text-[var(--gm-ink)] hover:border-zinc-600 hover:text-[var(--gm-ink)]">
           ← Voltar
         </button>
         <button type="button" onClick={handleNext} disabled={uploading}
-          className="flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-violet-500 disabled:opacity-60">
+          className="flex items-center gap-2 rounded-xl bg-[var(--gm-violet)] px-6 py-3 text-sm font-semibold text-[var(--gm-ink)] transition-all hover:bg-[var(--gm-violet)]/80 disabled:opacity-60">
           {uploading ? (
             <>
               <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />

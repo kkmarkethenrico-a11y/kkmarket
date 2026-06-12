@@ -73,7 +73,7 @@ function ItemVariations({
       {variations.map((v, idx) => (
         <div
           key={v.id}
-          className="grid grid-cols-[auto_1fr_140px_120px_auto] items-center gap-3 rounded-xl border border-zinc-800 bg-zinc-900/40 px-4 py-3"
+          className="grid grid-cols-[auto_1fr_140px_120px_auto] items-center gap-3 rounded-xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-2)]/40 px-4 py-3"
         >
           {/* Reorder */}
           <div className="flex flex-col gap-0.5">
@@ -81,7 +81,7 @@ function ItemVariations({
               type="button"
               onClick={() => moveUp(idx)}
               disabled={idx === 0}
-              className="text-zinc-600 hover:text-zinc-300 disabled:opacity-30"
+              className="text-zinc-600 hover:text-[var(--gm-ink)] disabled:opacity-30"
             >
               ▲
             </button>
@@ -89,7 +89,7 @@ function ItemVariations({
               type="button"
               onClick={() => moveDown(idx)}
               disabled={idx === variations.length - 1}
-              className="text-zinc-600 hover:text-zinc-300 disabled:opacity-30"
+              className="text-zinc-600 hover:text-[var(--gm-ink)] disabled:opacity-30"
             >
               ▼
             </button>
@@ -101,12 +101,12 @@ function ItemVariations({
             placeholder="Nome da variação"
             value={v.title}
             onChange={(e) => update(v.id, 'title', e.target.value)}
-            className="rounded-lg border border-zinc-700 bg-zinc-800/60 px-3 py-2 text-sm text-white placeholder-zinc-500 outline-none focus:border-violet-500"
+            className="rounded-lg border border-[var(--gm-ink-faint)]/30 bg-zinc-800/60 px-3 py-2 text-sm text-[var(--gm-ink)] placeholder:text-[var(--gm-ink-faint)] outline-none focus:border-[var(--gm-violet)]"
           />
 
           {/* Price */}
           <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500">R$</span>
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[var(--gm-ink-faint)]/80">R$</span>
             <input
               type="number"
               min="2"
@@ -114,7 +114,7 @@ function ItemVariations({
               placeholder="0,00"
               value={v.unit_price}
               onChange={(e) => update(v.id, 'unit_price', e.target.value)}
-              className="w-full rounded-lg border border-zinc-700 bg-zinc-800/60 py-2 pl-8 pr-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-violet-500"
+              className="w-full rounded-lg border border-[var(--gm-ink-faint)]/30 bg-zinc-800/60 py-2 pl-8 pr-3 text-sm text-[var(--gm-ink)] placeholder:text-[var(--gm-ink-faint)] outline-none focus:border-[var(--gm-violet)]"
             />
           </div>
 
@@ -125,7 +125,7 @@ function ItemVariations({
             placeholder="Qtd. estoque"
             value={v.stock_quantity}
             onChange={(e) => update(v.id, 'stock_quantity', e.target.value)}
-            className="rounded-lg border border-zinc-700 bg-zinc-800/60 px-3 py-2 text-sm text-white placeholder-zinc-500 outline-none focus:border-violet-500"
+            className="rounded-lg border border-[var(--gm-ink-faint)]/30 bg-zinc-800/60 px-3 py-2 text-sm text-[var(--gm-ink)] placeholder:text-[var(--gm-ink-faint)] outline-none focus:border-[var(--gm-violet)]"
           />
 
           <button
@@ -138,8 +138,8 @@ function ItemVariations({
 
           {/* Auto delivery keys inner */}
           {hasAutoDelivery && (
-            <div className="col-span-full mt-2 border-t border-zinc-800/50 pt-3">
-              <label className="text-xs text-zinc-400 font-medium mb-1.5 block">
+            <div className="col-span-full mt-2 border-t border-[var(--gm-ink-faint)]/20/50 pt-3">
+              <label className="text-xs text-[var(--gm-ink-faint)] font-medium mb-1.5 block">
                 Chaves de Entrega (uma por linha)
               </label>
               <textarea
@@ -147,10 +147,10 @@ function ItemVariations({
                 placeholder="key123...&#10;key456..."
                 value={v.auto_delivery_keys ?? ''}
                 onChange={(e) => update(v.id, 'auto_delivery_keys', e.target.value)}
-                className="w-full resize-y rounded-lg border border-zinc-700 bg-zinc-800/40 px-3 py-2 text-xs text-white placeholder-zinc-500 outline-none focus:border-violet-500"
+                className="w-full resize-y rounded-lg border border-[var(--gm-ink-faint)]/30 bg-zinc-800/40 px-3 py-2 text-xs text-[var(--gm-ink)] placeholder:text-[var(--gm-ink-faint)] outline-none focus:border-[var(--gm-violet)]"
               />
               {v.auto_delivery_keys && (
-                <p className="text-[10px] text-zinc-500 mt-1">
+                <p className="text-[10px] text-[var(--gm-ink-faint)]/80 mt-1">
                   {v.auto_delivery_keys.split('\n').filter(k => k.trim()).length} chaves detectadas.
                 </p>
               )}
@@ -167,7 +167,7 @@ function ItemVariations({
         type="button"
         onClick={add}
         disabled={variations.length >= 20}
-        className="flex items-center gap-2 self-start rounded-xl border border-dashed border-zinc-700 px-4 py-2.5 text-sm text-zinc-400 transition-all hover:border-zinc-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+        className="flex items-center gap-2 self-start rounded-xl border border-dashed border-[var(--gm-ink-faint)]/30 px-4 py-2.5 text-sm text-[var(--gm-ink-faint)] transition-all hover:border-zinc-600 hover:text-[var(--gm-ink)] disabled:cursor-not-allowed disabled:opacity-40"
       >
         + Adicionar variação
         <span className="text-xs text-zinc-600">({variations.length}/20)</span>
@@ -179,9 +179,9 @@ function ItemVariations({
 // ─── Plan selector ───────────────────────────────────────────────────────────
 function PlanSelector({ value, onChange }: { value: Plan; onChange: (p: Plan) => void }) {
   const colors: Record<Plan, string> = {
-    silver:  'border-zinc-700 bg-zinc-900/40',
+    silver:  'border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-2)]/40',
     gold:    'border-amber-500/40 bg-amber-500/5',
-    diamond: 'border-violet-500/40 bg-violet-500/5',
+    diamond: 'border-[var(--gm-violet)]/40 bg-violet-500/5',
   }
   const selected: Record<Plan, string> = {
     silver:  'ring-2 ring-zinc-400 shadow-lg shadow-zinc-500/10',
@@ -190,7 +190,7 @@ function PlanSelector({ value, onChange }: { value: Plan; onChange: (p: Plan) =>
   }
   const tagCls: Record<'amber' | 'violet', string> = {
     amber:  'bg-amber-500 text-amber-950',
-    violet: 'bg-violet-600 text-white',
+    violet: 'bg-[var(--gm-violet)] text-[var(--gm-ink)]',
   }
 
   // Simulation: how much the seller receives on R$ 100 sale
@@ -216,19 +216,19 @@ function PlanSelector({ value, onChange }: { value: Plan; onChange: (p: Plan) =>
               </span>
             )}
 
-            <div className="flex items-center gap-2 font-semibold text-zinc-100">
+            <div className="flex items-center gap-2 font-semibold text-[var(--gm-ink)]">
               <span className="text-xl">{plan.badge}</span>
               <span>{plan.label}</span>
             </div>
 
-            <p className="text-xs leading-relaxed text-zinc-400">{plan.description}</p>
+            <p className="text-xs leading-relaxed text-[var(--gm-ink-faint)]">{plan.description}</p>
 
-            <div className="mt-auto space-y-1 border-t border-zinc-800/60 pt-3">
-              <p className="text-sm font-bold text-zinc-100">
+            <div className="mt-auto space-y-1 border-t border-[var(--gm-ink-faint)]/20/60 pt-3">
+              <p className="text-sm font-bold text-[var(--gm-ink)]">
                 Taxa {(plan.fee * 100).toFixed(2).replace('.', ',')}%
               </p>
-              <p className="text-[11px] text-zinc-500">
-                Em uma venda de <span className="font-semibold text-zinc-300">R$ 100,00</span>, você recebe{' '}
+              <p className="text-[11px] text-[var(--gm-ink-faint)]/80">
+                Em uma venda de <span className="font-semibold text-[var(--gm-ink)]">R$ 100,00</span>, você recebe{' '}
                 <span className="font-bold text-green-400">
                   R$ {sellerReceives.toFixed(2).replace('.', ',')}
                 </span>
@@ -255,12 +255,12 @@ function CustomFilters({
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {Object.entries(schema).map(([key, def]) => (
         <div key={key} className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-zinc-300">{def.label}</label>
+          <label className="text-sm font-medium text-[var(--gm-ink)]">{def.label}</label>
           {def.type === 'select' && def.options ? (
             <select
               value={values[key] ?? ''}
               onChange={(e) => onChange({ ...values, [key]: e.target.value })}
-              className="rounded-xl border border-zinc-700 bg-zinc-800/60 px-3 py-2.5 text-sm text-white outline-none focus:border-violet-500"
+              className="rounded-xl border border-[var(--gm-ink-faint)]/30 bg-zinc-800/60 px-3 py-2.5 text-sm text-[var(--gm-ink)] outline-none focus:border-[var(--gm-violet)]"
             >
               <option value="">Selecione…</option>
               {def.options.map((o) => (
@@ -272,7 +272,7 @@ function CustomFilters({
               type="text"
               value={values[key] ?? ''}
               onChange={(e) => onChange({ ...values, [key]: e.target.value })}
-              className="rounded-xl border border-zinc-700 bg-zinc-800/60 px-3 py-2.5 text-sm text-white outline-none focus:border-violet-500"
+              className="rounded-xl border border-[var(--gm-ink-faint)]/30 bg-zinc-800/60 px-3 py-2.5 text-sm text-[var(--gm-ink)] outline-none focus:border-[var(--gm-violet)]"
             />
           )}
         </div>
@@ -349,8 +349,8 @@ export function Step2Details({ category }: Step2Props) {
 
       {/* Título */}
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="ann-title" className="text-sm font-medium text-zinc-300">
-          Título do anúncio <span className="text-zinc-500">({title.length}/120)</span>
+        <label htmlFor="ann-title" className="text-sm font-medium text-[var(--gm-ink)]">
+          Título do anúncio <span className="text-[var(--gm-ink-faint)]/80">({title.length}/120)</span>
         </label>
         <input
           id="ann-title"
@@ -359,7 +359,7 @@ export function Step2Details({ category }: Step2Props) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Ex: Conta Gold Nível 80 com skins raras"
-          className="rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
+          className="rounded-xl border border-[var(--gm-ink-faint)]/30 bg-zinc-800/60 px-4 py-3 text-sm text-[var(--gm-ink)] placeholder:text-[var(--gm-ink-faint)] outline-none transition-all focus:border-[var(--gm-violet)] focus:ring-2 focus:ring-[var(--gm-violet)]/50/20"
           aria-invalid={!!errors.title}
         />
         {errors.title && <p className="text-xs text-red-400">{errors.title[0]}</p>}
@@ -367,8 +367,8 @@ export function Step2Details({ category }: Step2Props) {
 
       {/* Descrição */}
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="ann-desc" className="text-sm font-medium text-zinc-300">
-          Descrição <span className="text-zinc-500">({description.length} chars — mín. 50)</span>
+        <label htmlFor="ann-desc" className="text-sm font-medium text-[var(--gm-ink)]">
+          Descrição <span className="text-[var(--gm-ink-faint)]/80">({description.length} chars — mín. 50)</span>
         </label>
         <textarea
           id="ann-desc"
@@ -376,7 +376,7 @@ export function Step2Details({ category }: Step2Props) {
           value={description}
           onChange={(e) => setDesc(e.target.value)}
           placeholder="Descreva detalhadamente o que o comprador irá receber..."
-          className="resize-y rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
+          className="resize-y rounded-xl border border-[var(--gm-ink-faint)]/30 bg-zinc-800/60 px-4 py-3 text-sm text-[var(--gm-ink)] placeholder:text-[var(--gm-ink-faint)] outline-none transition-all focus:border-[var(--gm-violet)] focus:ring-2 focus:ring-[var(--gm-violet)]/50/20"
           aria-invalid={!!errors.description}
         />
         {errors.description && <p className="text-xs text-red-400">{errors.description[0]}</p>}
@@ -384,7 +384,7 @@ export function Step2Details({ category }: Step2Props) {
 
       {/* Modelo */}
       <div className="flex flex-col gap-3">
-        <span className="text-sm font-medium text-zinc-300">Tipo de anúncio</span>
+        <span className="text-sm font-medium text-[var(--gm-ink)]">Tipo de anúncio</span>
         <div className="flex gap-3">
           {(['normal', 'dynamic'] as const).map((m) => (
             <button
@@ -393,15 +393,15 @@ export function Step2Details({ category }: Step2Props) {
               onClick={() => setModel(m)}
               className={`flex-1 rounded-xl border px-4 py-3 text-sm font-medium transition-all ${
                 model === m
-                  ? 'border-violet-500 bg-violet-600/20 text-violet-300'
-                  : 'border-zinc-800 bg-zinc-900/40 text-zinc-400 hover:border-zinc-700'
+                  ? 'border-[var(--gm-violet)] bg-[var(--gm-violet)]/20 text-[var(--gm-violet)]'
+                  : 'border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-2)]/40 text-[var(--gm-ink-faint)] hover:border-[var(--gm-ink-faint)]/30'
               }`}
             >
               {m === 'normal' ? '📦 Anúncio Normal' : '🎛 Com Variações (Dinâmico)'}
             </button>
           ))}
         </div>
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-[var(--gm-ink-faint)]/80">
           {model === 'normal'
             ? 'Um único produto com preço e estoque fixos.'
             : 'Múltiplas variações (ex: servidores diferentes, planos diferentes) com preços individuais.'}
@@ -409,14 +409,14 @@ export function Step2Details({ category }: Step2Props) {
       </div>
 
       {/* Auto-delivery toggle moved up */}
-      <div className="flex items-start gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+      <div className="flex items-start gap-4 rounded-2xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-2)]/40 p-4">
         <button
           type="button"
           role="switch"
           aria-checked={auto_delivery}
           onClick={() => setAuto((v) => !v)}
           className={`relative mt-0.5 h-6 w-11 shrink-0 rounded-full transition-colors ${
-            auto_delivery ? 'bg-violet-600' : 'bg-zinc-700'
+            auto_delivery ? 'bg-[var(--gm-violet)]' : 'bg-zinc-700'
           }`}
         >
           <span
@@ -426,10 +426,10 @@ export function Step2Details({ category }: Step2Props) {
           />
         </button>
         <div>
-          <p className="flex items-center gap-1.5 text-sm font-medium text-zinc-200">
-            <Zap className="h-4 w-4 text-violet-400" /> Ativar Entrega Automática
+          <p className="flex items-center gap-1.5 text-sm font-medium text-[var(--gm-ink)]">
+            <Zap className="h-4 w-4 text-[var(--gm-violet)]" /> Ativar Entrega Automática
           </p>
-          <p className="mt-1 text-xs text-zinc-500">
+          <p className="mt-1 text-xs text-[var(--gm-ink-faint)]/80">
             Cadastre suas credenciais e o comprador as receberá instantaneamente após o pagamento, sem necessidade de intervenção manual.
           </p>
         </div>
@@ -439,9 +439,9 @@ export function Step2Details({ category }: Step2Props) {
       {model === 'normal' && (
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="ann-price" className="text-sm font-medium text-zinc-300">Preço (R$)</label>
+            <label htmlFor="ann-price" className="text-sm font-medium text-[var(--gm-ink)]">Preço (R$)</label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500">R$</span>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[var(--gm-ink-faint)]/80">R$</span>
               <input
                 id="ann-price"
                 type="number"
@@ -450,14 +450,14 @@ export function Step2Details({ category }: Step2Props) {
                 placeholder="0,00"
                 value={unit_price}
                 onChange={(e) => setPrice(e.target.value)}
-                className="w-full rounded-xl border border-zinc-700 bg-zinc-800/60 py-3 pl-9 pr-4 text-sm text-white placeholder-zinc-500 outline-none focus:border-violet-500"
+                className="w-full rounded-xl border border-[var(--gm-ink-faint)]/30 bg-zinc-800/60 py-3 pl-9 pr-4 text-sm text-[var(--gm-ink)] placeholder:text-[var(--gm-ink-faint)] outline-none focus:border-[var(--gm-violet)]"
                 aria-invalid={!!errors.unit_price}
               />
             </div>
             {errors.unit_price && <p className="text-xs text-red-400">{errors.unit_price[0]}</p>}
           </div>
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="ann-stock" className="text-sm font-medium text-zinc-300">Estoque (Manual)</label>
+            <label htmlFor="ann-stock" className="text-sm font-medium text-[var(--gm-ink)]">Estoque (Manual)</label>
             <input
               id="ann-stock"
               type="number"
@@ -465,7 +465,7 @@ export function Step2Details({ category }: Step2Props) {
               placeholder="1"
               value={stock_quantity}
               onChange={(e) => setStock(e.target.value)}
-              className="rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-violet-500"
+              className="rounded-xl border border-[var(--gm-ink-faint)]/30 bg-zinc-800/60 px-4 py-3 text-sm text-[var(--gm-ink)] placeholder:text-[var(--gm-ink-faint)] outline-none focus:border-[var(--gm-violet)]"
               aria-invalid={!!errors.stock_quantity}
             />
             {errors.stock_quantity && <p className="text-xs text-red-400">{errors.stock_quantity[0]}</p>}
@@ -475,18 +475,18 @@ export function Step2Details({ category }: Step2Props) {
 
       {model === 'normal' && auto_delivery && (
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-zinc-300">
-            Chaves para Entrega Automática <span className="text-zinc-500">(1 por linha)</span>
+          <label className="text-sm font-medium text-[var(--gm-ink)]">
+            Chaves para Entrega Automática <span className="text-[var(--gm-ink-faint)]/80">(1 por linha)</span>
           </label>
           <textarea
             rows={4}
             value={auto_delivery_keys}
             onChange={(e) => setAutoKeys(e.target.value)}
             placeholder="ABCD-1234&#10;EFGH-5678"
-            className="resize-y rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-violet-500"
+            className="resize-y rounded-xl border border-[var(--gm-ink-faint)]/30 bg-zinc-800/60 px-4 py-3 text-sm text-[var(--gm-ink)] placeholder:text-[var(--gm-ink-faint)] outline-none focus:border-[var(--gm-violet)]"
           />
           {auto_delivery_keys && (
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-[var(--gm-ink-faint)]/80">
               {auto_delivery_keys.split('\n').filter(k => k.trim()).length} chaves detectadas prontas para entrega.
             </p>
           )}
@@ -496,7 +496,7 @@ export function Step2Details({ category }: Step2Props) {
       {/* Variações (dynamic) */}
       {model === 'dynamic' && (
         <div className="flex flex-col gap-3">
-          <span className="text-sm font-medium text-zinc-300">Variações</span>
+          <span className="text-sm font-medium text-[var(--gm-ink)]">Variações</span>
           <ItemVariations variations={variations} hasAutoDelivery={auto_delivery} onChange={setVariations} />
         </div>
       )}
@@ -506,14 +506,14 @@ export function Step2Details({ category }: Step2Props) {
 
       {/* Plano */}
       <div className="flex flex-col gap-3">
-        <span className="text-sm font-medium text-zinc-300">Plano do anúncio</span>
+        <span className="text-sm font-medium text-[var(--gm-ink)]">Plano do anúncio</span>
         <PlanSelector value={plan} onChange={setPlan} />
       </div>
 
       {/* Filtros customizados */}
       {customFilters && Object.keys(customFilters).length > 0 && (
         <div className="flex flex-col gap-3">
-          <span className="text-sm font-medium text-zinc-300">Filtros da categoria</span>
+          <span className="text-sm font-medium text-[var(--gm-ink)]">Filtros da categoria</span>
           <CustomFilters schema={customFilters} values={filters_data} onChange={setFilters} />
         </div>
       )}
@@ -523,14 +523,14 @@ export function Step2Details({ category }: Step2Props) {
         <button
           type="button"
           onClick={prevStep}
-          className="rounded-xl border border-zinc-700 px-5 py-3 text-sm font-medium text-zinc-300 transition-all hover:border-zinc-600 hover:text-white"
+          className="rounded-xl border border-[var(--gm-ink-faint)]/30 px-5 py-3 text-sm font-medium text-[var(--gm-ink)] transition-all hover:border-zinc-600 hover:text-[var(--gm-ink)]"
         >
           ← Voltar
         </button>
         <button
           type="button"
           onClick={handleNext}
-          className="rounded-xl bg-violet-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-violet-500"
+          className="rounded-xl bg-[var(--gm-violet)] px-6 py-3 text-sm font-semibold text-[var(--gm-ink)] transition-all hover:bg-[var(--gm-violet)]/80"
         >
           Próximo →
         </button>
