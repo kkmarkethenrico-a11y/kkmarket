@@ -37,6 +37,7 @@ export function Step4Review({ categories }: Step4Props) {
         model:            draft.model,
         plan:             draft.plan,
         has_auto_delivery: draft.has_auto_delivery,
+        auto_delivery_keys: draft.auto_delivery_keys,
         filters_data:     draft.filters_data,
         cover_url:        draft.cover_preview,
         gallery_urls:     draft.gallery_previews,
@@ -51,6 +52,7 @@ export function Step4Review({ categories }: Step4Props) {
           unit_price:     parseFloat(v.unit_price),
           stock_quantity: parseInt(v.stock_quantity),
           sort_order:     i,
+          auto_delivery_keys: v.auto_delivery_keys,
         }))
       }
 

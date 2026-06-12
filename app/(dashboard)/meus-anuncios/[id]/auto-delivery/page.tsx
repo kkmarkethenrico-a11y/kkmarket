@@ -36,8 +36,8 @@ export default async function AutoDeliveryPage({ params }: PageProps) {
       <div className="mb-6 rounded-lg border bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-900 p-4 text-sm">
         <p className="font-semibold mb-1">🔒 Segurança</p>
         <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-          <li>Credenciais são criptografadas (AES-256) antes de serem salvas.</li>
-          <li>Após salvar, nem mesmo você pode visualizar o conteúdo.</li>
+          <li>As credenciais são protegidas com RLS (Row Level Security) em nível de banco de dados.</li>
+          <li>Isso garante que apenas você e o sistema podem acessar esse estoque.</li>
           <li>O comprador só recebe a credencial após o pagamento ser confirmado.</li>
           <li>Itens já entregues não podem ser removidos.</li>
         </ul>

@@ -17,6 +17,7 @@ export interface ItemVariation {
   title: string
   unit_price: string
   stock_quantity: string
+  auto_delivery_keys: string
 }
 
 // ─── Wizard state ─────────────────────────────────────────────────────────────
@@ -36,6 +37,7 @@ export interface WizardDraft {
   variations: ItemVariation[]
   plan: Plan
   has_auto_delivery: boolean
+  auto_delivery_keys: string
   filters_data: Record<string, string>
 
   // step 3 (stored as data URLs for localStorage preview; actual Files held in memory)
@@ -66,6 +68,7 @@ const INITIAL_DRAFT: WizardDraft = {
   variations: [],
   plan: 'silver',
   has_auto_delivery: false,
+  auto_delivery_keys: '',
   filters_data: {},
   cover_preview: null,
   gallery_previews: [],

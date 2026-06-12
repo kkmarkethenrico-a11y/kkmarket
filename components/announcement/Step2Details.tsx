@@ -27,9 +27,11 @@ function getErrors(errors: Record<string, string[] | undefined>, field: string) 
 // ─── ItemVariations sub-component ────────────────────────────────────────────
 function ItemVariations({
   variations,
+  hasAutoDelivery,
   onChange,
 }: {
   variations: ItemVariation[]
+  hasAutoDelivery: boolean
   onChange: (v: ItemVariation[]) => void
 }) {
   const uid = useId()
@@ -38,7 +40,7 @@ function ItemVariations({
     if (variations.length >= 20) return
     onChange([
       ...variations,
-      { id: `${uid}-${Date.now()}`, title: '', unit_price: '', stock_quantity: '' },
+      { id: `${uid}-${Date.now()}`, title: '', unit_price: '', stock_quantity: '', auto_delivery_keys: '' },
     ])
   }
 
@@ -127,10 +129,31 @@ function ItemVariations({
           <button
             type="button"
             onClick={() => remove(v.id)}
-            className="text-zinc-600 hover:text-red-400 transition-colors text-lg leading-none"
+            className="text-zinc-600 hover:text-red-400 transition-colors text-lg leading-none mt-2"
           >
             ✕
           </button>
+
+          {/* Auto delivery keys inner */}
+          {hasAutoDelivery && (
+            <div className="col-span-full mt-2 border-t border-zinc-800/50 pt-3">
+              <label className="text-xs text-zinc-400 font-medium mb-1.5 block">
+                Chaves de Entrega (uma por linha)
+              </label>
+              <textarea
+                rows={2}
+                placeholder="key123...&#10;key456..."
+                value={v.auto_delivery_keys ?? ''}
+                onChange={(e) => update(v.id, 'auto_delivery_keys', e.target.value)}
+                className="w-full resize-y rounded-lg border border-zinc-700 bg-zinc-800/40 px-3 py-2 text-xs text-white placeholder-zinc-500 outline-none focus:border-violet-500"
+              />
+              {v.auto_delivery_keys && (
+                <p className="text-[10px] text-zinc-500 mt-1">
+                  {v.auto_delivery_keys.split('\n').filter(k => k.trim()).length} chaves detectadas.
+                </p>
+              )}
+            </div>
+          )}
         </div>
       ))}
 
@@ -272,6 +295,7 @@ export function Step2Details({ category }: Step2Props) {
   const [variations, setVariations]   = useState<ItemVariation[]>(draft.variations)
   const [plan, setPlan]               = useState<Plan>(draft.plan)
   const [auto_delivery, setAuto]      = useState(draft.has_auto_delivery)
+  const [auto_delivery_keys, setAutoKeys] = useState(draft.auto_delivery_keys)
   const [filters_data, setFilters]    = useState<Record<string, string>>(draft.filters_data)
   const [errors, setErrors]           = useState<Record<string, string[] | undefined>>({})
 
@@ -314,7 +338,7 @@ export function Step2Details({ category }: Step2Props) {
 
   function handleNext() {
     if (!validate()) return
-    updateDraft({ title, description, model, unit_price, stock_quantity, variations, plan, has_auto_delivery: auto_delivery, filters_data })
+    updateDraft({ title, description, model, unit_price, stock_quantity, variations, plan, has_auto_delivery: auto_delivery, auto_delivery_keys, filters_data })
     nextStep()
   }
 
@@ -382,6 +406,31 @@ export function Step2Details({ category }: Step2Props) {
         </p>
       </div>
 
+      {/* Auto-delivery toggle moved up */}
+      <div className="flex items-start gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+        <button
+          type="button"
+          role="switch"
+          aria-checked={auto_delivery}
+          onClick={() => setAuto((v) => !v)}
+          className={`relative mt-0.5 h-6 w-11 shrink-0 rounded-full transition-colors ${
+            auto_delivery ? 'bg-violet-600' : 'bg-zinc-700'
+          }`}
+        >
+          <span
+            className={`absolute top-1 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${
+              auto_delivery ? 'left-6' : 'left-1'
+            }`}
+          />
+        </button>
+        <div>
+          <p className="text-sm font-medium text-zinc-200">⚡ Ativar Entrega Automática</p>
+          <p className="mt-1 text-xs text-zinc-500">
+            Cadastre suas credenciais e o comprador as receberá instantaneamente após o pagamento, sem necessidade de intervenção manual.
+          </p>
+        </div>
+      </div>
+
       {/* Campos de preço/estoque (normal) */}
       {model === 'normal' && (
         <div className="grid grid-cols-2 gap-4">
@@ -404,7 +453,7 @@ export function Step2Details({ category }: Step2Props) {
             {errors.unit_price && <p className="text-xs text-red-400">{errors.unit_price[0]}</p>}
           </div>
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="ann-stock" className="text-sm font-medium text-zinc-300">Estoque</label>
+            <label htmlFor="ann-stock" className="text-sm font-medium text-zinc-300">Estoque (Manual)</label>
             <input
               id="ann-stock"
               type="number"
@@ -420,11 +469,31 @@ export function Step2Details({ category }: Step2Props) {
         </div>
       )}
 
+      {model === 'normal' && auto_delivery && (
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-medium text-zinc-300">
+            Chaves para Entrega Automática <span className="text-zinc-500">(1 por linha)</span>
+          </label>
+          <textarea
+            rows={4}
+            value={auto_delivery_keys}
+            onChange={(e) => setAutoKeys(e.target.value)}
+            placeholder="ABCD-1234&#10;EFGH-5678"
+            className="resize-y rounded-xl border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-violet-500"
+          />
+          {auto_delivery_keys && (
+            <p className="text-xs text-zinc-500">
+              {auto_delivery_keys.split('\n').filter(k => k.trim()).length} chaves detectadas prontas para entrega.
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Variações (dynamic) */}
       {model === 'dynamic' && (
         <div className="flex flex-col gap-3">
           <span className="text-sm font-medium text-zinc-300">Variações</span>
-          <ItemVariations variations={variations} onChange={setVariations} />
+          <ItemVariations variations={variations} hasAutoDelivery={auto_delivery} onChange={setVariations} />
         </div>
       )}
 
@@ -435,31 +504,6 @@ export function Step2Details({ category }: Step2Props) {
       <div className="flex flex-col gap-3">
         <span className="text-sm font-medium text-zinc-300">Plano do anúncio</span>
         <PlanSelector value={plan} onChange={setPlan} />
-      </div>
-
-      {/* Auto-delivery toggle */}
-      <div className="flex items-start gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
-        <button
-          type="button"
-          role="switch"
-          aria-checked={auto_delivery}
-          onClick={() => setAuto((v) => !v)}
-          className={`relative mt-0.5 h-6 w-11 shrink-0 rounded-full transition-colors ${
-            auto_delivery ? 'bg-violet-600' : 'bg-zinc-700'
-          }`}
-        >
-          <span
-            className={`absolute top-1 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${
-              auto_delivery ? 'left-6' : 'left-1'
-            }`}
-          />
-        </button>
-        <div>
-          <p className="text-sm font-medium text-zinc-200">⚡ Ativar Entrega Automática</p>
-          <p className="mt-1 text-xs text-zinc-500">
-            Cadastre as credenciais no próximo passo e o comprador as receberá instantaneamente após o pagamento, sem necessidade de intervenção manual.
-          </p>
-        </div>
       </div>
 
       {/* Filtros customizados */}

@@ -112,25 +112,17 @@ export async function lockSellerBalance(
   return data as string
 }
 
-// ─── autoDeliver ─────────────────────────────────────────────────────────────
-/**
- * Reserva atomicamente + decifra 1 auto_delivery_item.
- * Marca o anúncio como 'sold_out' se foi a última unidade.
- *
- * Caller é responsável por garantir que a ordem está paga.
- */
 export async function autoDeliver(
   orderId: string,
   announcementId: string,
   itemId: string | null,
 ): Promise<{ payload: string; soldOut: boolean } | null> {
-  const { decryptPayload } = await import('@/lib/auto-delivery/crypto')
   const admin = createAdminClient()
 
-  const { data, error } = await admin.rpc('deliver_auto_delivery', {
-    p_order_id:        orderId,
+  const { data: payload, error } = await admin.rpc('consume_auto_delivery_key', {
     p_announcement_id: announcementId,
-    p_item_id:         itemId ?? undefined,
+    p_item_id:         itemId ?? null,
+    p_order_id:        orderId,
   })
 
   if (error) {
@@ -138,16 +130,22 @@ export async function autoDeliver(
     return null
   }
 
-  const row = Array.isArray(data) ? data[0] : data
-  if (!row || !row.encrypted_payload) return null
+  if (!payload) return null
 
-  let payload: string
-  try {
-    payload = decryptPayload(row.encrypted_payload as string)
-  } catch (e) {
-    console.error('[escrow] autoDeliver decrypt failed:', e)
-    return null
+  // Check if sold out (i.e. no more keys left for this item/announcement)
+  let query = admin
+    .from('announcement_keys')
+    .select('id', { count: 'exact', head: true })
+    .eq('announcement_id', announcementId)
+    .eq('is_used', false)
+
+  if (itemId) {
+    query = query.eq('item_id', itemId)
+  } else {
+    query = query.is('item_id', null)
   }
 
-  return { payload, soldOut: Boolean(row.sold_out) }
+  const { count } = await query
+
+  return { payload: payload as string, soldOut: count === 0 }
 }

@@ -14,7 +14,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { encryptPayload } from '@/lib/auto-delivery/crypto'
 
 const MAX_PAYLOAD_LEN = 4000
 const MAX_BATCH       = 500
@@ -52,23 +51,26 @@ export async function GET(
 
   const admin = createAdminClient()
   const { data: items, error: listErr } = await admin
-    .from('auto_delivery_items')
-    .select('id, item_id, is_delivered, order_id, created_at')
+    .from('announcement_keys')
+    .select('id, item_id, is_used, order_id, created_at')
     .eq('announcement_id', announcementId)
     .order('created_at', { ascending: false })
     .limit(1000)
+
+  // Map is_used to is_delivered for the UI
+  const mappedItems = items?.map(i => ({ ...i, is_delivered: i.is_used })) ?? []
 
   if (listErr) {
     console.error('[auto-delivery.GET]', listErr)
     return NextResponse.json({ error: 'Falha ao listar itens.' }, { status: 500 })
   }
 
-  const total      = items?.length ?? 0
-  const delivered  = items?.filter((i) => i.is_delivered).length ?? 0
+  const total      = mappedItems.length
+  const delivered  = mappedItems.filter((i) => i.is_delivered).length
   const available  = total - delivered
 
   return NextResponse.json({
-    items: items ?? [],
+    items: mappedItems,
     counts: { total, delivered, available },
   })
 }
@@ -123,29 +125,29 @@ export async function POST(
     return NextResponse.json({ error: 'Nenhum item válido recebido.' }, { status: 400 })
   }
 
-  // Encripta TUDO em memória — nada de plain-text vai pro DB
+  // Grava as chaves
   let rows: Array<{
     announcement_id: string
     item_id: string | null
-    payload: string
-  }>
+    key_content: string
+  }> = []
   try {
     rows = rawList.map((p) => ({
       announcement_id: announcementId,
       item_id:         body.item_id ?? null,
-      payload:         encryptPayload(p),
+      key_content:     p,
     }))
-  } catch (cryptErr) {
-    console.error('[auto-delivery.POST] encrypt', cryptErr)
+  } catch (err) {
+    console.error('[auto-delivery.POST] parse error', err)
     return NextResponse.json(
-      { error: 'Falha ao proteger as credenciais. Verifique ENCRYPTION_KEY no servidor.' },
+      { error: 'Falha ao formatar credenciais.' },
       { status: 500 },
     )
   }
 
   const admin = createAdminClient()
   const { data: inserted, error: insertErr } = await admin
-    .from('auto_delivery_items')
+    .from('announcement_keys')
     .insert(rows)
     .select('id')
 
@@ -204,11 +206,11 @@ export async function DELETE(
 
   const admin = createAdminClient()
   const { data: deleted, error: delErr } = await admin
-    .from('auto_delivery_items')
+    .from('announcement_keys')
     .delete()
     .eq('id', body.item_id)
     .eq('announcement_id', announcementId)
-    .eq('is_delivered', false)
+    .eq('is_used', false)
     .select('id')
     .maybeSingle()
 

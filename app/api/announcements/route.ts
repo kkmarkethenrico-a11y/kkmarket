@@ -8,6 +8,7 @@ const variationSchema = z.object({
   unit_price:     z.number().min(2),
   stock_quantity: z.number().int().min(1),
   sort_order:     z.number().int().min(0),
+  auto_delivery_keys: z.string().optional(),
 })
 
 const bodySchema = z.discriminatedUnion('model', [
@@ -20,6 +21,7 @@ const bodySchema = z.discriminatedUnion('model', [
     unit_price:       z.number().min(2),
     stock_quantity:   z.number().int().min(1),
     has_auto_delivery: z.boolean(),
+    auto_delivery_keys: z.string().optional(),
     filters_data:     z.record(z.string(), z.string()).optional(),
     cover_url:        z.string().url().optional(),
     gallery_urls:     z.array(z.string()).optional(),
@@ -102,9 +104,18 @@ export async function POST(request: NextRequest) {
 
   const announcementId = announcement.id
 
+  // ── Auto Delivery Keys preparation ──
+  const keysToInsert: { announcement_id: string; item_id?: string; key_content: string }[] = []
+
+  if (data.has_auto_delivery && data.model === 'normal' && data.auto_delivery_keys) {
+    const keys = data.auto_delivery_keys.split('\n').map(k => k.trim()).filter(Boolean)
+    keys.forEach(k => keysToInsert.push({ announcement_id: announcementId, key_content: k }))
+  }
+
   // Insert variations (dynamic)
   if (data.model === 'dynamic') {
     const itemsRows = data.variations.map((v) => ({
+      id: crypto.randomUUID(),
       announcement_id: announcementId,
       title:           v.title,
       unit_price:      v.unit_price,
@@ -117,6 +128,28 @@ export async function POST(request: NextRequest) {
       // Roll back by deleting the announcement
       await supabase.from('announcements').delete().eq('id', announcementId)
       return NextResponse.json({ error: 'Erro ao criar variações.' }, { status: 500 })
+    }
+
+    // Add keys for dynamic items
+    if (data.has_auto_delivery) {
+      data.variations.forEach((v, i) => {
+        if (v.auto_delivery_keys) {
+          const keys = v.auto_delivery_keys.split('\n').map(k => k.trim()).filter(Boolean)
+          keys.forEach(k => keysToInsert.push({
+            announcement_id: announcementId,
+            item_id: itemsRows[i].id,
+            key_content: k
+          }))
+        }
+      })
+    }
+  }
+
+  // Insert Auto Delivery Keys into DB
+  if (keysToInsert.length > 0) {
+    const { error: keysError } = await supabase.from('announcement_keys').insert(keysToInsert)
+    if (keysError) {
+      console.error('[api/announcements] keys error:', keysError.message)
     }
   }
 
