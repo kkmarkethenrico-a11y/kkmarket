@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import type { AnnouncementItem } from './VariationSelector'
 import { PaymentMethods, PixResult } from '@/components/checkout/PaymentMethods'
@@ -132,6 +132,25 @@ function CheckoutModal({
     setOrderId(id)
     setPaymentData(pd)
   }
+
+  // Polling automático para confirmar PIX/Boleto pago
+  useEffect(() => {
+    if (!orderId || paymentData?.method === 'credit_card') return
+    
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/orders/${orderId}/status`)
+        const json = await res.json()
+        if (json.status && json.status !== 'pending_payment' && json.status !== 'cancelled') {
+          window.location.href = '/minhas-compras'
+        }
+      } catch (e) {
+        // Ignora falhas de rede no polling
+      }
+    }, 4000)
+
+    return () => clearInterval(interval)
+  }, [orderId, paymentData?.method])
 
   return (
     <div
