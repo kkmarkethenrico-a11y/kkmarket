@@ -58,8 +58,8 @@ export function BuyButton({
           <div className="flex items-center gap-2 rounded-xl border border-green-500/20 bg-green-500/10 px-4 py-2.5">
             <span className="text-lg">⚡</span>
             <div>
-              <p className="text-sm font-semibold text-green-400">Entrega Automática</p>
-              <p className="text-xs text-[var(--gm-green)]/70">
+              <p className="text-sm font-semibold text-[var(--gm-ink)]">Entrega Automática</p>
+              <p className="text-xs text-[var(--gm-ink-dim)]">
                 Receba seus dados instantaneamente após confirmar o pagamento
               </p>
             </div>

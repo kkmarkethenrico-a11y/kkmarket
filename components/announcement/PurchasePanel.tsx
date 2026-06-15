@@ -68,7 +68,7 @@ export function PurchasePanel({
           {selectedItem ? (
             <PriceDisplay price={selectedItem.unit_price} stock={selectedItem.stock_quantity} />
           ) : (
-            <p className="text-sm text-zinc-500">Selecione uma variação para ver o preço</p>
+            <p className="text-sm text-[var(--gm-ink-faint)]">Selecione uma variação para ver o preço</p>
           )}
           <VariationSelector items={items} onSelect={setSelectedItem} />
         </>
@@ -95,10 +95,10 @@ export function PurchasePanel({
           disabled={!canAddToCart}
           className={`flex w-full items-center justify-center gap-2 rounded-2xl border px-6 py-3 text-sm font-semibold transition-all active:scale-[0.98] ${
             added
-              ? 'border-green-500/40 bg-green-500/10 text-green-400'
+              ? 'border-green-500/40 bg-green-500/10 text-[var(--gm-green)]'
               : canAddToCart
-              ? 'border-zinc-700 bg-zinc-800/60 text-zinc-300 hover:border-violet-500/50 hover:bg-violet-500/10 hover:text-white'
-              : 'cursor-not-allowed border-zinc-800 bg-zinc-900/20 text-zinc-600'
+              ? 'border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-3)] text-[var(--gm-ink)] hover:border-[var(--gm-violet)]/50 hover:bg-[var(--gm-violet)]/10 hover:text-[var(--gm-violet)]'
+              : 'cursor-not-allowed border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-2)] text-[var(--gm-ink-faint)]'
           }`}
         >
           {added ? (
