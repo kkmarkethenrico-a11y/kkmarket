@@ -31,7 +31,23 @@ export default async function ChatPage({ params }: ChatPageProps) {
     notFound()
   }
 
-  // 4. Determina se o chat está ativo (pago, em entrega, entregue, em disputa)
+  // 4. Se o status for "Em entrega" (in_delivery) e o comprador abriu o chat, muda para "Entregue" (delivered)
+  if (order.status === 'in_delivery' && user.id === order.buyer_id) {
+    const admin = await import('@/lib/supabase/admin').then((m) => m.createAdminClient())
+    await admin
+      .from('orders')
+      .update({ 
+        status: 'delivered', 
+        delivered_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', orderId)
+    
+    // Atualiza a variável local para refletir no chatEnabled
+    order.status = 'delivered'
+  }
+
+  // 5. Determina se o chat está ativo (pago, em entrega, entregue, em disputa)
   const activeStatuses = ['paid', 'in_delivery', 'delivered', 'disputed']
   const chatEnabled = activeStatuses.includes(order.status)
 
