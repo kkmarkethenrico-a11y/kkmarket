@@ -1,5 +1,4 @@
 import { notFound, redirect } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { ChatWindow } from '@/components/chat/ChatWindow'
@@ -44,10 +43,6 @@ export default async function ChatPage({ params }: ChatPageProps) {
       })
       .eq('id', orderId)
     
-    // Invalida o cache da página de detalhes do pedido para refletir a mudança
-    revalidatePath(`/minhas-compras/${orderId}`)
-    revalidatePath(`/minhas-vendas/${orderId}`)
-
     // Atualiza a variável local para refletir no chatEnabled
     order.status = 'delivered'
   }
@@ -67,9 +62,9 @@ export default async function ChatPage({ params }: ChatPageProps) {
     <div className="min-h-[80vh] w-full max-w-4xl mx-auto p-4 flex flex-col gap-4">
       {/* Header do Chat */}
       <div className="flex items-center gap-3">
-        <Link href={backLink} className="text-[var(--gm-ink-faint)] hover:text-[var(--gm-ink)] transition-colors text-sm font-semibold">
+        <a href={backLink} className="text-[var(--gm-ink-faint)] hover:text-[var(--gm-ink)] transition-colors text-sm font-semibold">
           ← Voltar para o pedido
-        </Link>
+        </a>
       </div>
 
       <div className="rounded-xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-2)] p-4 flex flex-col gap-1">
