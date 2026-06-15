@@ -1,4 +1,5 @@
 import { notFound, redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { ChatWindow } from '@/components/chat/ChatWindow'
@@ -43,6 +44,10 @@ export default async function ChatPage({ params }: ChatPageProps) {
       })
       .eq('id', orderId)
     
+    // Invalida o cache da página de detalhes do pedido para refletir a mudança
+    revalidatePath(`/minhas-compras/${orderId}`)
+    revalidatePath(`/minhas-vendas/${orderId}`)
+
     // Atualiza a variável local para refletir no chatEnabled
     order.status = 'delivered'
   }
