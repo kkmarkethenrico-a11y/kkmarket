@@ -113,19 +113,47 @@ export async function POST(
     releaseMessage = `✅ Entrega confirmada pelo comprador. Saldo será liberado em ${newReleaseAt.toLocaleDateString('pt-BR')}.`
   }
 
-  // 8. Update order
+  // 8. Update order to completed instantly!
   await admin
     .from('orders')
     .update({
       buyer_confirmed_at: now.toISOString(),
+      completed_at:       now.toISOString(),
       accelerated_release: isPositive,
-      escrow_release_at:   newReleaseAt.toISOString(),
-      status:              'delivered',
+      status:              'completed',
       updated_at:          now.toISOString(),
     })
     .eq('id', orderId)
 
+  // 8.1 Release seller balance immediately via RPC
+  const { error: releaseErr } = await admin.rpc('release_seller_balance', {
+    p_order_id: orderId
+  })
+
+  if (releaseErr) {
+    console.error('[confirm] release_seller_balance failed:', releaseErr.message)
+  }
+
+  // 8.2 Distribute GG Points (25 for buyer, 25 for seller)
+  await admin.rpc('credit_points', {
+    p_user_id: order.buyer_id,
+    p_type: 'purchase_earn',
+    p_amount: 25,
+    p_reference_id: orderId,
+    p_description: 'Pontos ganhos por confirmar recebimento de compra'
+  })
+
+  await admin.rpc('credit_points', {
+    p_user_id: order.seller_id,
+    p_type: 'sale_earn',
+    p_amount: 25,
+    p_reference_id: orderId,
+    p_description: 'Pontos ganhos por venda concluída'
+  })
+
   // 9. System message in chat
+  releaseMessage = `✅ Compra concluída! Recebimento confirmado. O saldo foi liberado para o vendedor e ambos ganharam 25 Pontos GG!`
+  
   await admin.from('order_messages').insert({
     order_id:  orderId,
     sender_id: null,

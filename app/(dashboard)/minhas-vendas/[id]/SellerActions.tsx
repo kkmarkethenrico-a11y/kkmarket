@@ -18,7 +18,24 @@ export default function SellerActions({ orderId, status }: Props) {
   const [error, setError] = useState<string | null>(null)
 
   const canDispute = DISPUTABLE.includes(status)
-  if (!canDispute) return null
+  const canDeliver = status === 'paid' || status === 'in_delivery'
+
+  if (!canDispute && !canDeliver) return null
+
+  async function confirmDelivery() {
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await fetch(`/api/orders/${orderId}/deliver`, { method: 'POST' })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error ?? 'Erro ao confirmar entrega')
+      router.refresh()
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Erro desconhecido')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   async function openDispute() {
     if (disputeReason.length < 10) {
@@ -54,7 +71,17 @@ export default function SellerActions({ orderId, status }: Props) {
         </p>
       )}
 
-      {!showDispute && (
+      {canDeliver && (
+        <button
+          onClick={confirmDelivery}
+          disabled={loading}
+          className="w-full rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-violet-500 disabled:opacity-60 transition-colors"
+        >
+          {loading ? 'Confirmando…' : '📦 Confirmar entrega'}
+        </button>
+      )}
+
+      {!showDispute && canDispute && (
         <button
           onClick={() => { setShowDispute(true); setError(null) }}
           className="w-full rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-2.5 text-sm font-semibold text-red-400 hover:bg-red-500/20 transition-colors"

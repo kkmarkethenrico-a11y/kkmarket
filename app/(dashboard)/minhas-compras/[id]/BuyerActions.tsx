@@ -56,7 +56,7 @@ export default function BuyerActions({ orderId, status }: Props) {
     }
   }
 
-  const canConfirm = status === 'delivered'
+  const canConfirm = status === 'delivered' || status === 'in_delivery'
   const canDispute = DISPUTABLE.includes(status)
 
   if (!canConfirm && !canDispute) return null
