@@ -105,6 +105,15 @@ export async function Header() {
               </Link>
             )}
 
+            {user && profile?.role === 'admin' && (
+              <Link
+                href="/admin"
+                className="hidden lg:flex items-center gap-1.5 rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-1.5 text-sm font-bold text-red-500 transition-all hover:bg-red-500/20 active:scale-95"
+              >
+                Admin
+              </Link>
+            )}
+
             {user && (
               <Link
                 href="/painel"
