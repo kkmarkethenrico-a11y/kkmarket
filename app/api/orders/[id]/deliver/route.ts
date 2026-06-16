@@ -44,7 +44,6 @@ export async function POST(
     .from('orders')
     .update({
       status: 'delivered',
-      delivered_at: now,
       updated_at: now,
     })
     .eq('id', orderId)
