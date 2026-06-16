@@ -135,21 +135,34 @@ export async function POST(
   }
 
   // 8.2 Distribute GG Points (25 for buyer, 25 for seller)
-  await admin.rpc('credit_points', {
-    p_user_id: order.buyer_id,
-    p_type: 'purchase_earn',
-    p_amount: 25,
-    p_reference_id: orderId,
-    p_description: 'Pontos ganhos por confirmar recebimento de compra'
-  })
+  // p_expires_at é obrigatório na assinatura da RPC — pontos expiram em 1 ano
+  const pointsExpiresAt = new Date(now)
+  pointsExpiresAt.setFullYear(pointsExpiresAt.getFullYear() + 1)
+  const expiresIso = pointsExpiresAt.toISOString()
 
-  await admin.rpc('credit_points', {
-    p_user_id: order.seller_id,
-    p_type: 'sale_earn',
-    p_amount: 25,
+  const { error: buyerPointsErr } = await admin.rpc('credit_points', {
+    p_user_id:      order.buyer_id,
+    p_type:         'purchase_earn',
+    p_amount:       25,
+    p_expires_at:   expiresIso,
     p_reference_id: orderId,
-    p_description: 'Pontos ganhos por venda concluída'
+    p_description:  'Pontos ganhos por confirmar recebimento de compra',
   })
+  if (buyerPointsErr) {
+    console.error('[confirm] credit_points buyer failed:', buyerPointsErr.message)
+  }
+
+  const { error: sellerPointsErr } = await admin.rpc('credit_points', {
+    p_user_id:      order.seller_id,
+    p_type:         'sale_earn',
+    p_amount:       25,
+    p_expires_at:   expiresIso,
+    p_reference_id: orderId,
+    p_description:  'Pontos ganhos por venda concluída',
+  })
+  if (sellerPointsErr) {
+    console.error('[confirm] credit_points seller failed:', sellerPointsErr.message)
+  }
 
   // 9. System message in chat
   releaseMessage = `✅ Compra concluída! Recebimento confirmado. O saldo foi liberado para o vendedor e ambos ganharam 25 Pontos GG!`
