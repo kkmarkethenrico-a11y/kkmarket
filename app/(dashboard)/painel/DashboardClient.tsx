@@ -190,7 +190,6 @@ export default function DashboardClient({
     { id: 'daily_login', label: 'login diário', progress: 1, max: 1, pts: 10, done: claimedQuests.includes(todayQuestId) },
     { id: 'first_purchase', label: 'fazer sua 1ª compra da semana', progress: claimedQuests.includes('first_purchase') ? 1 : Math.min(totalPurchases, 1), max: 1, pts: 25, done: claimedQuests.includes('first_purchase') },
     { id: 'first_sale', label: 'criar 1 novo anúncio', progress: claimedQuests.includes('first_sale') ? 1 : Math.min(totalSales, 1), max: 1, pts: 50, done: claimedQuests.includes('first_sale') },
-    { id: 'invite_friend', label: 'convidar 1 amigo', progress: claimedQuests.includes('invite_friend') ? 1 : 0, max: 1, pts: 100, done: claimedQuests.includes('invite_friend') },
   ]
 
   // Activity feed from orders
@@ -202,19 +201,19 @@ export default function DashboardClient({
   }))
 
   // Achievements derived from milestones
-  const achievements: { icon: React.ReactNode; unlocked: boolean }[] = [
-    { icon: <Trophy className="h-4 w-4" />, unlocked: totalSales >= 1 },
-    { icon: <Zap className="h-4 w-4" />, unlocked: totalPurchases >= 1 },
-    { icon: <Lock className="h-4 w-4" />, unlocked: false },
-    { icon: <Star className="h-4 w-4" />,  unlocked: pointsBalance >= 50 },
-    { icon: <Wallet className="h-4 w-4" />, unlocked: walletBalance > 0 },
-    { icon: <Target className="h-4 w-4" />, unlocked: totalSales >= 10 },
-    { icon: <Lock className="h-4 w-4" />,  unlocked: false },
-    { icon: <Lock className="h-4 w-4" />,  unlocked: false },
-    { icon: <Lock className="h-4 w-4" />,  unlocked: false },
-    { icon: <Lock className="h-4 w-4" />,  unlocked: false },
-    { icon: <Lock className="h-4 w-4" />,  unlocked: false },
-    { icon: <Lock className="h-4 w-4" />,  unlocked: false },
+  const achievements: { icon: React.ReactNode; unlocked: boolean; name: string; description: string }[] = [
+    { icon: <Trophy className="h-4 w-4" />, unlocked: totalSales >= 1, name: 'Primeira Venda', description: 'Você realizou sua primeira venda!' },
+    { icon: <Zap className="h-4 w-4" />, unlocked: totalPurchases >= 1, name: 'Primeira Compra', description: 'Você realizou sua primeira compra!' },
+    { icon: <Lock className="h-4 w-4" />, unlocked: false, name: 'Misteriosa', description: 'Continue jogando para descobrir' },
+    { icon: <Star className="h-4 w-4" />,  unlocked: pointsBalance >= 50, name: 'Estrela Ascendente', description: 'Você acumulou 50 pontos' },
+    { icon: <Wallet className="h-4 w-4" />, unlocked: walletBalance > 0, name: 'Primeiro Lucro', description: 'Você tem saldo na carteira' },
+    { icon: <Target className="h-4 w-4" />, unlocked: totalSales >= 10, name: 'Vendedor Frequente', description: 'Você realizou 10 vendas' },
+    { icon: <Lock className="h-4 w-4" />,  unlocked: false, name: 'Misteriosa', description: 'Continue jogando para descobrir' },
+    { icon: <Lock className="h-4 w-4" />,  unlocked: false, name: 'Misteriosa', description: 'Continue jogando para descobrir' },
+    { icon: <Lock className="h-4 w-4" />,  unlocked: false, name: 'Misteriosa', description: 'Continue jogando para descobrir' },
+    { icon: <Lock className="h-4 w-4" />,  unlocked: false, name: 'Misteriosa', description: 'Continue jogando para descobrir' },
+    { icon: <Lock className="h-4 w-4" />,  unlocked: false, name: 'Misteriosa', description: 'Continue jogando para descobrir' },
+    { icon: <Lock className="h-4 w-4" />,  unlocked: false, name: 'Misteriosa', description: 'Continue jogando para descobrir' },
   ]
 
   const unlockedCount = achievements.filter((a) => a.unlocked).length
@@ -370,7 +369,14 @@ export default function DashboardClient({
               <div className="grid grid-cols-4 gap-2">
                 {achievements.map((a, i) => (
                   <div key={i}
-                    className="flex aspect-square items-center justify-center rounded-lg text-lg"
+                    onClick={() => {
+                      if (a.unlocked) {
+                        toast.success(a.name, { description: a.description })
+                      } else {
+                        toast(a.name, { description: a.description })
+                      }
+                    }}
+                    className="flex aspect-square items-center justify-center rounded-lg text-lg cursor-pointer hover:bg-[var(--gm-paper-3)] transition-colors"
                     style={{
                       border: `1.5px ${a.unlocked ? 'solid' : 'dashed'} ${i < 2 && a.unlocked ? 'var(--gm-violet)' : 'var(--gm-ink-faint)'}`,
                       background: i < 2 && a.unlocked ? 'rgba(255, 157, 0, 0.1)' : 'transparent',
