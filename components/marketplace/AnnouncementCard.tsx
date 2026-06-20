@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { ShoppingCart, Plus } from 'lucide-react'
 import { PlanBadge } from './PlanBadge'
 import type { AnnouncementWithRelations } from '@/types'
 
@@ -78,7 +79,10 @@ export function AnnouncementCard({ ann, dict }: { ann: AnnouncementWithRelations
           ) : (
             <span className="font-label-md text-label-md font-bold text-on-surface-variant tracking-tight">Ver variações</span>
           )}
-          <span className="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">add_shopping_cart</span>
+          <div className="flex items-center justify-center p-2 rounded-lg bg-surface-variant/50 text-on-surface-variant group-hover:bg-primary/20 group-hover:text-primary transition-all duration-300">
+            <Plus className="h-3 w-3 mr-0.5" strokeWidth={3} />
+            <ShoppingCart className="h-4 w-4" strokeWidth={2} />
+          </div>
         </div>
       </div>
     </Link>
