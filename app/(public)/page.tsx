@@ -278,10 +278,10 @@ export default async function HomePage() {
               <section>
                 <div className="flex justify-between items-end mb-6">
                   <div>
-                    <h2 className="font-headline-md text-headline-md text-white">Últimas do Blog</h2>
-                    <p className="text-on-surface-variant font-body-md text-body-md">Fique por dentro das novidades, dicas e tutoriais</p>
+                    <h2 className="font-headline-md text-headline-md text-white">{dict.sections.latestBlog}</h2>
+                    <p className="text-on-surface-variant font-body-md text-body-md">{dict.sections.latestBlogDesc}</p>
                   </div>
-                  <Link className="text-primary hover:underline font-label-md text-label-md" href="/blog">Ver todos</Link>
+                  <Link className="text-primary hover:underline font-label-md text-label-md" href="/blog">{dict.sections.viewAll}</Link>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                   {posts.map((post: any) => (
