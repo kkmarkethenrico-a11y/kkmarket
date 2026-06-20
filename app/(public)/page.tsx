@@ -86,7 +86,23 @@ async function getData() {
     return raw.map((ann) => ({ ...ann, user_stats: statsMap.get(ann.user_id) ?? null }))
   }
 
+  const { data: { user } } = await supabase.auth.getUser()
+
+  let userPoints = 0
+  if (user) {
+    const { data: statsRes } = await supabase
+      .from('user_stats')
+      .select('points_balance')
+      .eq('user_id', user.id)
+      .single()
+    if (statsRes) {
+      userPoints = statsRes.points_balance ?? 0
+    }
+  }
+
   return {
+    user,
+    userPoints,
     featured: mergeStats(featuredRes.data ?? []) as unknown as AnnouncementWithRelations[],
     popular: mergeStats(popularRes.data ?? []).sort(
       (a, b) => planWeight((b as any).plan) - planWeight((a as any).plan)
@@ -100,7 +116,7 @@ async function getData() {
 }
 
 export default async function HomePage() {
-  const { featured, popular, newest, reviews, posts, categories, sellers } = await getData()
+  const { user, userPoints, featured, popular, newest, reviews, posts, categories, sellers } = await getData()
   const dict = await getDictionary()
 
   const categoryItems = categories.length > 0
@@ -153,12 +169,19 @@ export default async function HomePage() {
             <div className="flex items-center gap-6">
               <div className="text-right hidden sm:block">
                 <div className="font-label-sm text-label-sm uppercase tracking-widest opacity-60">{dict.missions.nextReward}</div>
-                <div className="font-label-md text-label-md font-bold">1,500 KK-COINS</div>
+                <div className="font-label-md text-label-md font-bold">
+                  {user ? `${userPoints.toLocaleString('pt-BR')} / ${Math.max(1500, Math.ceil((userPoints + 1) / 1500) * 1500).toLocaleString('pt-BR')} KK-COINS` : '1.500 KK-COINS'}
+                </div>
               </div>
               <div className="hidden sm:block w-32 h-2 bg-on-secondary-container/20 rounded-full overflow-hidden">
-                <div className="w-3/4 h-full bg-on-secondary-container"></div>
+                <div 
+                  className="h-full bg-on-secondary-container transition-all duration-500" 
+                  style={{ width: user ? `${(userPoints % 1500) / 1500 * 100}%` : '75%' }} 
+                />
               </div>
-              <button className="bg-on-secondary-container text-secondary-container px-6 py-2 rounded-lg font-bold hover:opacity-90 transition-opacity">{dict.missions.claim}</button>
+              <button className="bg-on-secondary-container text-secondary-container px-6 py-2 rounded-lg font-bold hover:opacity-90 transition-opacity">
+                {dict.missions.claim}
+              </button>
             </div>
           </div>
         </section>
