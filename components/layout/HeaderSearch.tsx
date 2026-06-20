@@ -20,11 +20,22 @@ const mockResults = {
   ],
 }
 
-export function HeaderSearch() {
+export function HeaderSearch({ dict }: { dict?: any }) {
   const [query, setQuery] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+
+  // Fallback para caso não receba o dict
+  const d = dict || {
+    header: {
+      searchPlaceholder: 'Buscar anúncios, jogos, usuários...',
+      ads: 'Anúncios',
+      categories: 'Categorias',
+      sellers: 'Vendedores',
+      viewAllResults: 'Ver todos os resultados para',
+    }
+  }
 
   // Handle click outside to close dropdown
   useEffect(() => {
@@ -61,7 +72,7 @@ export function HeaderSearch() {
         )}
         <Input
           type="search"
-          placeholder="Buscar anúncios, jogos, usuários..."
+          placeholder={d.header.searchPlaceholder}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => {
@@ -77,7 +88,7 @@ export function HeaderSearch() {
             
             {/* Announcements */}
             <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-widest">
-              Anúncios
+              {d.header.ads}
             </div>
             <div className="mb-2 flex flex-col">
               {mockResults.announcements.map((item) => (
@@ -100,7 +111,7 @@ export function HeaderSearch() {
 
             {/* Categories */}
             <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-widest border-t border-border/50 pt-3">
-              Categorias
+              {d.header.categories}
             </div>
             <div className="mb-2 flex gap-2 px-2 py-1 flex-wrap">
               {mockResults.categories.map((cat) => (
@@ -118,7 +129,7 @@ export function HeaderSearch() {
 
             {/* Users */}
             <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-widest border-t border-border/50 pt-3">
-              Vendedores
+              {d.header.sellers}
             </div>
             <div className="flex flex-col mb-1">
               {mockResults.users.map((user) => (
@@ -146,7 +157,7 @@ export function HeaderSearch() {
             onClick={() => setIsOpen(false)}
             className="block border-t border-border bg-muted/50 p-3 text-center text-xs font-medium text-primary hover:text-primary/80 hover:bg-muted transition-colors"
           >
-            Ver todos os resultados para &quot;{query}&quot;
+            {d.header.viewAllResults} &quot;{query}&quot;
           </Link>
         </div>
       )}

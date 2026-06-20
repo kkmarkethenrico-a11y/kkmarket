@@ -1,28 +1,31 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { getDictionary } from '@/lib/i18n'
 
-const LINKS = {
-  'Acesso Rápido': [
-    { label: 'Anunciar', href: '/meus-anuncios/novo' },
-    { label: 'Blog', href: '/blog' },
-    { label: 'Perguntas frequentes', href: '/perguntas-frequentes' },
-    { label: 'Categorias', href: '/categorias' },
-  ],
-  'Como Funciona': [
-    { label: 'Como funciona', href: '/como-funciona' },
-    { label: 'Tarifas e prazos', href: '/tarifas-e-prazos' },
-    { label: 'Formas de pagamento', href: '/formas-de-pagamento' },
-    { label: 'Programa de pontos', href: '/programa-de-pontos' },
-    { label: 'Verificador de contas', href: '/verificador' },
-    { label: 'Ranking de Vendedores', href: '/ranking' },
-  ],
-  'Institucional': [
-    { label: 'Termos de uso', href: '/termos' },
-    { label: 'Política de privacidade', href: '/privacidade' },
-  ],
-}
+export async function Footer() {
+  const dict = await getDictionary()
 
-export function Footer() {
+  const LINKS = {
+    [dict.footer.links.quickAccess]: [
+      { label: dict.footer.items.announce, href: '/meus-anuncios/novo' },
+      { label: dict.footer.items.blog, href: '/blog' },
+      { label: dict.footer.items.faq, href: '/perguntas-frequentes' },
+      { label: dict.footer.items.categories, href: '/categorias' },
+    ],
+    [dict.footer.links.howItWorks]: [
+      { label: dict.footer.items.howItWorks, href: '/como-funciona' },
+      { label: dict.footer.items.fees, href: '/tarifas-e-prazos' },
+      { label: dict.footer.items.paymentMethods, href: '/formas-de-pagamento' },
+      { label: dict.footer.items.pointsProgram, href: '/programa-de-pontos' },
+      { label: dict.footer.items.accountChecker, href: '/verificador' },
+      { label: dict.footer.items.sellerRanking, href: '/ranking' },
+    ],
+    [dict.footer.links.institutional]: [
+      { label: dict.footer.items.terms, href: '/termos' },
+      { label: dict.footer.items.privacy, href: '/privacidade' },
+    ],
+  }
+
   return (
     <footer className="border-t border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper)]">
       <div className="container mx-auto px-4 py-12">
@@ -40,7 +43,7 @@ export function Footer() {
               />
             </Link>
             <p className="text-sm leading-relaxed text-[var(--gm-ink-dim)]">
-              Somos o marketplace ideal para o mercado digital. Conectamos compradores e vendedores de forma segura, garantindo a entrega do produto e o pagamento, com total praticidade.
+              {dict.footer.description}
             </p>
           </div>
 
@@ -65,7 +68,7 @@ export function Footer() {
       <div className="border-t border-[var(--gm-ink-faint)]/15">
         <div className="container mx-auto flex flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-[var(--gm-ink-dim)] sm:flex-row">
           <span>Copyright © KKmarket {new Date().getFullYear()}</span>
-          <span>Plataforma de marketplace de produtos digitais</span>
+          <span>{dict.footer.copyright}</span>
         </div>
       </div>
     </footer>

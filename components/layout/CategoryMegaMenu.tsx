@@ -9,19 +9,19 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { ChevronDown, Gamepad2, LayoutGrid, MonitorPlay, Bot, Code } from 'lucide-react'
 
-const topCategories = [
-  { name: 'Jogos', icon: Gamepad2, slug: 'jogos', items: ['Free Fire', 'Valorant', 'Roblox', 'League of Legends', 'Minecraft', 'GTA V', 'CS2', 'Fortnite'] },
-  { name: 'Redes Sociais', icon: LayoutGrid, slug: 'redes-sociais' },
-  { name: 'Bots', icon: Bot, slug: 'bots' },
-  { name: 'Scripts', icon: Code, slug: 'scripts' },
-  { name: 'Outros Digitais', icon: MonitorPlay, slug: 'outros-digitais' },
-]
+export function CategoryMegaMenu({ dict }: { dict: any }) {
+  const topCategories = [
+    { name: dict.categories.games, icon: Gamepad2, slug: 'jogos', items: ['Free Fire', 'Valorant', 'Roblox', 'League of Legends', 'Minecraft', 'GTA V', 'CS2', 'Fortnite'] },
+    { name: dict.categories.socialMedia, icon: LayoutGrid, slug: 'redes-sociais' },
+    { name: dict.categories.bots, icon: Bot, slug: 'bots' },
+    { name: dict.categories.scripts, icon: Code, slug: 'scripts' },
+    { name: dict.categories.otherDigital, icon: MonitorPlay, slug: 'outros-digitais' },
+  ]
 
-export function CategoryMegaMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center gap-1.5 text-sm font-medium text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)] transition-colors outline-none focus-visible:text-[var(--gm-violet)]">
-          Categorias
+          {dict.header.categories}
           <ChevronDown className="h-4 w-4 opacity-50" />
       </DropdownMenuTrigger>
 
@@ -46,7 +46,7 @@ export function CategoryMegaMenu() {
           {/* Sub-categories grid view */}
           <div className="col-span-2 flex flex-col">
             <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--gm-ink-faint)] mb-3 px-2">
-              Jogos Populares
+              {dict.header.popularGames}
             </h4>
             <div className="grid grid-cols-2 gap-1">
               {topCategories[0].items?.map(game => (
@@ -60,7 +60,7 @@ export function CategoryMegaMenu() {
 
             <DropdownMenuItem className="mt-4 rounded-lg cursor-pointer bg-[var(--gm-violet)]/10 focus:bg-[var(--gm-violet)]/20 text-[var(--gm-violet)] focus:text-[var(--gm-violet)] p-0">
               <Link href="/categoria/jogos" className="flex items-center justify-center py-2.5 font-medium border border-[var(--gm-violet)]/20 w-full">
-                Ver todos os jogos
+                {dict.header.viewAllGames}
               </Link>
             </DropdownMenuItem>
           </div>

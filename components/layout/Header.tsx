@@ -72,7 +72,7 @@ export async function Header() {
 
             {/* Navegação Desktop */}
             <nav className="hidden lg:flex items-center gap-6">
-              <CategoryMegaMenu />
+              <CategoryMegaMenu dict={dict} />
               <Link
                 href="/blog"
                 className="text-sm font-medium text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)] transition-colors"
@@ -84,7 +84,7 @@ export async function Header() {
 
           {/* Busca (Desktop) */}
           <div className="hidden flex-1 items-center justify-center lg:flex max-w-xl px-4">
-            <HeaderSearch />
+            <HeaderSearch dict={dict} />
           </div>
 
           {/* Ações */}
@@ -151,7 +151,7 @@ export async function Header() {
             </div>
 
             {/* Mobile nav */}
-            <MobileNav isAuthenticated={!!user} profile={profile} sellerStatus={profile?.seller_status ?? 'disabled'} />
+            <MobileNav isAuthenticated={!!user} profile={profile} sellerStatus={profile?.seller_status ?? 'disabled'} dict={dict} />
           </div>
         </div>
       </div>
