@@ -20,7 +20,10 @@ export function CategoryMegaMenu({ dict }: { dict: any }) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center gap-1.5 text-sm font-medium text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)] transition-colors outline-none focus-visible:text-[var(--gm-violet)]">
+      <DropdownMenuTrigger
+        data-tour="categories"
+        className="flex items-center gap-1.5 text-sm font-medium text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)] transition-colors outline-none focus-visible:text-[var(--gm-violet)]"
+      >
           {dict.header.categories}
           <ChevronDown className="h-4 w-4 opacity-50" />
       </DropdownMenuTrigger>

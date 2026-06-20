@@ -87,6 +87,51 @@ export const dictionaries = {
       scripts: 'Scripts',
       otherDigital: 'Outros Digitais',
     },
+    onboarding: {
+      next: 'Próximo',
+      back: 'Voltar',
+      skip: 'Pular tour',
+      finish: 'Começar a explorar',
+      stepOf: 'Passo {current} de {total}',
+      steps: {
+        welcome: {
+          title: 'Bem-vindo ao KKmarket!',
+          description: 'Este tour rápido mostra como navegar, comprar com segurança e aproveitar recompensas. Leva menos de 1 minuto.',
+        },
+        categories: {
+          title: 'Explore as categorias',
+          description: 'Encontre jogos, bots, scripts e produtos digitais organizados por categoria. No celular, abra o menu para acessar.',
+        },
+        search: {
+          title: 'Busque o que precisa',
+          description: 'Digite o nome do jogo, item ou vendedor para encontrar anúncios em segundos.',
+        },
+        missions: {
+          title: 'Missões e recompensas',
+          description: 'Complete tarefas diárias para ganhar KK-COINS e desbloquear benefícios exclusivos na plataforma.',
+        },
+        cart: {
+          title: 'Seu carrinho',
+          description: 'Adicione itens aos anúncios e finalize a compra com pagamento protegido e entrega garantida.',
+        },
+        account: {
+          title: 'Sua conta e painel',
+          description: 'Acesse seu painel, acompanhe compras, vendas, pontos e gerencie tudo em um só lugar.',
+        },
+        accountGuest: {
+          title: 'Entre ou crie sua conta',
+          description: 'Faça login para comprar, vender, ganhar pontos diários e acompanhar seus pedidos com segurança.',
+        },
+        language: {
+          title: 'Escolha o idioma',
+          description: 'Alterne entre português e inglês a qualquer momento. No celular, o seletor fica no menu lateral.',
+        },
+        finish: {
+          title: 'Tudo pronto!',
+          description: 'Você já conhece o essencial. Explore os destaques, negocie com confiança e aproveite o marketplace.',
+        },
+      },
+    },
     auth: {
       language: 'Idioma',
       login: {
@@ -262,6 +307,51 @@ export const dictionaries = {
       bots: 'Bots',
       scripts: 'Scripts',
       otherDigital: 'Other Digital',
+    },
+    onboarding: {
+      next: 'Next',
+      back: 'Back',
+      skip: 'Skip tour',
+      finish: 'Start exploring',
+      stepOf: 'Step {current} of {total}',
+      steps: {
+        welcome: {
+          title: 'Welcome to KKmarket!',
+          description: 'This quick tour shows you how to browse, buy safely, and earn rewards. It takes less than a minute.',
+        },
+        categories: {
+          title: 'Browse categories',
+          description: 'Find games, bots, scripts, and digital products organized by category. On mobile, open the menu to access them.',
+        },
+        search: {
+          title: 'Search what you need',
+          description: 'Type a game, item, or seller name to find listings in seconds.',
+        },
+        missions: {
+          title: 'Missions & rewards',
+          description: 'Complete daily tasks to earn KK-COINS and unlock exclusive platform perks.',
+        },
+        cart: {
+          title: 'Your cart',
+          description: 'Add items from listings and checkout with protected payment and guaranteed delivery.',
+        },
+        account: {
+          title: 'Your account & dashboard',
+          description: 'Access your dashboard, track purchases, sales, points, and manage everything in one place.',
+        },
+        accountGuest: {
+          title: 'Sign in or create an account',
+          description: 'Log in to buy, sell, earn daily points, and track your orders securely.',
+        },
+        language: {
+          title: 'Choose your language',
+          description: 'Switch between Portuguese and English anytime. On mobile, the selector is in the side menu.',
+        },
+        finish: {
+          title: 'You\'re all set!',
+          description: 'You know the essentials. Explore featured items, trade with confidence, and enjoy the marketplace.',
+        },
+      },
     },
     auth: {
       language: 'Language',

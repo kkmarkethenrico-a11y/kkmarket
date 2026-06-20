@@ -83,7 +83,7 @@ export async function Header() {
           </div>
 
           {/* Busca (Desktop) */}
-          <div className="hidden flex-1 items-center justify-center lg:flex max-w-xl px-4">
+          <div className="hidden flex-1 items-center justify-center lg:flex max-w-xl px-4" data-tour="search">
             <HeaderSearch dict={dict} />
           </div>
 
@@ -138,7 +138,7 @@ export async function Header() {
             )}
 
             {/* Language Selector */}
-            <div className="hidden lg:block ml-1">
+            <div className="hidden lg:block ml-1" data-tour="language">
               <LanguageSelector currentLang={lang} />
             </div>
 
@@ -146,7 +146,7 @@ export async function Header() {
             <CartButton />
 
             {/* Desktop UserNav */}
-            <div className="hidden lg:block border-l border-[var(--gm-ink-faint)]/40 pl-3 ml-1">
+            <div className="hidden lg:block border-l border-[var(--gm-ink-faint)]/40 pl-3 ml-1" data-tour="account">
               <UserNav />
             </div>
 

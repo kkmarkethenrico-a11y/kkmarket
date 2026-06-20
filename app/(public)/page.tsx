@@ -155,7 +155,7 @@ export default async function HomePage() {
         </section>
 
         {/* Missions & Rewards Banner */}
-        <section className="mt-8">
+        <section className="mt-8" data-tour="missions">
           <div className="bg-secondary-container text-on-secondary-container p-6 rounded-xl flex flex-col md:flex-row md:items-center justify-between shadow-lg gap-4">
             <div className="flex items-center gap-4">
               <div className="bg-on-secondary-container text-secondary p-3 rounded-lg">

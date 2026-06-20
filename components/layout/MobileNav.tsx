@@ -75,13 +75,17 @@ export function MobileNav({ isAuthenticated, profile, sellerStatus = 'disabled',
     <div className="flex items-center gap-2 lg:hidden">
       <button
         onClick={() => setShowSearch(true)}
+        data-tour="mobile-search"
         className="p-2 text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)] transition-colors"
       >
         <Search className="h-5 w-5" />
       </button>
 
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger className="p-2 text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)] transition-colors">
+        <SheetTrigger
+          data-tour="mobile-menu"
+          className="p-2 text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)] transition-colors"
+        >
             <Menu className="h-6 w-6" />
         </SheetTrigger>
         <SheetContent side="right" className="w-[300px] border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper)] p-6 sm:w-[400px]">

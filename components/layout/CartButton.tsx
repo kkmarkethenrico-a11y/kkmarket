@@ -10,6 +10,7 @@ export function CartButton() {
   return (
     <Link
       href="/carrinho"
+      data-tour="cart"
       className="relative flex items-center justify-center rounded-full p-2 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-white"
       title="Carrinho de compras"
     >
