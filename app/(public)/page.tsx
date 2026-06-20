@@ -272,6 +272,42 @@ export default async function HomePage() {
                 </div>
               </section>
             )}
+
+            {/* Blog Posts Section */}
+            {posts.length > 0 && (
+              <section>
+                <div className="flex justify-between items-end mb-6">
+                  <div>
+                    <h2 className="font-headline-md text-headline-md text-white">Últimas do Blog</h2>
+                    <p className="text-on-surface-variant font-body-md text-body-md">Fique por dentro das novidades, dicas e tutoriais</p>
+                  </div>
+                  <Link className="text-primary hover:underline font-label-md text-label-md" href="/blog">Ver todos</Link>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                  {posts.map((post: any) => (
+                    <Link key={post.id} href={`/blog/${post.slug}`} className="group bg-surface-container-low rounded-xl border border-white/5 overflow-hidden hover:border-primary/30 transition-colors">
+                      <div className="aspect-[16/9] w-full relative overflow-hidden bg-surface-variant">
+                        {post.cover_url ? (
+                          <Image src={post.cover_url} alt={post.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-on-surface-variant">
+                            <Terminal className="w-8 h-8 opacity-20" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-5">
+                        <div className="text-xs text-primary font-bold mb-2 uppercase tracking-wider">
+                          {new Date(post.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
+                        </div>
+                        <h3 className="font-headline-sm text-headline-sm text-white line-clamp-2 group-hover:text-primary transition-colors">
+                          {post.title}
+                        </h3>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
         </div>
       </main>
