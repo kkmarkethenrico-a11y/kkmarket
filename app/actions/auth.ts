@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { loginSchema, registerSchema } from '@/lib/validations/auth'
+import { sendWelcomeEmail } from '@/lib/resend/emails'
 
 export type LoginFormState = {
   errors?: { email?: string[]; password?: string[] }
@@ -92,6 +93,11 @@ export async function registerAction(
     return { message: 'Erro ao criar conta. Tente novamente.' }
   }
 
+  void sendWelcomeEmail({
+    to: parsed.data.email,
+    username: parsed.data.username.toLowerCase(),
+  }).catch((err) => console.error('[registerAction] welcome email failed:', err))
+
   return {
     message:
       'success:Conta criada! Verifique seu e-mail para ativar sua conta.',
@@ -169,6 +175,13 @@ export async function completeProfileAction(
       return { error: 'Este username já está em uso. Escolha outro.' }
     }
     return { error: 'Erro ao salvar. Tente novamente.' }
+  }
+
+  if (user.email) {
+    void sendWelcomeEmail({
+      to: user.email,
+      username,
+    }).catch((err) => console.error('[completeProfileAction] welcome email failed:', err))
   }
 
   redirect('/painel')

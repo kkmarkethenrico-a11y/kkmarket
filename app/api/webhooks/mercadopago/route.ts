@@ -26,6 +26,7 @@ import {
   calculateReleaseDate,
   lockSellerBalance,
 } from '@/lib/orders/escrow'
+import { sendOrderPaidEmails } from '@/lib/resend/order-emails'
 
 const paymentClient = new Payment(mp)
 
@@ -203,6 +204,8 @@ async function handlePaymentApproved(
   await lockSellerBalance(order.id, order.seller_id, order.seller_amount)
 
   // d. Auto-delivery, se aplicável
+  let autoDeliveryCode: string | null = null
+
   if (ann.has_auto_delivery) {
     const result = await autoDeliver(
       order.id,
@@ -211,6 +214,8 @@ async function handlePaymentApproved(
     )
 
     if (result) {
+      autoDeliveryCode = result.payload
+
       await admin
         .from('orders')
         .update({ status: 'in_delivery', updated_at: now.toISOString() })
@@ -304,6 +309,13 @@ async function handlePaymentApproved(
   }
 
   console.log('[MP Webhook] payment approved processed:', order.id)
+
+  // h. E-mails transacionais (compra + código de entrega automática)
+  try {
+    await sendOrderPaidEmails(admin, order, autoDeliveryCode)
+  } catch (emailErr) {
+    console.error('[MP Webhook] falha ao enviar e-mails:', emailErr)
+  }
 }
 
 // ─── handlePaymentFailed ─────────────────────────────────────────────────────
