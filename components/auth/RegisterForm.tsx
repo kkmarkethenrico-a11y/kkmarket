@@ -16,11 +16,9 @@ function GoogleIcon() {
   )
 }
 
-// O ícone do Discord foi removido
-
 type AvailabilityStatus = 'idle' | 'checking' | 'available' | 'taken' | 'invalid'
 
-function useUsernameAvailability() {
+function useUsernameAvailability(t: any) {
   const [status, setStatus] = useState<AvailabilityStatus>('idle')
   const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
@@ -39,19 +37,28 @@ function useUsernameAvailability() {
     }, 500)
   }
 
-  return { status, check }
-}
+  const usernameHint: Record<AvailabilityStatus, { text: string; cls: string } | null> = {
+    idle: null,
+    invalid: { text: t.usernameInvalid, cls: 'text-[var(--gm-amber)]' },
+    checking: { text: t.usernameChecking, cls: 'text-[var(--gm-ink-faint)]' },
+    available: { text: t.usernameAvailable, cls: 'text-[var(--gm-green)]' },
+    taken: { text: t.usernameTaken, cls: 'text-[var(--gm-rose)]' },
+  }
 
-const STEPS = ['conta', 'segurança', 'confirmar'] as const
+  return { status, check, usernameHint }
+}
 
 const inputCls = "w-full rounded-lg border border-[var(--gm-ink-faint)]/50 bg-[var(--gm-paper-3)] px-4 py-3 text-sm text-[var(--gm-ink)] placeholder-[var(--gm-ink-faint)] outline-none transition-all focus:border-[var(--gm-violet)] focus:ring-2 focus:ring-[var(--gm-violet)]/20 aria-[invalid]:border-[var(--gm-rose)]"
 
-export function RegisterForm() {
+const strengthColors = ['#fb7185', '#fbbf24', '#fbbf24', '#34d399', '#34d399']
+
+export function RegisterForm({ dict }: { dict: any }) {
+  const t = dict.auth.register
   const [state, action, pending] = useActionState<RegisterFormState, FormData>(registerAction, null)
   const [oauthLoading, setOauthLoading] = useState<'google' | 'discord' | null>(null)
   const [step, setStep] = useState(0)
   const [fields, setFields] = useState({ username: '', email: '', password: '', confirmPassword: '' })
-  const { status: usernameStatus, check: checkUsername } = useUsernameAvailability()
+  const { status: usernameStatus, check: checkUsername, usernameHint } = useUsernameAvailability(t)
 
   const isSuccess = state?.message?.startsWith('success:')
   const successText = state?.message?.replace('success:', '')
@@ -81,17 +88,6 @@ export function RegisterForm() {
     return score
   })()
 
-  const strengthColors = ['#fb7185', '#fbbf24', '#fbbf24', '#34d399', '#34d399']
-  const strengthLabels = ['', 'fraca', 'média', 'boa', 'forte']
-
-  const usernameHint: Record<AvailabilityStatus, { text: string; cls: string } | null> = {
-    idle: null,
-    invalid: { text: 'Apenas letras, números e _', cls: 'text-[var(--gm-amber)]' },
-    checking: { text: 'Verificando…', cls: 'text-[var(--gm-ink-faint)]' },
-    available: { text: '✓ Username disponível', cls: 'text-[var(--gm-green)]' },
-    taken: { text: '✗ Username já em uso', cls: 'text-[var(--gm-rose)]' },
-  }
-
   if (isSuccess) {
     return (
       <div className="w-full max-w-md text-center">
@@ -100,14 +96,14 @@ export function RegisterForm() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <div className="rank-chip green inline-flex mb-4">🎉 CONTA CRIADA</div>
-        <h2 className="text-2xl font-black text-[var(--gm-ink)] mb-2">Quase lá!</h2>
+        <div className="rank-chip green inline-flex mb-4">{t.successBadge}</div>
+        <h2 className="text-2xl font-black text-[var(--gm-ink)] mb-2">{t.successTitle}</h2>
         <p className="text-[var(--gm-ink-dim)] text-sm mb-8">{successText}</p>
         <Link
           href="/login"
           className="inline-block rounded-lg bg-[var(--gm-violet)] px-8 py-3 text-sm font-black text-[#1a1126] transition-all hover:opacity-90 gm-glow"
         >
-          Ir para o login →
+          {t.goToLogin}
         </Link>
       </div>
     )
@@ -115,18 +111,16 @@ export function RegisterForm() {
 
   return (
     <div className="w-full max-w-md">
-      {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-black tracking-tight text-[var(--gm-ink)]">criar conta</h1>
+        <h1 className="text-3xl font-black tracking-tight text-[var(--gm-ink)]">{t.title}</h1>
         <p className="mt-2 text-sm text-[var(--gm-ink-dim)]">
-          já tem conta?{' '}
+          {t.hasAccount}{' '}
           <Link href="/login" className="text-[var(--gm-violet)] hover:text-[var(--gm-cyan)] font-semibold transition-colors">
-            entrar
+            {t.signIn}
           </Link>
         </p>
       </div>
 
-      {/* OAuth on step 0 only */}
       {step === 0 && (
         <>
           <div className="mb-6">
@@ -142,15 +136,14 @@ export function RegisterForm() {
               <div className="w-full border-t border-[var(--gm-ink-faint)]/30" />
             </div>
             <div className="relative flex justify-center text-[11px] uppercase tracking-widest">
-              <span className="bg-[var(--gm-paper)] px-3 text-[var(--gm-ink-faint)]">ou cadastre com e-mail</span>
+              <span className="bg-[var(--gm-paper)] px-3 text-[var(--gm-ink-faint)]">{t.orRegisterEmail}</span>
             </div>
           </div>
         </>
       )}
 
-      {/* Step indicator */}
       <div className="flex items-center gap-2 mb-8">
-        {STEPS.map((label, i) => (
+        {t.steps.map((label: string, i: number) => (
           <div key={label} className="flex items-center gap-2">
             <div className={`flex h-7 w-7 items-center justify-center rounded-full border text-xs font-black transition-all ${
               i < step
@@ -164,7 +157,7 @@ export function RegisterForm() {
             <span className={`text-xs font-semibold uppercase tracking-wide ${
               i <= step ? 'text-[var(--gm-ink)]' : 'text-[var(--gm-ink-faint)]'
             }`}>{label}</span>
-            {i < STEPS.length - 1 && (
+            {i < t.steps.length - 1 && (
               <span className="text-[var(--gm-ink-faint)]/40 mx-1 text-xs">─</span>
             )}
           </div>
@@ -172,26 +165,24 @@ export function RegisterForm() {
       </div>
 
       <form action={action} className="space-y-4">
-        {/* Always include hidden fields with collected values */}
         <input type="hidden" name="username" value={fields.username} />
         <input type="hidden" name="email" value={fields.email} />
         <input type="hidden" name="password" value={fields.password} />
         <input type="hidden" name="confirmPassword" value={fields.confirmPassword} />
 
-        {/* ── Step 0: Conta ──────────────────────────────────────────── */}
         {step === 0 && (
           <div className="space-y-4">
-            <div className="rank-chip inline-flex mb-2">STEP 1 · CONTA</div>
+            <div className="rank-chip inline-flex mb-2">{t.stepLabels[0]}</div>
             <div>
               <label htmlFor="reg-username" className="block text-xs font-bold uppercase tracking-wide text-[var(--gm-ink-dim)] mb-1.5">
-                @ Username
+                {t.usernameLabel}
               </label>
               <input
                 id="reg-username"
                 type="text"
                 autoComplete="username"
                 maxLength={30}
-                placeholder="seu_username"
+                placeholder={t.usernamePlaceholder}
                 value={fields.username}
                 onChange={(e) => { setFields(f => ({ ...f, username: e.target.value })); checkUsername(e.target.value) }}
                 className={inputCls}
@@ -206,7 +197,7 @@ export function RegisterForm() {
 
             <div>
               <label htmlFor="reg-email" className="block text-xs font-bold uppercase tracking-wide text-[var(--gm-ink-dim)] mb-1.5">
-                E-mail
+                {t.emailLabel}
               </label>
               <input
                 id="reg-email"
@@ -228,24 +219,23 @@ export function RegisterForm() {
               onClick={() => setStep(1)}
               className="w-full rounded-lg bg-[var(--gm-violet)] px-4 py-3 text-sm font-black text-[#1a1126] transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              continuar →
+              {t.continue}
             </button>
           </div>
         )}
 
-        {/* ── Step 1: Segurança ──────────────────────────────────────── */}
         {step === 1 && (
           <div className="space-y-4">
-            <div className="rank-chip inline-flex mb-2">STEP 2 · SEGURANÇA</div>
+            <div className="rank-chip inline-flex mb-2">{t.stepLabels[1]}</div>
             <div>
               <label htmlFor="reg-password" className="block text-xs font-bold uppercase tracking-wide text-[var(--gm-ink-dim)] mb-1.5">
-                Senha
+                {t.passwordLabel}
               </label>
               <input
                 id="reg-password"
                 type="password"
                 autoComplete="new-password"
-                placeholder="Mín. 8 caracteres"
+                placeholder={t.passwordPlaceholder}
                 value={fields.password}
                 onChange={(e) => setFields(f => ({ ...f, password: e.target.value }))}
                 className={inputCls}
@@ -262,7 +252,7 @@ export function RegisterForm() {
                   </div>
                   {passwordStrength > 0 && (
                     <p className="text-xs" style={{ color: strengthColors[passwordStrength] }}>
-                      Senha {strengthLabels[passwordStrength]}
+                      {t.passwordLabel} {t.passwordStrength[passwordStrength]}
                     </p>
                   )}
                 </div>
@@ -274,66 +264,63 @@ export function RegisterForm() {
 
             <div>
               <label htmlFor="reg-confirm" className="block text-xs font-bold uppercase tracking-wide text-[var(--gm-ink-dim)] mb-1.5">
-                Confirmar Senha
+                {t.confirmPasswordLabel}
               </label>
               <input
                 id="reg-confirm"
                 type="password"
                 autoComplete="new-password"
-                placeholder="Repita a senha"
+                placeholder={t.confirmPlaceholder}
                 value={fields.confirmPassword}
                 onChange={(e) => setFields(f => ({ ...f, confirmPassword: e.target.value }))}
                 className={inputCls}
                 aria-invalid={fields.confirmPassword.length > 0 && fields.password !== fields.confirmPassword}
               />
               {fields.confirmPassword.length > 0 && fields.password !== fields.confirmPassword && (
-                <p className="mt-1.5 text-xs text-[var(--gm-rose)]">As senhas não coincidem</p>
+                <p className="mt-1.5 text-xs text-[var(--gm-rose)]">{t.passwordMismatch}</p>
               )}
               {fields.confirmPassword.length > 0 && fields.password === fields.confirmPassword && (
-                <p className="mt-1.5 text-xs text-[var(--gm-green)]">✓ Senhas coincidem</p>
+                <p className="mt-1.5 text-xs text-[var(--gm-green)]">{t.passwordMatch}</p>
               )}
             </div>
 
             <div className="flex gap-3">
               <button type="button" onClick={() => setStep(0)}
                 className="flex-1 rounded-lg border border-[var(--gm-ink-faint)]/40 px-4 py-3 text-sm font-semibold text-[var(--gm-ink-dim)] hover:border-[var(--gm-violet)]/50 hover:text-[var(--gm-ink)] transition-all">
-                ← voltar
+                {t.back}
               </button>
               <button type="button" disabled={!canAdvanceStep1()} onClick={() => setStep(2)}
                 className="flex-1 rounded-lg bg-[var(--gm-violet)] px-4 py-3 text-sm font-black text-[#1a1126] transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed">
-                continuar →
+                {t.continue}
               </button>
             </div>
           </div>
         )}
 
-        {/* ── Step 2: Confirmar ──────────────────────────────────────── */}
         {step === 2 && (
           <div className="space-y-4">
-            <div className="rank-chip inline-flex mb-2">STEP 3 · CONFIRMAR</div>
+            <div className="rank-chip inline-flex mb-2">{t.stepLabels[2]}</div>
 
-            {/* Summary */}
             <div className="rounded-xl border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-3)] p-4 space-y-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-[var(--gm-ink-dim)]">Username</span>
+                <span className="text-[var(--gm-ink-dim)]">{t.summaryUsername}</span>
                 <span className="font-bold text-[var(--gm-violet)]">@{fields.username}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-[var(--gm-ink-dim)]">E-mail</span>
+                <span className="text-[var(--gm-ink-dim)]">{t.summaryEmail}</span>
                 <span className="font-semibold text-[var(--gm-ink)]">{fields.email}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-[var(--gm-ink-dim)]">Senha</span>
-                <span className="font-semibold text-[var(--gm-green)]">✓ configurada</span>
+                <span className="text-[var(--gm-ink-dim)]">{t.summaryPassword}</span>
+                <span className="font-semibold text-[var(--gm-green)]">{t.passwordConfigured}</span>
               </div>
             </div>
 
-            {/* Welcome bonus */}
             <div className="rounded-xl border border-[var(--gm-amber)]/30 bg-[var(--gm-amber)]/5 p-3 flex items-center gap-3">
               <span className="text-2xl">🎁</span>
               <div>
-                <p className="text-xs font-bold text-[var(--gm-amber)] uppercase tracking-wide">Bônus de Login Diário</p>
-                <p className="text-sm text-[var(--gm-ink)]">+10 pts ao confirmar o e-mail e logar</p>
+                <p className="text-xs font-bold text-[var(--gm-amber)] uppercase tracking-wide">{t.welcomeBonusTitle}</p>
+                <p className="text-sm text-[var(--gm-ink)]">{t.welcomeBonusDesc}</p>
               </div>
             </div>
 
@@ -344,16 +331,16 @@ export function RegisterForm() {
             )}
 
             <p className="text-xs text-[var(--gm-ink-faint)]">
-              Ao criar conta, você concorda com nossos{' '}
-              <Link href="/termos" className="text-[var(--gm-violet)] hover:underline">Termos</Link>{' '}
-              e{' '}
-              <Link href="/privacidade" className="text-[var(--gm-violet)] hover:underline">Política de Privacidade</Link>.
+              {t.termsPrefix}{' '}
+              <Link href="/termos" className="text-[var(--gm-violet)] hover:underline">{t.terms}</Link>{' '}
+              {t.and}{' '}
+              <Link href="/privacidade" className="text-[var(--gm-violet)] hover:underline">{t.privacy}</Link>.
             </p>
 
             <div className="flex gap-3">
               <button type="button" onClick={() => setStep(1)}
                 className="flex-1 rounded-lg border border-[var(--gm-ink-faint)]/40 px-4 py-3 text-sm font-semibold text-[var(--gm-ink-dim)] hover:border-[var(--gm-violet)]/50 hover:text-[var(--gm-ink)] transition-all">
-                ← voltar
+                {t.back}
               </button>
               <button type="submit" disabled={pending}
                 className="flex-1 rounded-lg bg-[var(--gm-violet)] px-4 py-3 text-sm font-black text-[#1a1126] transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-60 gm-glow"
@@ -361,10 +348,10 @@ export function RegisterForm() {
                 {pending ? (
                   <span className="flex items-center justify-center gap-2">
                     <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#1a1126]/30 border-t-[#1a1126]" />
-                    Criando…
+                    {t.creating}
                   </span>
                 ) : (
-                  'criar minha conta →'
+                  t.createAccount
                 )}
               </button>
             </div>

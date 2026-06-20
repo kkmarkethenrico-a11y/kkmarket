@@ -202,10 +202,20 @@ export default async function HomePage() {
               </Link>
               {categoryItems.map(item => {
                 const Icon = CATEGORY_ICONS[item.slug] || Gamepad2
+                
+                const catMap: Record<string, string> = {
+                  'jogos': dict.categories.games,
+                  'redes-sociais': dict.categories.socialMedia,
+                  'bots': dict.categories.bots,
+                  'scripts': dict.categories.scripts,
+                  'outros-digitais': dict.categories.otherDigital,
+                }
+                const translatedName = catMap[item.slug] || item.name
+
                 return (
                   <Link key={item.slug} href={item.href} className="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-colors cursor-pointer">
                     <Icon className="w-5 h-5" />
-                    <span className="font-label-md text-label-md">{item.name}</span>
+                    <span className="font-label-md text-label-md">{translatedName}</span>
                   </Link>
                 )
               })}

@@ -2,8 +2,9 @@
 
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import { Globe } from 'lucide-react'
 
-export function LanguageSelector({ currentLang }: { currentLang: string }) {
+export function LanguageSelector({ currentLang, className }: { currentLang: string; className?: string }) {
   const router = useRouter()
   const [mounted, setMounted] = useState(false)
 
@@ -15,15 +16,15 @@ export function LanguageSelector({ currentLang }: { currentLang: string }) {
     router.refresh()
   }
 
-  if (!mounted) return <div className="w-16 h-8" />
+  if (!mounted) return <div className={`w-16 h-8 ${className ?? ''}`} />
 
   return (
     <button 
       onClick={toggleLang}
-      className="flex items-center justify-center gap-1.5 rounded-lg border border-[var(--gm-ink-faint)]/40 px-2 py-1.5 text-xs font-bold text-[var(--gm-ink-dim)] hover:border-[var(--gm-violet)]/60 hover:text-[var(--gm-ink)] transition-all uppercase"
+      className={`flex items-center justify-center gap-1.5 rounded-lg border border-[var(--gm-ink-faint)]/40 px-2 py-1.5 text-xs font-bold text-[var(--gm-ink-dim)] hover:border-[var(--gm-violet)]/60 hover:text-[var(--gm-ink)] transition-all uppercase ${className ?? ''}`}
       title="Mudar Idioma / Change Language"
     >
-      <span className="material-symbols-outlined text-[16px]">language</span>
+      <Globe className="w-4 h-4" />
       {currentLang}
     </button>
   )

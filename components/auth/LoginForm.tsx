@@ -9,7 +9,6 @@ import {
   type LoginFormState,
 } from '@/app/actions/auth'
 
-// ─── Ícones inline (sem dep extra) ──────────────────────────────────────────
 function GoogleIcon() {
   return (
     <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden>
@@ -21,10 +20,8 @@ function GoogleIcon() {
   )
 }
 
-// O ícone do Discord foi removido
-
-// ─── Login Form ──────────────────────────────────────────────────────────────
-export function LoginForm() {
+export function LoginForm({ dict }: { dict: any }) {
+  const t = dict.auth.login
   const [state, action, pending] = useActionState<LoginFormState, FormData>(loginAction, null)
   const [showForgot, setShowForgot] = useState(false)
   const [forgotState, forgotAction, forgotPending] = useActionState<{ message?: string } | null, FormData>(
@@ -33,7 +30,6 @@ export function LoginForm() {
   )
   const [oauthLoading, setOauthLoading] = useState<'google' | 'discord' | null>(null)
 
-  // Extrai prefixo de mensagem ("success:" | "error:")
   const forgotMsg = forgotState?.message
   const forgotIsSuccess = forgotMsg?.startsWith('success:')
   const forgotText = forgotMsg?.replace(/^(success:|error:)/, '')
@@ -48,20 +44,18 @@ export function LoginForm() {
 
   return (
     <div className="w-full max-w-md">
-      {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-black tracking-tight text-[var(--gm-ink)]">
-          login
+          {t.title}
         </h1>
         <p className="mt-2 text-sm text-[var(--gm-ink-dim)]">
-          novo no KKmarket?{' '}
+          {t.newUser}{' '}
           <Link href="/cadastro" className="text-[var(--gm-violet)] hover:text-[var(--gm-cyan)] font-semibold transition-colors">
-            criar conta grátis
+            {t.createAccount}
           </Link>
         </p>
       </div>
 
-      {/* OAuth Buttons */}
       <div className="mb-6">
         <button
           type="button"
@@ -78,22 +72,20 @@ export function LoginForm() {
         </button>
       </div>
 
-      {/* Divider */}
       <div className="relative mb-6">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-[var(--gm-ink-faint)]/30" />
         </div>
         <div className="relative flex justify-center text-[11px] uppercase tracking-widest">
-          <span className="bg-[var(--gm-paper)] px-3 text-[var(--gm-ink-faint)]">ou continue com e-mail</span>
+          <span className="bg-[var(--gm-paper)] px-3 text-[var(--gm-ink-faint)]">{t.orContinueEmail}</span>
         </div>
       </div>
 
-      {/* Email/Password Form */}
       {!showForgot ? (
         <form action={action} className="space-y-4">
           <div>
             <label htmlFor="login-email" className="block text-xs font-bold uppercase tracking-wide text-[var(--gm-ink-dim)] mb-1.5">
-              E-mail ou usuário
+              {t.emailLabel}
             </label>
             <input
               id="login-email"
@@ -115,7 +107,7 @@ export function LoginForm() {
 
           <div>
             <label htmlFor="login-password" className="block text-xs font-bold uppercase tracking-wide text-[var(--gm-ink-dim)] mb-1.5">
-              Senha
+              {t.passwordLabel}
             </label>
             <input
               id="login-password"
@@ -147,7 +139,7 @@ export function LoginForm() {
               onClick={() => setShowForgot(true)}
               className="text-xs text-[var(--gm-ink-faint)] hover:text-[var(--gm-violet)] transition-colors"
             >
-              esqueci a senha
+              {t.forgotPassword}
             </button>
           </div>
 
@@ -160,10 +152,10 @@ export function LoginForm() {
             {pending ? (
               <span className="flex items-center justify-center gap-2">
                 <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#1a1126]/30 border-t-[#1a1126]" />
-                Entrando…
+                {t.submitting}
               </span>
             ) : (
-              'entrar →'
+              t.submit
             )}
           </button>
         </form>
@@ -174,18 +166,18 @@ export function LoginForm() {
             onClick={() => setShowForgot(false)}
             className="mb-4 flex items-center gap-1.5 text-sm text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)] transition-colors"
           >
-            ← Voltar ao login
+            {t.backToLogin}
           </button>
-          <h2 className="text-lg font-black text-[var(--gm-ink)] mb-1">Recuperar senha</h2>
+          <h2 className="text-lg font-black text-[var(--gm-ink)] mb-1">{t.recoverTitle}</h2>
           <p className="text-sm text-[var(--gm-ink-dim)] mb-4">
-            Informe seu e-mail e enviaremos as instruções de recuperação.
+            {t.recoverDesc}
           </p>
           <form action={forgotAction} className="space-y-4">
             <input
               name="email"
               type="email"
               required
-              placeholder="seu@email.com"
+              placeholder={t.emailPlaceholder}
               className={inputCls}
             />
             {forgotMsg && (
@@ -207,10 +199,10 @@ export function LoginForm() {
               {forgotPending ? (
                 <span className="flex items-center justify-center gap-2">
                   <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#1a1126]/30 border-t-[#1a1126]" />
-                  Enviando…
+                  {t.sending}
                 </span>
               ) : (
-                'Enviar instruções'
+                t.sendInstructions
               )}
             </button>
           </form>

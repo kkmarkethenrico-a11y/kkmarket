@@ -151,7 +151,7 @@ export async function Header() {
             </div>
 
             {/* Mobile nav */}
-            <MobileNav isAuthenticated={!!user} profile={profile} sellerStatus={profile?.seller_status ?? 'disabled'} dict={dict} />
+            <MobileNav isAuthenticated={!!user} profile={profile} sellerStatus={profile?.seller_status ?? 'disabled'} dict={dict} currentLang={lang} />
           </div>
         </div>
       </div>

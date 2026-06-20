@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/co
 import { Input } from '@/components/ui/input'
 import { LogoutButton } from '@/components/auth/LogoutButton'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { LanguageSelector } from '@/components/layout/LanguageSelector'
 
 interface MobileNavProps {
   isAuthenticated: boolean
@@ -18,9 +19,10 @@ interface MobileNavProps {
   } | null
   sellerStatus?: string
   dict: any
+  currentLang: string
 }
 
-export function MobileNav({ isAuthenticated, profile, sellerStatus = 'disabled', dict }: MobileNavProps) {
+export function MobileNav({ isAuthenticated, profile, sellerStatus = 'disabled', dict, currentLang }: MobileNavProps) {
   const [open, setOpen] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -220,6 +222,18 @@ export function MobileNav({ isAuthenticated, profile, sellerStatus = 'disabled',
                 {dict.header.helpCenter}
               </Link>
             </nav>
+
+            <div className="h-px bg-[var(--gm-ink-faint)]/20" />
+
+            {/* Language */}
+            <div className="flex items-center justify-between px-2">
+              <span className="text-xs font-semibold uppercase tracking-widest text-[var(--gm-ink-faint)]">
+                {dict.auth?.language ?? 'Idioma'}
+              </span>
+              <LanguageSelector currentLang={currentLang} />
+            </div>
+
+            <div className="h-px bg-[var(--gm-ink-faint)]/20" />
 
             {isAuthenticated && (
               <div className="mt-auto pt-6">

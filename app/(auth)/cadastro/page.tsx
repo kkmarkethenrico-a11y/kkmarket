@@ -2,19 +2,34 @@ import { redirect } from 'next/navigation'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { RegisterForm } from '@/components/auth/RegisterForm'
+import { LanguageSelector } from '@/components/layout/LanguageSelector'
+import { getDictionary, getLanguage } from '@/lib/i18n'
 
-export const metadata = {
-  title: 'Criar conta — KKmarket',
-  description: 'Crie sua conta KKmarket grátis e comece a comprar e vender produtos digitais de games.',
+export async function generateMetadata() {
+  const dict = await getDictionary()
+  return {
+    title: dict.auth.register.metaTitle,
+    description: dict.auth.register.metaDescription,
+  }
 }
+
+const BENEFIT_ICONS = ['🎁', '⚡', '🏆', '💰']
+const BENEFIT_COLORS = ['var(--gm-amber)', 'var(--gm-cyan)', 'var(--gm-violet)', 'var(--gm-green)']
 
 export default async function CadastroPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (user) redirect('/painel')
 
+  const [dict, lang] = await Promise.all([getDictionary(), getLanguage()])
+  const t = dict.auth.register
+
   return (
-    <div className="min-h-screen bg-[var(--gm-paper)] flex items-stretch">
+    <div className="min-h-screen bg-[var(--gm-paper)] flex items-stretch relative">
+
+      <div className="absolute top-4 right-4 z-10 lg:top-6 lg:right-6">
+        <LanguageSelector currentLang={lang} />
+      </div>
 
       {/* ── Left panel ────────────────────────────────────────────────── */}
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 relative overflow-hidden"
@@ -37,37 +52,31 @@ export default async function CadastroPage() {
         </div>
 
         <div className="relative">
-          <div className="rank-chip mb-6 inline-flex">🎮 JUNTE-SE À ARENA</div>
+          <div className="rank-chip mb-6 inline-flex">{t.panelBadge}</div>
           <h2 className="text-5xl font-black leading-tight tracking-tight text-[var(--gm-ink)] mb-4">
-            monte seu{' '}
+            {t.panelTitle1}{' '}
             <span className="text-[var(--gm-cyan)]" style={{ textShadow: '0 0 24px rgba(34,211,238,0.4)' }}>
-              avatar
+              {t.panelTitle2}
             </span>
           </h2>
           <p className="text-[var(--gm-ink-dim)] text-base max-w-xs mb-8">
-            crie sua conta, ganhe pontos e conquiste sua posição no ranking
+            {t.panelDesc}
           </p>
 
-          {/* Benefit list */}
           <div className="space-y-3">
-            {[
-              { icon: '🎁', text: '+50 pts de boas-vindas ao confirmar e-mail', color: 'var(--gm-amber)' },
-              { icon: '⚡', text: 'Compre com entrega automática imediata', color: 'var(--gm-cyan)' },
-              { icon: '🏆', text: 'Suba no ranking e desbloqueie benefícios', color: 'var(--gm-violet)' },
-              { icon: '💰', text: 'Venda seus itens para milhares de gamers', color: 'var(--gm-green)' },
-            ].map(({ icon, text, color }) => (
+            {t.benefits.map((text: string, i: number) => (
               <div key={text} className="flex items-center gap-3">
-                <span className="text-xl">{icon}</span>
-                <span className="text-sm font-semibold" style={{ color }}>{text}</span>
+                <span className="text-xl">{BENEFIT_ICONS[i]}</span>
+                <span className="text-sm font-semibold" style={{ color: BENEFIT_COLORS[i] }}>{text}</span>
               </div>
             ))}
           </div>
         </div>
 
         <div className="relative flex items-center gap-6 text-xs text-[var(--gm-ink-dim)]">
-          <span>🔒 100% seguro</span>
-          <span>✓ Grátis para criar</span>
-          <span>🎯 Sem cartão</span>
+          <span>{t.trustSecure}</span>
+          <span>{t.trustFree}</span>
+          <span>{t.trustNoCard}</span>
         </div>
 
         <div className="absolute bottom-8 right-8 text-8xl opacity-[0.04] select-none pointer-events-none">
@@ -78,7 +87,7 @@ export default async function CadastroPage() {
       {/* ── Right panel: register form ───────────────────────────────── */}
       <div className="flex w-full lg:w-1/2 items-center justify-center px-6 py-16 bg-[var(--gm-paper)]">
         <div className="w-full max-w-md">
-          <RegisterForm />
+          <RegisterForm dict={dict} />
         </div>
       </div>
     </div>
