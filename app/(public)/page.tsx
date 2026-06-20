@@ -4,9 +4,18 @@ import { createClient } from '@/lib/supabase/server'
 import { AnnouncementCard } from '@/components/marketplace/AnnouncementCard'
 import type { AnnouncementWithRelations, Category } from '@/types'
 import { getDictionary } from '@/lib/i18n'
+import { LayoutGrid, Gamepad2, Bot, Code, MonitorPlay, Users, Terminal, ArrowRight, Medal, Star, BadgeCheck } from 'lucide-react'
 
 const PLAN_ORDER: Record<string, number> = { diamond: 3, gold: 2, silver: 1 }
 function planWeight(p: string) { return PLAN_ORDER[p] ?? 0 }
+
+const CATEGORY_ICONS: Record<string, React.ElementType> = {
+  'jogos': Gamepad2,
+  'redes-sociais': Users,
+  'bots': Bot,
+  'scripts': Code,
+  'outros-digitais': MonitorPlay,
+}
 
 const CATEGORY_COVERS: Record<string, string> = {
   'jogos':          'https://images.unsplash.com/photo-1593118247619-e2d6f056869e?w=224&h=288&fit=crop&q=80',
@@ -113,14 +122,14 @@ export default async function HomePage() {
           {/* Hero Content */}
           <div className="relative z-20 w-full md:w-1/2 p-6 md:p-12 space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary font-label-md text-label-md tracking-wider">
-              <span className="material-symbols-outlined text-[16px]">terminal</span>
+              <Terminal className="w-4 h-4" />
               {dict.hero.systemsOnline}
             </div>
             <h1 className="font-display-lg text-4xl md:text-display-lg text-white leading-tight">{dict.hero.title1} <span className="text-primary">{dict.hero.title2}</span></h1>
             <p className="font-body-lg text-body-lg text-on-surface-variant max-w-lg">{dict.hero.subtitle}</p>
             <div className="flex flex-wrap gap-4 pt-4">
               <Link href="/buscar" className="px-8 py-4 bg-primary text-on-primary font-bold rounded-lg hover:shadow-[0_0_20px_rgba(76,215,246,0.6)] transition-all active:scale-95 flex items-center gap-2">
-                {dict.hero.startTrading} <span className="material-symbols-outlined">trending_flat</span>
+                {dict.hero.startTrading} <ArrowRight className="w-5 h-5" />
               </Link>
               <Link href="/como-funciona" className="px-8 py-4 bg-transparent border border-secondary text-secondary font-bold rounded-lg hover:bg-secondary/10 transition-all active:scale-95">
                 {dict.hero.viewMissions}
@@ -134,7 +143,7 @@ export default async function HomePage() {
           <div className="bg-secondary-container text-on-secondary-container p-6 rounded-xl flex flex-col md:flex-row md:items-center justify-between shadow-lg gap-4">
             <div className="flex items-center gap-4">
               <div className="bg-on-secondary-container text-secondary p-3 rounded-lg">
-                <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>military_tech</span>
+                <Medal className="w-6 h-6 fill-current" />
               </div>
               <div>
                 <h3 className="font-headline-sm text-headline-sm leading-tight">{dict.missions.title}</h3>
@@ -165,15 +174,18 @@ export default async function HomePage() {
             </div>
             <div className="flex flex-col gap-2">
               <Link href="/buscar" className="flex items-center gap-3 p-3 text-primary bg-primary/10 rounded-lg font-bold cursor-pointer">
-                <span className="material-symbols-outlined">grid_view</span>
+                <LayoutGrid className="w-5 h-5" />
                 <span className="font-label-md text-label-md">{dict.sidebar.allProducts}</span>
               </Link>
-              {categoryItems.map(item => (
-                <Link key={item.slug} href={item.href} className="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-colors cursor-pointer">
-                  <span className="material-symbols-outlined">sports_esports</span>
-                  <span className="font-label-md text-label-md">{item.name}</span>
-                </Link>
-              ))}
+              {categoryItems.map(item => {
+                const Icon = CATEGORY_ICONS[item.slug] || Gamepad2
+                return (
+                  <Link key={item.slug} href={item.href} className="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-colors cursor-pointer">
+                    <Icon className="w-5 h-5" />
+                    <span className="font-label-md text-label-md">{item.name}</span>
+                  </Link>
+                )
+              })}
             </div>
             <Link href="/buscar" className="mt-8 text-center bg-primary text-on-primary font-bold py-3 rounded-lg hover:opacity-90 transition-opacity">{dict.sidebar.applyFilters}</Link>
           </aside>
@@ -245,13 +257,13 @@ export default async function HomePage() {
                           </div>
                           <div className="flex text-secondary">
                             {[...Array(5)].map((_, i) => (
-                              <span key={i} className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                              <Star key={i} className="w-4 h-4 fill-current" />
                             ))}
                           </div>
                         </div>
                         <p className="font-body-md text-on-surface-variant leading-relaxed italic">"{r.message}"</p>
-                        <div className="pt-2 border-t border-white/5 flex items-center gap-2 text-label-sm text-outline">
-                          <span className="material-symbols-outlined text-[14px]">verified</span>
+                        <div className="pt-2 border-t border-white/5 flex items-center gap-2 text-label-sm text-[var(--gm-green)] opacity-90">
+                          <BadgeCheck className="w-4 h-4" />
                           {dict.sections.verifiedPurchase}
                         </div>
                       </div>
