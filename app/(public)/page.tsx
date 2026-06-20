@@ -143,11 +143,11 @@ export default async function HomePage() {
             </div>
             <h1 className="font-display-lg text-4xl md:text-display-lg text-white leading-tight">{dict.hero.title1} <span className="text-primary">{dict.hero.title2}</span></h1>
             <p className="font-body-lg text-body-lg text-on-surface-variant max-w-lg">{dict.hero.subtitle}</p>
-            <div className="flex flex-wrap gap-4 pt-4">
-              <Link href="/buscar" className="px-8 py-4 bg-primary text-on-primary font-bold rounded-lg hover:shadow-[0_0_20px_rgba(76,215,246,0.6)] transition-all active:scale-95 flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-4 pt-4">
+              <Link href="/buscar" className="w-full sm:w-auto justify-center px-8 py-4 bg-primary text-on-primary font-bold rounded-lg hover:shadow-[0_0_20px_rgba(76,215,246,0.6)] transition-all active:scale-95 flex items-center gap-2">
                 {dict.hero.startTrading} <ArrowRight className="w-5 h-5" />
               </Link>
-              <Link href="/como-funciona" className="px-8 py-4 bg-transparent border border-secondary text-secondary font-bold rounded-lg hover:bg-secondary/10 transition-all active:scale-95">
+              <Link href="/como-funciona" className="w-full sm:w-auto text-center px-8 py-4 bg-transparent border border-secondary text-secondary font-bold rounded-lg hover:bg-secondary/10 transition-all active:scale-95">
                 {dict.hero.viewMissions}
               </Link>
             </div>
@@ -226,7 +226,7 @@ export default async function HomePage() {
                   </div>
                   <Link className="text-primary hover:underline font-label-md text-label-md" href="/buscar?order=best_sellers">{dict.sections.viewAll}</Link>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                   {featured.map(ann => (
                     <AnnouncementCard key={ann.id} ann={ann} dict={dict} />
                   ))}
@@ -244,7 +244,7 @@ export default async function HomePage() {
                   </div>
                   <Link className="text-primary hover:underline font-label-md text-label-md" href="/buscar?order=best_sellers">{dict.sections.viewAll}</Link>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                   {popular.map(ann => (
                     <AnnouncementCard key={ann.id} ann={ann} dict={dict} />
                   ))}
@@ -266,19 +266,19 @@ export default async function HomePage() {
                     const initials = (r.profiles?.username || 'U').charAt(0).toUpperCase()
                     return (
                       <div key={r.id} className="bg-surface-container-low p-6 rounded-xl border border-white/5 space-y-3">
-                        <div className="flex justify-between items-start">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center font-bold text-primary">
+                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className="w-10 h-10 shrink-0 rounded-full bg-surface-variant flex items-center justify-center font-bold text-primary">
                               {r.profiles?.avatar_url ? (
                                 <Image src={r.profiles.avatar_url} alt="Avatar" width={40} height={40} className="rounded-full object-cover" />
                               ) : initials}
                             </div>
-                            <div>
-                              <div className="font-label-md text-label-md text-white">{r.profiles?.username}</div>
-                              <div className="font-label-sm text-label-sm text-on-surface-variant">{dict.sections.recent}</div>
+                            <div className="min-w-0">
+                              <div className="font-label-md text-label-md text-white truncate">{r.profiles?.username}</div>
+                              <div className="font-label-sm text-label-sm text-on-surface-variant truncate">{dict.sections.recent}</div>
                             </div>
                           </div>
-                          <div className="flex text-secondary">
+                          <div className="flex text-secondary shrink-0 pt-1">
                             {[...Array(5)].map((_, i) => (
                               <Star key={i} className="w-4 h-4 fill-current" />
                             ))}

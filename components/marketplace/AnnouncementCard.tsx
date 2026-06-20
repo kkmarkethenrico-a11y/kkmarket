@@ -37,7 +37,7 @@ export function AnnouncementCard({ ann, dict }: { ann: AnnouncementWithRelations
       href={`/anuncio/${ann.slug}`}
       className="product-card-hover group flex flex-col bg-surface-container rounded-xl overflow-hidden transition-all duration-300 border border-white/5"
     >
-      <div className="h-48 relative overflow-hidden bg-surface-container-high">
+      <div className="h-40 sm:h-48 relative overflow-hidden bg-surface-container-high shrink-0">
         {imgSrc ? (
           <Image
             src={imgSrc}
