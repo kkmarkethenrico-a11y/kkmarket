@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Menu, Search, ChevronRight, LayoutDashboard, PlusCircle, Gamepad2 } from 'lucide-react'
+import { Menu, Search, ChevronRight, LayoutDashboard, PlusCircle, Gamepad2, LayoutGrid, Bot, Code, MonitorPlay } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { Input } from '@/components/ui/input'
 import { LogoutButton } from '@/components/auth/LogoutButton'
@@ -161,9 +161,41 @@ export function MobileNav({ isAuthenticated, profile, sellerStatus = 'disabled',
                 {dict.categories.games}
               </Link>
               <Link
-                href="/categoria"
+                href="/categoria/redes-sociais"
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-3 rounded-lg px-2 py-3 text-sm font-medium text-[var(--gm-ink-dim)] hover:bg-[var(--gm-paper-2)] hover:text-[var(--gm-ink)] transition-colors"
+              >
+                <LayoutGrid className="h-5 w-5 text-[var(--gm-ink-faint)]" />
+                {dict.categories.socialMedia}
+              </Link>
+              <Link
+                href="/categoria/bots"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 rounded-lg px-2 py-3 text-sm font-medium text-[var(--gm-ink-dim)] hover:bg-[var(--gm-paper-2)] hover:text-[var(--gm-ink)] transition-colors"
+              >
+                <Bot className="h-5 w-5 text-[var(--gm-ink-faint)]" />
+                {dict.categories.bots}
+              </Link>
+              <Link
+                href="/categoria/scripts"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 rounded-lg px-2 py-3 text-sm font-medium text-[var(--gm-ink-dim)] hover:bg-[var(--gm-paper-2)] hover:text-[var(--gm-ink)] transition-colors"
+              >
+                <Code className="h-5 w-5 text-[var(--gm-ink-faint)]" />
+                {dict.categories.scripts}
+              </Link>
+              <Link
+                href="/categoria/outros-digitais"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 rounded-lg px-2 py-3 text-sm font-medium text-[var(--gm-ink-dim)] hover:bg-[var(--gm-paper-2)] hover:text-[var(--gm-ink)] transition-colors"
+              >
+                <MonitorPlay className="h-5 w-5 text-[var(--gm-ink-faint)]" />
+                {dict.categories.otherDigital}
+              </Link>
+              <Link
+                href="/categorias"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 rounded-lg px-2 py-3 text-sm font-medium text-[var(--gm-ink-dim)] hover:bg-[var(--gm-paper-2)] hover:text-[var(--gm-ink)] transition-colors mt-2 border-t border-[var(--gm-ink-faint)]/10 pt-3"
               >
                 <ChevronRight className="h-5 w-5 text-[var(--gm-ink-faint)]" />
                 {dict.header.allCategories}
