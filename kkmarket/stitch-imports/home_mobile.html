@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEXUS - KKMarket Gamer Marketplace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-card {
+            background: rgba(22, 29, 47, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glowing-border-amber {
+            position: relative;
+        }
+        .glowing-border-amber::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(45deg, #ee9800, transparent, #ffb95f);
+            z-index: -1;
+            border-radius: inherit;
+            opacity: 0.3;
+        }
+        .neon-glow-cyan {
+            text-shadow: 0 0 10px rgba(76, 215, 246, 0.5);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#ffddb8",
+                      "secondary-container": "#ee9800",
+                      "primary-fixed-dim": "#c1c6db",
+                      "on-secondary-fixed": "#2a1700",
+                      "surface-container": "#1d2021",
+                      "on-tertiary-container": "#0089a0",
+                      "primary": "#c1c6db",
+                      "on-primary-container": "#777c90",
+                      "on-error-container": "#ffdad6",
+                      "on-background": "#e1e3e4",
+                      "surface-variant": "#323536",
+                      "tertiary-container": "#001419",
+                      "surface-container-lowest": "#0c0f10",
+                      "glass-border": "rgba(255, 255, 255, 0.1)",
+                      "on-surface": "#e1e3e4",
+                      "tertiary-fixed": "#acedff",
+                      "surface-container-low": "#191c1d",
+                      "surface-container-high": "#282a2b",
+                      "inverse-surface": "#e1e3e4",
+                      "surface-bright": "#373a3b",
+                      "surface-tint": "#c1c6db",
+                      "surface-container-highest": "#323536",
+                      "outline-variant": "#45464c",
+                      "on-primary": "#2a3040",
+                      "primary-fixed": "#dde2f8",
+                      "on-secondary": "#472a00",
+                      "inverse-on-surface": "#2e3132",
+                      "on-primary-fixed-variant": "#414658",
+                      "secondary": "#ffb95f",
+                      "on-tertiary": "#003640",
+                      "secondary-fixed-dim": "#ffb95f",
+                      "outline": "#909097",
+                      "on-surface-variant": "#c6c6cd",
+                      "surface-dim": "#111415",
+                      "on-secondary-container": "#5b3800",
+                      "surface": "#111415",
+                      "on-tertiary-fixed": "#001f26",
+                      "error": "#ffb4ab",
+                      "error-container": "#93000a",
+                      "on-primary-fixed": "#151b2b",
+                      "on-error": "#690005",
+                      "background": "#111415",
+                      "neon-purple": "#7C3AED",
+                      "tertiary": "#4cd7f6",
+                      "primary-container": "#0b1120",
+                      "on-secondary-fixed-variant": "#653e00",
+                      "inverse-primary": "#585e70",
+                      "tertiary-fixed-dim": "#4cd7f6",
+                      "on-tertiary-fixed-variant": "#004e5c",
+                      "surface-elevated": "#161D2F"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "margin-desktop": "40px",
+                      "container-max": "1280px",
+                      "unit": "8px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Inter"],
+                      "headline-xl": ["Outfit"],
+                      "body-lg": ["Inter"],
+                      "headline-lg-mobile": ["Outfit"],
+                      "headline-lg": ["Outfit"],
+                      "label-md": ["Inter"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-24">
+<!-- Top AppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 border-b border-glass-border bg-surface/80 backdrop-blur-md">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-secondary/30">
+<img class="w-full h-full object-cover" data-alt="A professional high-definition user profile avatar of a tech-savvy gamer with neon lighting highlights. The style is digital-cyberpunk with deep navy and cyan tones, set against a blurred futuristic background. The character has a confident expression, wearing a sleek headset with minimal amber accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQzAdbboHKF5A9B1msNe9KvRo8apctXS9pMEYkFea4ff7aFgtWxzxgb2LtjIav_vMAzP_rjVVdxxL7EBLs0eQVGGnU7dO9Mfcm7kHvmCzuKq7jiYCTNio6OhUvL2Z7rPFK0G4NpTkudu2T848dcPGKCPydzkKPaSHp_RhjaoSf9yFkYEvbfgvjsc08K5p7tUe_Y2LP_c-SdoVq21uCpXD8MLT5GKoFP0crwTx2sdV_X-_uLMnVeWIRFvq-HruPBmx2nk6SerTSDFRZ"/>
+</div>
+<img alt="NEXUS" class="h-6" src="https://lh3.googleusercontent.com/aida/AP1WRLvePEjx4y6EOIJX9RQGLJwKgMgNYe_iIEY4yABNcWnia-itgwL9A1CV3dRpofJzO6bF6SN7nEzpIVjBhrpyU902ruOyqNWb5jNdlJ1Ct--gq6GTNep-UPnfoKHCNuGWhtOgVJ7DrcG2n-0r7JN6wRQzCe6rwcOhew1e00hIobbqN2OqlQ7GbsRTCIqN0PNaXCgsoDaSq3qIDtGZpAEls0G95X32J4iEN5yYUN-8zDEtHN2vHXK-y9mRBQzP"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:text-secondary transition-colors duration-150 active:scale-95 transition-transform" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-primary hover:text-secondary transition-colors duration-150 active:scale-95 transition-transform" data-icon="search">search</button>
+</div>
+</header>
+<main class="mt-20 px-margin-mobile">
+<!-- Hero Banner: Daily Missions -->
+<section class="relative w-full aspect-[16/9] rounded-xl overflow-hidden mb-8 glowing-border-amber shadow-2xl">
+<div class="absolute inset-0 bg-gradient-to-r from-background via-background/40 to-transparent z-10 p-6 flex flex-col justify-center">
+<span class="font-label-sm text-secondary-container tracking-widest mb-1 uppercase">Daily Rewards</span>
+<h1 class="font-headline-lg-mobile text-white leading-tight mb-3">CONQUER MISSIONS,<br/><span class="text-secondary">EARN LOOT.</span></h1>
+<p class="font-label-sm text-on-surface-variant max-w-[180px] mb-4">Complete 3 trades today to unlock the Legendary Cyber-Crate.</p>
+<button class="bg-secondary text-on-secondary-fixed font-label-md px-6 py-2 rounded-lg w-fit hover:brightness-110 active:scale-95 transition-all">Claim Now</button>
+</div>
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover" data-alt="A vibrant digital cyberpunk landscape with high-energy neon amber glows and deep navy atmospheric layers. In the center, a futuristic digital loot crate is radiating energetic light, surrounded by floating cryptographic symbols and high-speed motion blurs. The aesthetic is clean, professional, and exciting, perfectly suited for a high-stakes gamer rewards banner." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU3MJz-4lGMWYpXeEYTdpEdfEGttlrrXgyUHxpjpK5GnbzHDffHQxEuOUUuXEWQtqTKTOQi0XIdYelPVbBgd3zSfUuQjoKHlHeCHdqaxaqLmsezpYT3YKPXTQDq7yljVhCnjdd1iadubEiv4OlzaQbcJs89Bf1OUDjhF-i-yxxe4GuvfjbTwPTNEzlMcN77gHZFHCmg5Tw5tXgaPzeBZey1_0dm2UgHDlXTHDgNeor7_5JFxy44tOuoB-4aoEXwFc3iFSp1Ad_nJ5g"/>
+</div>
+</section>
+<!-- Category Scroll -->
+<section class="mb-8">
+<div class="flex justify-between items-end mb-4">
+<h2 class="font-label-md text-on-surface uppercase tracking-wider">Categories</h2>
+</div>
+<div class="flex gap-4 overflow-x-auto hide-scrollbar -mx-margin-mobile px-margin-mobile pb-2">
+<div class="flex-shrink-0 flex flex-col items-center gap-2 group">
+<div class="w-16 h-16 rounded-full glass-card flex items-center justify-center text-tertiary group-hover:bg-tertiary/10 transition-colors">
+<span class="material-symbols-outlined text-3xl" data-icon="sports_esports">sports_esports</span>
+</div>
+<span class="font-label-sm text-on-surface-variant">Games</span>
+</div>
+<div class="flex-shrink-0 flex flex-col items-center gap-2 group">
+<div class="w-16 h-16 rounded-full glass-card flex items-center justify-center text-primary group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-3xl" data-icon="group">group</span>
+</div>
+<span class="font-label-sm text-on-surface-variant">Social</span>
+</div>
+<div class="flex-shrink-0 flex flex-col items-center gap-2 group">
+<div class="w-16 h-16 rounded-full glass-card flex items-center justify-center text-secondary group-hover:bg-secondary/10 transition-colors">
+<span class="material-symbols-outlined text-3xl" data-icon="smart_toy">smart_toy</span>
+</div>
+<span class="font-label-sm text-on-surface-variant">Bots</span>
+</div>
+<div class="flex-shrink-0 flex flex-col items-center gap-2 group">
+<div class="w-16 h-16 rounded-full glass-card flex items-center justify-center text-on-surface-variant group-hover:bg-on-surface-variant/10 transition-colors">
+<span class="material-symbols-outlined text-3xl" data-icon="grid_view">grid_view</span>
+</div>
+<span class="font-label-sm text-on-surface-variant">Other</span>
+</div>
+</div>
+</section>
+<!-- Most Popular Section -->
+<section class="mb-8">
+<div class="flex justify-between items-center mb-5">
+<h2 class="font-label-md text-on-surface uppercase tracking-wider">Most Popular</h2>
+<span class="font-label-sm text-secondary">View All</span>
+</div>
+<div class="grid grid-cols-1 gap-6">
+<!-- Product Card 1 -->
+<div class="glass-card rounded-xl overflow-hidden flex flex-col group">
+<div class="relative h-48 w-full">
+<img class="w-full h-full object-cover" data-alt="A cinematic high-quality digital art representation of a legendary Valorant weapon skin with glowing cyan energy trails and sharp geometric details. The background is a dark, atmospheric futuristic armory with subtle amber spotlighting. The lighting is high-contrast, emphasizing the premium quality of the digital asset in a clean, professional gamer style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhjfAmyzVuC2Aan77sp8DaK4KinPTSINu3b66iAdDmE8k7a63CSikAnXtWiDMAv-ve2Y2zcUFbwxldSs2xymhbVeRcNfnGBOIsJ7REjAhkDpFe8nyEeC_aX1Pzg3pw5JO2ImSGZBm7TOc7y-xpQy7-gAoKU3ThjdLDCvm2GZki1vv2ECvZTUpfaMnxg3xCNa3TxhRSSP6_YcfyGeY1eSYI7sGDDYcsczj0XJuNhoBUs3XSB8WP-8J0yJx3Cfp0djh4t9jz0ZN0VLm8"/>
+<div class="absolute top-3 left-3 flex gap-2">
+<span class="bg-surface/90 backdrop-blur-md px-3 py-1 rounded-full font-label-sm text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+                                Verified
+                            </span>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-lg-mobile text-white group-hover:text-tertiary transition-colors">Valorant Account</h3>
+<span class="font-headline-lg-mobile text-secondary">R$ 450,00</span>
+</div>
+<p class="font-label-sm text-on-surface-variant mb-4">Rank: Immortal 3 • 45 Premium Skins • Original Owner</p>
+<div class="flex items-center justify-between border-t border-glass-border pt-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-glass-border flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A close-up portrait avatar of a reputable digital goods seller. The person is wearing a minimalist tech-wear jacket, with soft cyan lighting reflecting off their face. The background is a clean, dark navy pattern. The overall feel is professional, secure, and trustworthy, in line with a high-end fintech marketplace aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4-qRjUhkqyJpCLfFsIMRtk28GPs8I7YoPsUthqYNblZhjAZWOJDm1S0XgiKTKmfRAYQg60bTChWLJ166Wgo6Tr0JyJZdO9viuDGciSRuh-VznsrbDPwaxqjQhZ1LGXOfL7LakR3se-M45t1lBv6msA0lweHYAtCWy4IYUYFn_bffEWCSAa7hHqL7Ss_bbe7D4db3EuON92si38fx7YvD9e_CpYbrUrJhotA-D5NE1xcRXzWJOO5vJf1mW6PQBosBZEOAVFEQmtHXQ"/>
+</div>
+<div>
+<p class="font-label-sm text-white">GhostTrader</p>
+<div class="flex gap-0.5">
+<span class="material-symbols-outlined text-[10px] text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[10px] text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[10px] text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[10px] text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[10px] text-on-surface-variant" data-icon="star">star</span>
+</div>
+</div>
+</div>
+<button class="bg-tertiary/10 text-tertiary border border-tertiary/20 px-4 py-1.5 rounded-lg font-label-md hover:bg-tertiary hover:text-on-tertiary transition-all">Buy Now</button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="glass-card rounded-xl overflow-hidden flex flex-col group">
+<div class="relative h-48 w-full">
+<img class="w-full h-full object-cover" data-alt="A premium digital artwork showcasing a GTA V Criminal Enterprise Starter Pack icon set against a neon-lit Los Santos skyline at night. The colors are dominated by deep purples and high-intensity ambers. The composition is sleek and professional, with sharp focus on the digital keycard representing the product. It evokes high-stakes excitement and value." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiv1JoFIGb7yQ9Wurd6W1je7tPf9fJMiuk_BDIWsc1ZfOPVEA9ZzVnwMs6LmSimt0VvQDW4eakI8R8stEA07qtB7gy0KIDSHPiqDUQAm_DDaGYAtgHvwcd75AkYIYCc4A--Y1roJ9OhsUEmgmV0d4kmzYu2EnIrBnsff9Ch1fvvOIeVf0odN1YTBG1vDobk2zIVHzaPnZKSmqbzJkhiO2GjVCL06QGLEiyEpOEw7wgD-bkV5kAjOo70r0ZvKobq35t3U3nt4WqLkb0"/>
+<div class="absolute top-3 left-3">
+<span class="bg-secondary/20 text-secondary border border-secondary/30 px-3 py-1 rounded-full font-label-sm flex items-center gap-1 backdrop-blur-md">
+<span class="material-symbols-outlined text-sm" data-icon="bolt">bolt</span>
+                                Hot Deal
+                            </span>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-lg-mobile text-white group-hover:text-tertiary transition-colors">GTA V Key</h3>
+<span class="font-headline-lg-mobile text-secondary">R$ 89,90</span>
+</div>
+<p class="font-label-sm text-on-surface-variant mb-4">Premium Edition • Criminal Enterprise Pack Included</p>
+<div class="flex items-center justify-between border-t border-glass-border pt-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-glass-border flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional digital avatar of a verified top-tier seller, featuring a clean minimalist aesthetic. The character is stylized with soft focus, wearing high-tech glasses that reflect a subtle amber glow. The background is a dark, sophisticated texture of geometric grids in muted navy and charcoal tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGNT_J6fyaKSksEbySXEPezcvOvX5P9JZF7c508LXBA7ncb5yQI6bM3ZL-Cn3ZknpBvsFCGdMROgs5F_251QFLK0hbQP_FSKpWglF5a88T-2kxgvcvYWCz5oJyFiOvHCLWXgfxtsOlETv88WVWV38vZTDcX2KBQiGbAsOQ8AlpFxCkGorqeqrEPOOPoFC1oOb8tQ7LmKrO2sCDV56ZLqr3ePuBIwGkcEEkm76Z4wIiuuwvFScVdi4dIYKDDp2dnGHYfDD14G1E243t"/>
+</div>
+<div>
+<p class="font-label-sm text-white">NeonMerchant</p>
+<div class="flex gap-0.5">
+<span class="material-symbols-outlined text-[10px] text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[10px] text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[10px] text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[10px] text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[10px] text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+</div>
+<button class="bg-tertiary/10 text-tertiary border border-tertiary/20 px-4 py-1.5 rounded-lg font-label-md hover:bg-tertiary hover:text-on-tertiary transition-all">Buy Now</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Ratings Section -->
+<section class="mb-12">
+<div class="flex justify-between items-center mb-4">
+<h2 class="font-label-md text-on-surface uppercase tracking-wider">Recent Ratings</h2>
+</div>
+<div class="flex gap-4 overflow-x-auto hide-scrollbar -mx-margin-mobile px-margin-mobile">
+<!-- Rating 1 -->
+<div class="flex-shrink-0 w-72 glass-card p-4 rounded-xl border-l-2 border-l-secondary">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small, stylized avatar of a customer in a futuristic setting. The lighting is soft amber, casting gentle shadows on the character's friendly face. The visual style is clean and modern with a focus on trust and approachability, using the project's signature dark navy and gold palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHp7IUdZs2_cM-ejKovmHiYxiFkc6hn7iR3jNicQDcpTT61G5z5o14hZ-6tCjcmuOwI7rlse50X-7p5mzSuqIEewuexjF9RKerU72IX-6d97oWYyGHtKDoUHQlLbxhIoEqn9RFgzZAdAmmvGgsRRwCxkUsJFxExxoicbTanbDekxUSdfhiTx3b3eu0iPoKBeFF5IbOviZPojJ97lTM3rXLzjhcMFgCBRvlLGSiQlLD4FSNdgAQIlcS9ZadV9ombVOhTnAnbUbl0Du_"/>
+</div>
+<div>
+<p class="font-label-md text-white">Lucas S.</p>
+<div class="flex gap-0.5">
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+</div>
+<p class="font-label-sm text-on-surface-variant italic">"Fastest delivery I've ever had on KKMarket. The Valorant account was exactly as described. 10/10 service!"</p>
+</div>
+<!-- Rating 2 -->
+<div class="flex-shrink-0 w-72 glass-card p-4 rounded-xl border-l-2 border-l-tertiary">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A digital consumer avatar portrait for a gaming marketplace. The character has a cool, calm expression with cyan colored lighting accents on the side of their face. The style is modern, professional, and slightly futuristic, consistent with a high-tier digital assets platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWRGm2AshLLCP72rGmXD4JCThKO9Nw9kOdxyXjsRF2ZpHc8_l8Trjqm9Rheiys8la217SeuePpYdTNPHroe5q8Qshll7_Wiu0SPp3-Y5IrKC8l7D5WrjjCgb7-nwYjuk69Q3TkMoNx0f1uYEKy7mf-Nior1H1zhYn31OsIX3yTE070IbGuXeDL7KSjFLe9Kngw8SrXeMic1ksrF-ClXPqAvR5QEt7H49bl1LwRqoYmQVG9L2izwHzpBzBD4KyVtZeixlh29_Zl94ey"/>
+</div>
+<div>
+<p class="font-label-md text-white">Beatriz R.</p>
+<div class="flex gap-0.5">
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-xs text-secondary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+</div>
+<p class="font-label-sm text-on-surface-variant italic">"Trusted seller. Transaction went smoothly and the GTA key worked instantly. Will buy again for sure."</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-surface-container/90 backdrop-blur-xl border-t border-glass-border rounded-t-xl">
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-label-sm">Search</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-sm">Inventory</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm">Profile</span>
+</a>
+</nav>
+<!-- Contextual FAB -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-secondary text-on-secondary-fixed rounded-full shadow-[0_0_20px_rgba(238,152,0,0.4)] flex items-center justify-center z-40 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-icon="add" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+<script>
+        // Subtle atmospheric background interaction
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            const hero = document.querySelector('.glowing-border-amber');
+            if (hero) {
+                hero.style.transform = `perspective(1000px) rotateX(${(y - 0.5) * 2}deg) rotateY(${(x - 0.5) * -2}deg)`;
+            }
+        });
+    </script>
+</body></html>

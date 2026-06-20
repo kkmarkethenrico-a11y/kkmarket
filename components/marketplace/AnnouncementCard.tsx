@@ -34,95 +34,51 @@ export function AnnouncementCard({ ann }: { ann: AnnouncementWithRelations }) {
   return (
     <Link
       href={`/anuncio/${ann.slug}`}
-      className="group flex flex-col overflow-hidden rounded-xl border border-[var(--gm-ink-faint)]/50 bg-[var(--gm-paper-2)] gm-card-tilt hover:border-[var(--gm-violet)]/50"
+      className="product-card-hover group flex flex-col bg-surface-container rounded-xl overflow-hidden transition-all duration-300 border border-white/5"
     >
-      {/* Cover image */}
-      <div className="relative aspect-video overflow-hidden bg-[var(--gm-paper-3)]">
+      <div className="h-48 relative overflow-hidden bg-surface-container-high">
         {imgSrc ? (
           <Image
             src={imgSrc}
             alt={ann.title}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover transition-transform duration-500"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-4xl text-[var(--gm-ink-faint)]">🎮</div>
+          <div className="flex h-full items-center justify-center text-4xl text-on-surface-variant">🎮</div>
         )}
 
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--gm-paper-2)]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-        {/* Plan badge */}
-        <div className="absolute right-2 top-2">
-          <PlanBadge plan={ann.plan} />
-        </div>
-
-        {/* Auto-delivery badge */}
-        {ann.has_auto_delivery && (
-          <div className="absolute left-2 bottom-2">
-            <span className="rank-chip green text-[9px]">⚡ Auto</span>
-          </div>
-        )}
-
-        {/* Sale count badge */}
         {ann.sale_count > 10 && (
-          <div className="absolute left-2 top-2">
-            <span className="rank-chip gold text-[9px]">🔥 {ann.sale_count}+</span>
-          </div>
+          <div className="absolute top-2 right-2 px-2 py-1 bg-surface-container/80 backdrop-blur-md rounded text-label-sm font-bold text-secondary">HOT</div>
         )}
+
+        {ann.has_auto_delivery && (
+           <div className="absolute top-2 left-2 px-2 py-1 bg-primary/20 text-primary border border-primary/30 backdrop-blur-md rounded text-label-sm font-bold">AUTO</div>
+        )}
+
+        <div className="absolute bottom-2 right-2">
+           <PlanBadge plan={ann.plan} />
+        </div>
       </div>
 
-      {/* Content */}
-      <div className="flex flex-1 flex-col gap-2.5 p-3">
-        {/* Title */}
-        <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-[var(--gm-ink)] group-hover:text-white transition-colors">
+      <div className="p-4 flex flex-col flex-1">
+        <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-tighter flex items-center gap-2">
+           <span className="truncate">{sellerName}</span>
+           {total > 0 && <span className="text-primary text-[10px]">{pct}%</span>}
+        </span>
+        <h3 className="font-headline-sm text-[18px] text-white mt-1 line-clamp-2">
           {ann.title}
         </h3>
-
-        {/* Price */}
-        <div className="mt-auto">
+        <div className="mt-auto pt-4 flex justify-between items-center">
           {ann.model === 'normal' && ann.unit_price !== null ? (
-            <span className="text-xl font-black text-[var(--gm-green)]">
+            <span className="font-label-md text-label-md font-bold text-primary tracking-tight font-mono">
               R$ {ann.unit_price.toFixed(2).replace('.', ',')}
             </span>
           ) : (
-            <span className="text-sm font-medium text-[var(--gm-ink-dim)]">Ver variações</span>
+            <span className="font-label-md text-label-md font-bold text-on-surface-variant tracking-tight">Ver variações</span>
           )}
-        </div>
-
-        {/* Seller row */}
-        <div className="flex items-center gap-2 border-t border-[var(--gm-ink-faint)]/30 pt-2.5">
-          <div className="relative shrink-0">
-            {seller?.avatar_url ? (
-              <Image
-                src={seller.avatar_url}
-                alt={sellerName}
-                width={22}
-                height={22}
-                sizes="22px"
-                loading="lazy"
-                className="rounded-full object-cover"
-              />
-            ) : (
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--gm-violet)]/20 border border-[var(--gm-violet)]/40 text-[9px] font-bold text-[var(--gm-violet)] uppercase">
-                {sellerName[0]}
-              </span>
-            )}
-            {online && (
-              <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full border border-[var(--gm-paper-2)] bg-[var(--gm-green)]" />
-            )}
-          </div>
-          <span className="truncate text-xs text-[var(--gm-ink-dim)]">{sellerName}</span>
-
-          {/* Review score */}
-          {total > 0 ? (
-            <span className="ml-auto shrink-0 text-[10px] font-semibold text-[var(--gm-green)]">
-              {pct}%
-            </span>
-          ) : (
-            <span className="ml-auto shrink-0 text-[10px] text-[var(--gm-ink-faint)]">Novo</span>
-          )}
+          <span className="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">add_shopping_cart</span>
         </div>
       </div>
     </Link>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Chat | NEXUS Marketplace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Shared Components Logic & Style Guidance Integration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "error": "#ffb4ab",
+                "on-tertiary-fixed": "#001f26",
+                "on-tertiary": "#003640",
+                "on-primary-fixed-variant": "#414658",
+                "surface-container-highest": "#323536",
+                "surface-variant": "#323536",
+                "neon-purple": "#7C3AED",
+                "on-error": "#690005",
+                "surface": "#111415",
+                "secondary-fixed": "#ffddb8",
+                "surface-container-lowest": "#0c0f10",
+                "primary-container": "#0b1120",
+                "on-tertiary-fixed-variant": "#004e5c",
+                "inverse-primary": "#585e70",
+                "on-primary": "#2a3040",
+                "background": "#111415",
+                "secondary-container": "#ee9800",
+                "on-surface-variant": "#c6c6cd",
+                "on-surface": "#e1e3e4",
+                "on-tertiary-container": "#0089a0",
+                "primary-fixed": "#dde2f8",
+                "surface-container-high": "#282a2b",
+                "tertiary": "#4cd7f6",
+                "primary-fixed-dim": "#c1c6db",
+                "on-secondary-fixed": "#2a1700",
+                "inverse-on-surface": "#2e3132",
+                "tertiary-fixed": "#acedff",
+                "surface-dim": "#111415",
+                "glass-border": "rgba(255, 255, 255, 0.1)",
+                "on-secondary": "#472a00",
+                "on-secondary-container": "#5b3800",
+                "tertiary-fixed-dim": "#4cd7f6",
+                "surface-tint": "#c1c6db",
+                "inverse-surface": "#e1e3e4",
+                "tertiary-container": "#001419",
+                "surface-container": "#1d2021",
+                "primary": "#c1c6db",
+                "surface-container-low": "#191c1d",
+                "secondary-fixed-dim": "#ffb95f",
+                "on-error-container": "#ffdad6",
+                "secondary": "#ffb95f",
+                "on-secondary-fixed-variant": "#653e00",
+                "outline": "#909097",
+                "on-primary-fixed": "#151b2b",
+                "on-background": "#e1e3e4",
+                "surface-elevated": "#161D2F",
+                "error-container": "#93000a",
+                "surface-bright": "#373a3b",
+                "on-primary-container": "#777c90",
+                "outline-variant": "#45464c"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "gutter": "24px",
+                "margin-mobile": "16px",
+                "container-max": "1280px",
+                "margin-desktop": "40px",
+                "unit": "8px"
+            },
+            "fontFamily": {
+                "headline-lg-mobile": ["Outfit"],
+                "headline-xl": ["Outfit"],
+                "body-lg": ["Inter"],
+                "body-md": ["Inter"],
+                "headline-lg": ["Outfit"],
+                "label-md": ["Inter"],
+                "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #111415;
+            color: #e1e3e4;
+            overflow: hidden;
+            height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(22, 29, 47, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .message-in {
+            border-radius: 4px 16px 16px 16px;
+        }
+        .message-out {
+            border-radius: 16px 16px 4px 16px;
+            background: linear-gradient(135deg, #ee9800 0%, #ffb95f 100%);
+            box-shadow: 0 0 15px rgba(238, 152, 0, 0.2);
+        }
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .cyber-glow {
+            box-shadow: 0 0 20px rgba(76, 215, 246, 0.15);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col">
+<!-- Top Navigation Bar (Custom TopAppBar for Chat) -->
+<header class="fixed top-0 left-0 w-full z-50 glass-panel h-16 flex items-center px-4 justify-between border-b border-glass-border">
+<div class="flex items-center gap-3">
+<button class="text-on-surface p-1 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">arrow_back_ios</span>
+</button>
+<div class="relative">
+<div class="w-10 h-10 rounded-full border border-tertiary/30 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional high-tech digital avatar for a premium seller named NexusPrime Keys, featuring futuristic cyberpunk aesthetics with glowing cyan neon accents on a sleek dark metallic visor. The background is a deep navy with subtle geometric data patterns, maintaining a clean yet advanced digital marketplace identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSt9hp6cHsC4dUxdIPTe0UtbHE50nO4rAyJN7tsdk9PsqpKdzJW7mAbSmn_vHHN8PZ_-N4BjKC28C-HYM9b9v3IhxR5h4M6NhJuPmeLIMH0hLd1xTJMzlX9BLKQiF219RmzZ6SHv1UOd3nA9MI9n9xopcPwB3kRX0Jhkc6dcmnycVrZVvEOCjpyTzKs98lgUHg5Or1mJUdA8iYVK2DC6ctsJLdekoREKdYAf1GolBV1-bold-uvnCt3WdmOK2YDfPvLKyxSiZKuRA8"/>
+</div>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-tertiary rounded-full border-2 border-surface"></div>
+</div>
+<div class="flex flex-col">
+<h1 class="font-label-md text-label-md text-on-surface font-bold">NexusPrime Keys</h1>
+<span class="text-[10px] text-tertiary font-medium tracking-widest flex items-center gap-1 uppercase">
+<span class="w-1.5 h-1.5 bg-tertiary rounded-full animate-pulse"></span>
+                    Online
+                </span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-tertiary transition-colors">
+<span class="material-symbols-outlined">call</span>
+</button>
+<button class="text-on-surface-variant hover:text-tertiary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</header>
+<!-- Transaction Header (Pinned Banner) -->
+<div class="fixed top-16 left-0 w-full z-40 bg-surface-container/90 backdrop-blur-md px-4 py-3 border-b border-glass-border flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 bg-surface-container-highest rounded-lg overflow-hidden border border-glass-border">
+<img class="w-full h-full object-cover" data-alt="A high-resolution promotional artwork for Grand Theft Auto V Premium Edition featuring iconic characters and a stylized Los Santos cityscape under a golden sunset. The visual style is crisp and cinematic, adhering to the high-stakes excitement and premium digital asset feel of the Nexus Marketplace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkYJpELw6473YesgtksB-nkhwkBWb7I7uGIplDhcP60-YscRb8KLtZlszWD5IMiVaER4PE9LPWC7kHGuoqhRik6Uihiignn8Xn-Hn7qj4CpRp8xERKQO4RASygrmEVwxMAnotoSosfbcUigbqMVzYF-AbykbR8ZqwDwVOLYNl8EO6JLc3jm3SuAv8KFcLKUvgATqRxSvM9rRhSjGLgta8HiltCk_MACZ29uB5fQvkChSfnxDPIh9-oEvdpxk-7alPh3mgnUBzQSi6e"/>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface leading-tight">GTA V: Premium Edition</p>
+<p class="font-label-md text-label-md text-secondary font-bold">R$ 89,90</p>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-full border border-tertiary text-tertiary font-label-sm text-label-sm hover:bg-tertiary/10 transition-colors">
+            View Product
+        </button>
+</div>
+<!-- Main Chat Canvas -->
+<main class="flex-1 mt-[132px] mb-[140px] px-4 overflow-y-auto scroll-hide space-y-6 pt-4">
+<!-- Day Divider -->
+<div class="flex justify-center">
+<span class="bg-surface-container-high px-3 py-1 rounded-full text-[10px] text-on-surface-variant font-medium uppercase tracking-widest">Today</span>
+</div>
+<!-- Seller Message -->
+<div class="flex flex-col items-start max-w-[85%]">
+<div class="bg-surface-container-low border border-glass-border p-4 text-on-surface font-body-md text-body-md message-in">
+                Olá! O envio é imediato após a confirmação do pagamento. Alguma dúvida?
+            </div>
+<span class="text-[10px] text-on-surface-variant mt-1 ml-1">14:20</span>
+</div>
+<!-- Buyer Message -->
+<div class="flex flex-col items-end self-end max-w-[85%]">
+<div class="message-out p-4 text-on-secondary font-body-md text-body-md font-medium">
+                Olá, a chave funciona na Steam?
+            </div>
+<div class="flex items-center gap-1 mt-1 mr-1">
+<span class="text-[10px] text-on-surface-variant">14:22</span>
+<span class="material-symbols-outlined text-[12px] text-secondary">done_all</span>
+</div>
+</div>
+<!-- Seller Message -->
+<div class="flex flex-col items-start max-w-[85%]">
+<div class="bg-surface-container-low border border-glass-border p-4 text-on-surface font-body-md text-body-md message-in">
+                Sim, é uma chave global ativável diretamente na Steam.
+            </div>
+<span class="text-[10px] text-on-surface-variant mt-1 ml-1">14:23</span>
+</div>
+<!-- System Message: Trusted Seller Badge (Implicit in guidance) -->
+<div class="flex justify-center px-6">
+<div class="bg-tertiary/5 border border-tertiary/20 rounded-xl p-3 flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<p class="text-[11px] text-on-tertiary-container leading-tight">This seller is <b>NEXUS Verified</b>. Transactions are held in escrow until you confirm delivery.</p>
+</div>
+</div>
+</main>
+<!-- Bottom Interaction Area -->
+<footer class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest/95 backdrop-blur-xl border-t border-glass-border pb-safe">
+<!-- Safe Deal Notice -->
+<div class="bg-primary-container/40 px-4 py-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">security</span>
+<p class="text-[10px] text-on-primary-container font-medium">
+                Mantenha sua negociação aqui para garantir a Proteção ao Comprador
+            </p>
+</div>
+<!-- Input Bar -->
+<div class="p-4 flex items-center gap-3">
+<div class="flex items-center gap-1">
+<button class="p-2 text-on-surface-variant hover:text-tertiary active:scale-90 transition-all">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-tertiary active:scale-90 transition-all">
+<span class="material-symbols-outlined">photo_camera</span>
+</button>
+</div>
+<div class="flex-1 relative">
+<input class="w-full bg-surface-container border-none rounded-full py-3 px-5 text-on-surface font-body-md text-body-md focus:ring-1 focus:ring-tertiary placeholder:text-on-surface-variant/50 transition-all" placeholder="Type a message..." type="text"/>
+</div>
+<button class="w-12 h-12 rounded-full bg-secondary text-on-secondary flex items-center justify-center active:scale-90 transition-transform shadow-lg shadow-secondary/20">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</footer>
+<!-- Animated Atmospheric Effect (Micro-interaction script) -->
+<script>
+        // Subtle background pulse or interaction feedback
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.classList.add('scale-95');
+                setTimeout(() => this.classList.remove('scale-95'), 150);
+            });
+        });
+
+        // Auto-scroll to bottom
+        const main = document.querySelector('main');
+        main.scrollTop = main.scrollHeight;
+    </script>
+</body></html>

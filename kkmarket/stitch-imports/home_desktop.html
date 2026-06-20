@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KKMarket | Cyber-Nexus Marketplace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&amp;family=JetBrains+Mono:wght@100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --primary-glow: rgba(76, 215, 246, 0.5);
+            --secondary-glow: rgba(255, 198, 64, 0.3);
+        }
+        body {
+            background-color: #0d1322;
+            color: #dde2f8;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(25, 31, 47, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .neon-border-primary {
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+        .neon-text-secondary {
+            text-shadow: 0 0 8px var(--secondary-glow);
+        }
+        .product-card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(76, 215, 246, 0.2);
+        }
+        .product-card-hover:hover img {
+            transform: scale(1.05);
+        }
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(76, 215, 246, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
+            opacity: 0.1;
+            position: absolute;
+            bottom: 100%;
+            animation: scanline 8s linear infinite;
+        }
+        @keyframes scanline {
+            0% { bottom: 100%; }
+            100% { bottom: -100%; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#e9ddff",
+                        "on-tertiary-container": "#4900ae",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed": "#261a00",
+                        "on-tertiary-fixed": "#23005c",
+                        "on-surface": "#dde2f8",
+                        "surface-bright": "#33394a",
+                        "on-primary-fixed": "#001f26",
+                        "surface": "#0d1322",
+                        "tertiary-fixed-dim": "#d0bcff",
+                        "inverse-surface": "#dde2f8",
+                        "on-error": "#690005",
+                        "primary-container": "#06b6d4",
+                        "surface-container-high": "#242a3a",
+                        "primary": "#4cd7f6",
+                        "on-tertiary-fixed-variant": "#5516be",
+                        "on-tertiary": "#3c0091",
+                        "secondary": "#ffc640",
+                        "surface-container-lowest": "#080e1d",
+                        "secondary-fixed": "#ffdf9f",
+                        "surface-tint": "#4cd7f6",
+                        "on-secondary": "#402d00",
+                        "on-surface-variant": "#bcc9cd",
+                        "surface-container-low": "#151b2b",
+                        "error-container": "#93000a",
+                        "surface-variant": "#2f3445",
+                        "on-primary-fixed-variant": "#004e5c",
+                        "primary-fixed": "#acedff",
+                        "on-secondary-container": "#5a4100",
+                        "secondary-container": "#e3aa00",
+                        "tertiary": "#d0bcff",
+                        "background": "#0d1322",
+                        "on-secondary-fixed-variant": "#5c4300",
+                        "inverse-primary": "#00687a",
+                        "surface-container": "#191f2f",
+                        "primary-fixed-dim": "#4cd7f6",
+                        "on-error-container": "#ffdad6",
+                        "inverse-on-surface": "#2a3040",
+                        "on-primary": "#003640",
+                        "surface-dim": "#0d1322",
+                        "outline": "#869397",
+                        "tertiary-container": "#b395ff",
+                        "on-background": "#dde2f8",
+                        "on-primary-container": "#00424f",
+                        "outline-variant": "#3d494c",
+                        "secondary-fixed-dim": "#f9bd22",
+                        "surface-container-highest": "#2f3445"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit-lg": "24px",
+                        "container-max": "1440px",
+                        "margin": "48px",
+                        "gutter": "24px",
+                        "unit-xl": "32px",
+                        "columns": "12",
+                        "unit-sm": "8px",
+                        "unit-md": "16px",
+                        "unit-xs": "4px",
+                        "unit-2xl": "64px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Outfit"],
+                        "display-lg": ["Outfit"],
+                        "display-md": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "headline-sm": ["Outfit"],
+                        "headline-md": ["Outfit"],
+                        "label-sm": ["JetBrains Mono"],
+                        "body-lg": ["Outfit"],
+                        "label-md": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "display-md": ["56px", {"lineHeight": "64px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-lg": ["40px", {"lineHeight": "48px", "fontWeight": "600"}],
+                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-body-md text-on-surface bg-background">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-[0_0_15px_rgba(76,215,246,0.1)]">
+<div class="flex justify-between items-center max-w-[1440px] mx-auto px-margin h-20">
+<!-- Brand Logo -->
+<div class="flex items-center gap-4">
+<img alt="KKMarket Logo" class="h-10 w-auto" src="https://lh3.googleusercontent.com/aida/AP1WRLvePEjx4y6EOIJX9RQGLJwKgMgNYe_iIEY4yABNcWnia-itgwL9A1CV3dRpofJzO6bF6SN7nEzpIVjBhrpyU902ruOyqNWb5jNdlJ1Ct--gq6GTNep-UPnfoKHCNuGWhtOgVJ7DrcG2n-0r7JN6wRQzCe6rwcOhew1e00hIobbqN2OqlQ7GbsRTCIqN0PNaXCgsoDaSq3qIDtGZpAEls0G95X32J4iEN5yYUN-8zDEtHN2vHXK-y9mRBQzP"/>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex gap-unit-xl font-body-md text-body-md">
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Games</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Accounts</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Skins</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Support</a>
+</nav>
+<!-- Actions -->
+<div class="flex items-center gap-unit-md">
+<div class="relative hidden lg:block">
+<input class="bg-surface-container-low border border-outline-variant rounded-xl py-2 pl-10 pr-4 w-64 focus:ring-1 focus:ring-primary focus:border-primary transition-all text-label-md" placeholder="Search marketplace..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors duration-200 p-2">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors duration-200 p-2 relative">
+                    shopping_cart
+                    <span class="absolute top-1 right-1 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<div class="h-10 w-10 rounded-full border border-primary/30 overflow-hidden cursor-pointer active:scale-95 transition-transform">
+<img class="w-full h-full object-cover" data-alt="A futuristic professional avatar for a high-end gamer profile, featuring a holographic interface glow reflecting on a sleek dark helmet, set against a deep navy digital grid background. The lighting is focused and cinematic with cyan accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo_zwcZs1BytFUVQiRadU9tgRyAnEPoqI2Ktg3wCAykU3amXPCW8yPWZw6H7izCPRRY4j_YZyUgZ7meLN6s3YSMXW7fZcmLhfCm181xYtgLuZEPCbvjh2YYVN-t2uoNt3LAeq4lySrwP_5hzwpyShdssn_2sV6eeKPLCJBUnvqvRy6bDEf8Wk7Qm9IoVGiBl-Sg2nYVhoPJVZNi5t_Sy471QLuDzshzK4suiMtGIl9No9RCO7y6G1ueQjaV1kr5hhDQE7UIa1TOB0w"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-[1440px] mx-auto px-margin">
+<!-- Cyber-Nexus Hero Section -->
+<section class="relative mt-unit-lg rounded-xl overflow-hidden min-h-[500px] flex items-center border border-white/5 bg-surface-container-lowest">
+<div class="scanline"></div>
+<!-- Background Elements -->
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-r from-background via-transparent to-transparent z-10"></div>
+<div class="w-full h-full bg-cover bg-center opacity-40" data-alt="An expansive digital vista of a futuristic cyberpunk city at night with towering neon skyscrapers and flying data streams. The aesthetic is high-fidelity with deep navy and cyan hues, featuring technical UI overlays and a sense of immersive depth. Glowing energy conduits pulse with light across the landscape." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA3c8skU9aYIn74YQc4q8Dds0-sDXJ-fUCcfQOzD1rRmLiKmfswSo51GD8qTQV7smjcHRUx8iHPu50UstJlEvU6l2i_CDwYEkkbB_0hnqH5UWioLLYmbrSPbn7AB6yBmderOeZbrmX-fUCI-ihqezZLmwqhc8ij2F8WVDDXV-Qew3ffn58qpG3hMUdYjcA4ufyiuHW3Q0SyNfF8NUwOSYJ7-YBIkQt-4XF7erpOSCR1y4_mYORa-DvbK9n1Rldx0UPsfwvla5uQOOmi')"></div>
+</div>
+<!-- Hero Content -->
+<div class="relative z-20 w-1/2 p-unit-2xl space-y-unit-md">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary font-label-md text-label-md tracking-wider">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+                    SYSTEMS ONLINE
+                </div>
+<h1 class="font-display-lg text-display-lg text-white leading-tight">THE NEXT GEN <span class="text-primary">MARKETPLACE</span></h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">Experience the most secure high-speed trading hub for gamers. Instant deliveries, encrypted transactions, and verified elite accounts.</p>
+<div class="flex gap-unit-md pt-unit-md">
+<button class="px-8 py-4 bg-primary text-on-primary font-bold rounded-lg hover:shadow-[0_0_20px_rgba(76,215,246,0.6)] transition-all active:scale-95 flex items-center gap-2">
+                        START TRADING <span class="material-symbols-outlined">trending_flat</span>
+</button>
+<button class="px-8 py-4 bg-transparent border border-secondary text-secondary font-bold rounded-lg hover:bg-secondary/10 transition-all active:scale-95">
+                        VIEW MISSIONS
+                    </button>
+</div>
+</div>
+</section>
+<!-- Missions & Rewards Banner -->
+<section class="mt-unit-lg">
+<div class="bg-secondary-container text-on-secondary-container p-unit-md rounded-xl flex items-center justify-between shadow-lg">
+<div class="flex items-center gap-unit-md">
+<div class="bg-on-secondary-container text-secondary p-3 rounded-lg">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm leading-tight">Missions &amp; Rewards</h3>
+<p class="font-label-md text-label-md opacity-80">Complete daily tasks to unlock exclusive Cyber-Nexus skins and currency.</p>
+</div>
+</div>
+<div class="flex items-center gap-unit-lg">
+<div class="text-right">
+<div class="font-label-sm text-label-sm uppercase tracking-widest opacity-60">NEXT REWARD AT</div>
+<div class="font-label-md text-label-md font-bold">1,500 KK-COINS</div>
+</div>
+<div class="w-32 h-2 bg-on-secondary-container/20 rounded-full overflow-hidden">
+<div class="w-3/4 h-full bg-on-secondary-container"></div>
+</div>
+<button class="bg-on-secondary-container text-secondary-container px-6 py-2 rounded-lg font-bold hover:opacity-90 transition-opacity">CLAIM</button>
+</div>
+</div>
+</section>
+<!-- Main Marketplace Body -->
+<div class="mt-unit-2xl flex gap-gutter">
+<!-- Sidebar Navigation -->
+<aside class="hidden lg:flex flex-col gap-unit-md p-unit-lg h-full w-64 rounded-xl bg-surface-container border-r border-white/5">
+<div class="mb-unit-md">
+<h2 class="font-headline-sm text-headline-sm text-primary">Marketplace</h2>
+<p class="font-label-md text-label-md text-on-surface-variant">Browse Categories</p>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3 p-3 text-primary bg-primary/10 rounded-lg font-bold cursor-pointer">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-md text-label-md">All Products</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-colors cursor-pointer">
+<span class="material-symbols-outlined">trending_up</span>
+<span class="font-label-md text-label-md">Trending</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-colors cursor-pointer">
+<span class="material-symbols-outlined">fiber_new</span>
+<span class="font-label-md text-label-md">New Arrivals</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-colors cursor-pointer">
+<span class="material-symbols-outlined">star</span>
+<span class="font-label-md text-label-md">Top Rated</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-colors cursor-pointer">
+<span class="material-symbols-outlined">bolt</span>
+<span class="font-label-md text-label-md">Flash Sales</span>
+</div>
+</div>
+<button class="mt-auto bg-primary text-on-primary font-bold py-3 rounded-lg hover:opacity-90 transition-opacity">Apply Filters</button>
+</aside>
+<!-- Main Content Area -->
+<div class="flex-1 space-y-unit-2xl">
+<!-- Most Popular Section (4 per row) -->
+<section>
+<div class="flex justify-between items-end mb-unit-lg">
+<div>
+<h2 class="font-headline-md text-headline-md text-white">Most Popular Items</h2>
+<p class="text-on-surface-variant font-body-md text-body-md">The most traded assets in the nexus right now.</p>
+</div>
+<a class="text-primary hover:underline font-label-md text-label-md" href="#">View All</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-gutter">
+<!-- Product Card 1 -->
+<div class="product-card-hover group flex flex-col bg-surface-container rounded-xl overflow-hidden transition-all duration-300 border border-white/5">
+<div class="h-48 relative overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover transition-transform duration-500" data-alt="A high-performance gaming laptop with iridescent glowing keys and a sleek dark carbon fiber finish. The background is a blurred digital workspace with soft purple and blue ambient lighting, emphasizing high-end hardware quality and professional gamer gear." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLCWLe9JHjXgvqNlcoiyHPHRF9L-4sRa10cctW4qAY39M1d2eWJW6_o130HWwstN_wE3sbw_EIIZUcraBVUQN-OIXKy4meMPaFjQlTCwJo07tsniqEGmbKJxOvfm30GUdB24T62iRI1mkVnrO35cyt9tqjM6Zgi7y2F9YKXR0clzIX2qN70o66YcD-V3nX6pApMuxcq3RXDJvoziOATnhYwSQXCThxkGtikjRVSF3LSpbpIHRvUIj-HG_QPJ9_SwOUw3eRzahIUDyq"/>
+<div class="absolute top-2 right-2 px-2 py-1 bg-surface-container/80 backdrop-blur-md rounded text-label-sm font-bold text-secondary">HOT</div>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-tighter">CS:GO • Skins</span>
+<h3 class="font-headline-sm text-[18px] text-white mt-1">Dragon Lore AWP</h3>
+<div class="mt-auto pt-4 flex justify-between items-center">
+<span class="font-label-md text-label-md font-bold text-primary tracking-tight font-[JetBrains Mono]">$4,250.00</span>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">add_shopping_cart</button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="product-card-hover group flex flex-col bg-surface-container rounded-xl overflow-hidden transition-all duration-300 border border-white/5">
+<div class="h-48 relative overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover transition-transform duration-500" data-alt="A premium mechanical keyboard with vibrant RGB lighting under each key, casting a spectrum of neon colors onto a dark desk surface. The aesthetic is modern and technical, with a focus on tactile precision and high-fidelity peripheral design. Set against a dark, tech-focused background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApD1nLqWXIU1BzDaffiL39FbWisrldxFlsyqGZIkeWPFlb9A00_Odosd0U6hz-98mJDLpKIisoUqsrm_6L-08k7gcdaIHgcDASO5D_xcwaqHZuHw8a-MwKUk6yQCjc1I_BJOlIcTaIGd18cr0QjPjE0r2CqZZyT3pfz7egz_MphxXzsOfbX0_RvK33kBi4LKPcROVdb_uEPbRInQ5XB6isyRMDowCAwhf0hTHipDz8FlOSU2n-5k5o3K1RlLdMK7iKEm8_jgf7Jfhb"/>
+<div class="absolute top-2 right-2 px-2 py-1 bg-primary/20 text-primary border border-primary/30 backdrop-blur-md rounded text-label-sm font-bold">-15%</div>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-tighter">Hardware • Peripherals</span>
+<h3 class="font-headline-sm text-[18px] text-white mt-1">Nexus Pro V3 Keyboard</h3>
+<div class="mt-auto pt-4 flex justify-between items-center">
+<span class="font-label-md text-label-md font-bold text-primary tracking-tight font-[JetBrains Mono]">$189.99</span>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">add_shopping_cart</button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="product-card-hover group flex flex-col bg-surface-container rounded-xl overflow-hidden transition-all duration-300 border border-white/5">
+<div class="h-48 relative overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover transition-transform duration-500" data-alt="A sophisticated professional gamer headset with glowing cyan LED rings on the earcups. The design is ergonomic and sleek, featuring high-quality leather and metal components. The background is a dark, moody studio setting with subtle lens flares and high-tech energy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGuPYCtwIg47AnWIQ83GDbyyP62FHLpwjFaT1n34l2kBv4hB7ruEdXblaABPWICQmwejM5Fkl98YepGIgg2qLkQeyWpN_FA6-zkAuGK-LBuKOhn5o4lhtS2HYkh2lR2ST78LjiHHfkWlBxGr0TKZZuHa8w2Y1bG7FqzVti8iCBYrjSyCatB65zwM5kRgQkNuCNsah77QMyiaRo5jZc4ZysWhkpI6QbZl0Z7mGk44gZim0GjmqG3YQahkRqoJlXi4O0_SAVcvK9QfPa"/>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-tighter">Valorant • Accounts</span>
+<h3 class="font-headline-sm text-[18px] text-white mt-1">Radiant Tier Account</h3>
+<div class="mt-auto pt-4 flex justify-between items-center">
+<span class="font-label-md text-label-md font-bold text-primary tracking-tight font-[JetBrains Mono]">$550.00</span>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">add_shopping_cart</button>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="product-card-hover group flex flex-col bg-surface-container rounded-xl overflow-hidden transition-all duration-300 border border-white/5">
+<div class="h-48 relative overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover transition-transform duration-500" data-alt="An advanced GPU with triple cooling fans and integrated RGB strips glowing in a vibrant amber color. The image highlights technical sophistication and raw computing power, featuring intricate heat pipes and metallic textures. The lighting creates a sense of high-performance energy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXWGhJZ-d8Us1qYoCieKeOclhSLins1aqkXU4ZTiT7fxFF56lzdsopN4ledpDa4OzCsmj_skakp7jb2pGXmtod1_NjK02uNTq6e6-z0pNSUEyjcyoGt9tkUckS63H0ym-OIqoXY0utguDEW5LIfS_78sKOGDw4L2uaXu_tols2gDFcpPxiCOGux2qjLQ_kDveBUySrTXr9kBxQ5L3qO88WTiaJVnu366NdNDVa3Fg9rQVLAAwyF8LGSpf-fHbQPaOoAhbI2WQNfo6Z"/>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-tighter">Hardware • Components</span>
+<h3 class="font-headline-sm text-[18px] text-white mt-1">RTX 5090 Nexus-Edit</h3>
+<div class="mt-auto pt-4 flex justify-between items-center">
+<span class="font-label-md text-label-md font-bold text-primary tracking-tight font-[JetBrains Mono]">$1,999.00</span>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">add_shopping_cart</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Ratings Section (Horizontal Scroll/Masonry Feel) -->
+<section>
+<div class="flex justify-between items-end mb-unit-lg">
+<div>
+<h2 class="font-headline-md text-headline-md text-white">Recent Ratings</h2>
+<p class="text-on-surface-variant font-body-md text-body-md">Verified community feedback from recent trades.</p>
+</div>
+<div class="flex gap-2">
+<button class="p-2 border border-outline rounded-lg hover:border-primary transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="p-2 border border-outline rounded-lg hover:border-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Rating 1 -->
+<div class="bg-surface-container-low p-unit-md rounded-xl border border-white/5 space-y-3">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center font-bold text-primary">S</div>
+<div>
+<div class="font-label-md text-label-md text-white">Shadow_Reaper</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">2 mins ago</div>
+</div>
+</div>
+<div class="flex text-secondary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="font-body-md text-on-surface-variant leading-relaxed italic">"Instant delivery for the account. Seller was communicative throughout the process. Legit 10/10."</p>
+<div class="pt-2 border-t border-white/5 flex items-center gap-2 text-label-sm text-outline">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+                                Purchased: Immortal rank boost
+                            </div>
+</div>
+<!-- Rating 2 -->
+<div class="bg-surface-container-low p-unit-md rounded-xl border border-white/5 space-y-3">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center font-bold text-secondary">K</div>
+<div>
+<div class="font-label-md text-label-md text-white">Kira_Codes</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">15 mins ago</div>
+</div>
+</div>
+<div class="flex text-secondary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]">star</span>
+</div>
+</div>
+<p class="font-body-md text-on-surface-variant leading-relaxed italic">"Excellent packaging on the hardware. Arrived 2 days early. The nexus edition looks insane."</p>
+<div class="pt-2 border-t border-white/5 flex items-center gap-2 text-label-sm text-outline">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+                                Purchased: RTX 5090 Nexus-Edit
+                            </div>
+</div>
+<!-- Rating 3 -->
+<div class="bg-surface-container-low p-unit-md rounded-xl border border-white/5 space-y-3">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center font-bold text-tertiary">V</div>
+<div>
+<div class="font-label-md text-label-md text-white">VoidWalker</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">1 hour ago</div>
+</div>
+</div>
+<div class="flex text-secondary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="font-body-md text-on-surface-variant leading-relaxed italic">"Secure transaction. Was nervous about buying high-value skins but the escrow system works perfectly."</p>
+<div class="pt-2 border-t border-white/5 flex items-center gap-2 text-label-sm text-outline">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+                                Purchased: Dragon Lore AWP
+                            </div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="mt-unit-2xl border-t border-white/10 bg-surface-container-lowest">
+<div class="max-w-[1440px] mx-auto px-margin py-unit-2xl grid grid-cols-12 gap-gutter">
+<div class="col-span-12 lg:col-span-4 space-y-unit-md">
+<img alt="KKMarket Logo" class="h-12 w-auto mb-4" src="https://lh3.googleusercontent.com/aida/AP1WRLvePEjx4y6EOIJX9RQGLJwKgMgNYe_iIEY4yABNcWnia-itgwL9A1CV3dRpofJzO6bF6SN7nEzpIVjBhrpyU902ruOyqNWb5jNdlJ1Ct--gq6GTNep-UPnfoKHCNuGWhtOgVJ7DrcG2n-0r7JN6wRQzCe6rwcOhew1e00hIobbqN2OqlQ7GbsRTCIqN0PNaXCgsoDaSq3qIDtGZpAEls0G95X32J4iEN5yYUN-8zDEtHN2vHXK-y9mRBQzP"/>
+<p class="text-on-surface-variant font-body-md max-w-sm">The world's premier digital marketplace for the modern gamer. Secure, fast, and community-driven.</p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">share</span>
+</a>
+<a class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">forum</span>
+</a>
+</div>
+</div>
+<div class="col-span-6 lg:col-span-2 space-y-4">
+<h4 class="font-label-md text-label-md font-bold text-white uppercase tracking-widest">Navigation</h4>
+<nav class="flex flex-col gap-2 font-label-md text-label-md text-outline">
+<a class="hover:text-secondary transition-colors" href="#">Marketplace</a>
+<a class="hover:text-secondary transition-colors" href="#">Missions</a>
+<a class="hover:text-secondary transition-colors" href="#">Inventory</a>
+<a class="hover:text-secondary transition-colors" href="#">Support</a>
+</nav>
+</div>
+<div class="col-span-6 lg:col-span-2 space-y-4">
+<h4 class="font-label-md text-label-md font-bold text-white uppercase tracking-widest">Legal</h4>
+<nav class="flex flex-col gap-2 font-label-md text-label-md text-outline">
+<a class="hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-secondary transition-colors" href="#">Security</a>
+<a class="hover:text-secondary transition-colors" href="#">Payment Info</a>
+</nav>
+</div>
+<div class="col-span-12 lg:col-span-4 space-y-4">
+<h4 class="font-label-md text-label-md font-bold text-white uppercase tracking-widest">Newsletter</h4>
+<p class="text-on-surface-variant font-label-md">Get the latest drops and flash sales directly to your inbox.</p>
+<div class="flex gap-2">
+<input class="flex-1 bg-surface-container border border-outline-variant rounded-lg px-4 py-2 focus:ring-1 focus:ring-primary outline-none" placeholder="email@cybernexus.com" type="email"/>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-bold">JOIN</button>
+</div>
+</div>
+</div>
+<div class="border-t border-white/5 py-8 text-center text-label-sm text-outline">
+            © 2024 KKMarket Cyber-Nexus. All Rights Reserved.
+        </div>
+</footer>
+<script>
+        // Simple micro-interaction for product cards
+        document.querySelectorAll('.product-card-hover').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

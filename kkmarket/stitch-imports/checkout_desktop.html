@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Checkout | KKMarket Cyber-Nexus</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#e9ddff",
+                    "on-tertiary-container": "#4900ae",
+                    "error": "#ffb4ab",
+                    "on-secondary-fixed": "#261a00",
+                    "on-tertiary-fixed": "#23005c",
+                    "on-surface": "#dde2f8",
+                    "surface-bright": "#33394a",
+                    "on-primary-fixed": "#001f26",
+                    "surface": "#0d1322",
+                    "tertiary-fixed-dim": "#d0bcff",
+                    "inverse-surface": "#dde2f8",
+                    "on-error": "#690005",
+                    "primary-container": "#06b6d4",
+                    "surface-container-high": "#242a3a",
+                    "primary": "#4cd7f6",
+                    "on-tertiary-fixed-variant": "#5516be",
+                    "on-tertiary": "#3c0091",
+                    "secondary": "#ffc640",
+                    "surface-container-lowest": "#080e1d",
+                    "secondary-fixed": "#ffdf9f",
+                    "surface-tint": "#4cd7f6",
+                    "on-secondary": "#402d00",
+                    "on-surface-variant": "#bcc9cd",
+                    "surface-container-low": "#151b2b",
+                    "error-container": "#93000a",
+                    "surface-variant": "#2f3445",
+                    "on-primary-fixed-variant": "#004e5c",
+                    "primary-fixed": "#acedff",
+                    "on-secondary-container": "#5a4100",
+                    "secondary-container": "#e3aa00",
+                    "tertiary": "#d0bcff",
+                    "background": "#0d1322",
+                    "on-secondary-fixed-variant": "#5c4300",
+                    "inverse-primary": "#00687a",
+                    "surface-container": "#191f2f",
+                    "primary-fixed-dim": "#4cd7f6",
+                    "on-error-container": "#ffdad6",
+                    "inverse-on-surface": "#2a3040",
+                    "on-primary": "#003640",
+                    "surface-dim": "#0d1322",
+                    "outline": "#869397",
+                    "tertiary-container": "#b395ff",
+                    "on-background": "#dde2f8",
+                    "on-primary-container": "#00424f",
+                    "outline-variant": "#3d494c",
+                    "secondary-fixed-dim": "#f9bd22",
+                    "surface-container-highest": "#2f3445"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit-lg": "24px",
+                    "container-max": "1440px",
+                    "margin": "48px",
+                    "gutter": "24px",
+                    "unit-xl": "32px",
+                    "columns": "12",
+                    "unit-sm": "8px",
+                    "unit-md": "16px",
+                    "unit-xs": "4px",
+                    "unit-2xl": "64px"
+            },
+            "fontFamily": {
+                    "body-md": ["Outfit"],
+                    "display-lg": ["Outfit"],
+                    "display-md": ["Outfit"],
+                    "headline-lg": ["Outfit"],
+                    "headline-sm": ["Outfit"],
+                    "headline-md": ["Outfit"],
+                    "label-sm": ["JetBrains Mono"],
+                    "body-lg": ["Outfit"],
+                    "label-md": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-md": ["56px", {"lineHeight": "64px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-lg": ["40px", {"lineHeight": "48px", "fontWeight": "600"}],
+                    "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(25, 31, 47, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .bloom-primary:hover {
+            box-shadow: 0 0 20px rgba(76, 215, 246, 0.3);
+            border-color: rgba(76, 215, 246, 0.5);
+        }
+        .neon-border-active {
+            border: 1px solid #4cd7f6;
+            box-shadow: inset 0 0 10px rgba(76, 215, 246, 0.1);
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0d1322; }
+        ::-webkit-scrollbar-thumb { background: #191f2f; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4cd7f6; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary/30">
+<!-- TopNavBar -->
+<nav class="sticky top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-[0_0_15px_rgba(76,215,246,0.1)]">
+<div class="flex justify-between items-center max-w-[1440px] mx-auto px-margin h-20">
+<div class="flex items-center gap-unit-xl">
+<span class="font-display-md text-display-md font-bold text-primary tracking-tighter">KKMarket</span>
+<div class="hidden md:flex gap-unit-md">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Games</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Accounts</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Skins</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Support</a>
+</div>
+</div>
+<div class="flex items-center gap-unit-md">
+<button class="p-unit-sm rounded-full hover:bg-primary/10 transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full border border-primary/30 p-0.5">
+<img class="w-full h-full rounded-full object-cover" data-alt="A high-quality digital avatar of a futuristic gamer with neon-rimmed glasses and a sleek tech-wear collar. The lighting is deep navy and cyan, matching the gamer-tech aesthetic of the KKMarket platform. Digital art style with sharp focus and cinematic depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiITwej3jm0Dlr7inUNH2w0zm_KiUiTdsuMGUmRhn-y5tExaRsgXg2ry2tyE6lHRZLd4XiRiCeA4Qy4n3b-9PS19Pi4Eau9Q46iNfDOaJA6HLImkXmzi9_wjcxKKRUArHfK_816CbFPLhiNYAWGbDHtJnrCRsC-3K86GwD2NxblVOWDfIpAEmjTL8twcrVooPb4vDnx5eHrWHB7sfVFlSyrnvHYD0A5lSs5ywvXSSdN2OgQGXg8FaJByqgk-aHH-kSqfcbyGD98oyJ"/>
+</div>
+</div>
+</div>
+</nav>
+<main class="max-w-[1440px] mx-auto px-margin py-unit-2xl grid grid-cols-12 gap-gutter items-start">
+<!-- Left Column: Checkout Actions -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-unit-xl">
+<!-- Nexus Protection Banner -->
+<div class="glass-panel p-unit-md rounded-xl flex items-center gap-unit-md border-primary/20 bg-primary/5">
+<div class="bg-primary/20 p-unit-sm rounded-lg">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-primary">Nexus Buyer Protection</h3>
+<p class="font-body-md text-on-surface-variant">Your transaction is encrypted and secured. Funds are held in escrow until delivery is confirmed.</p>
+</div>
+</div>
+<!-- Review Basket -->
+<section class="glass-panel p-unit-xl rounded-xl">
+<div class="flex items-center justify-between mb-unit-lg border-b border-white/5 pb-unit-sm">
+<h2 class="font-headline-md text-on-surface flex items-center gap-unit-sm">
+<span class="material-symbols-outlined text-primary">shopping_basket</span>
+                        Review Basket
+                    </h2>
+<span class="font-label-md text-primary bg-primary/10 px-unit-sm py-1 rounded">2 ITEMS</span>
+</div>
+<div class="flex flex-col gap-unit-lg">
+<!-- Item 1 -->
+<div class="flex gap-unit-lg group">
+<div class="w-32 h-32 rounded-lg overflow-hidden border border-white/10 shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A cinematic close-up of a legendary digital sword skin with pulsing cyan energy veins and a sleek obsidian hilt. The weapon is displayed against a dark, tech-inspired background with subtle atmospheric dust particles and high-performance hardware rendering style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuBnkaL2vrVDGAHnlHVvAeOYKgvLGVUzalguEH0uoqkxNlc_-KJA5l6lT8hGPksAP6m9tgaT6fGac2glGpCqlfeZJgNxsWSnd2pqkSLY1gj0r5p-eTMUNsFEPhwli-3kA6C6AIlXHkNjieIy8wx0UfTOr_f966ISQISvBGrKMQP7-HcIiT02XIgk3nva8tuWve9akY2cnRSqHZtqOoPcJE_aAmZx9Wa3w0ds2Q4gIyDyIpy5rGwyvUH1RSSXqXcNOdAgHlOfO4yfgb"/>
+</div>
+<div class="flex-grow flex flex-col justify-between py-1">
+<div>
+<div class="flex justify-between">
+<h4 class="font-headline-sm text-on-surface">Neon Phantom Blade</h4>
+<span class="font-label-md text-secondary font-bold text-lg">$149.00</span>
+</div>
+<p class="font-body-md text-on-surface-variant">Item Class: Legendary | Account Bound: No</p>
+</div>
+<div class="flex items-center gap-unit-md">
+<button class="text-on-surface-variant hover:text-error transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">delete</span>
+<span class="font-label-sm">REMOVE</span>
+</button>
+<div class="h-4 w-[1px] bg-white/10"></div>
+<span class="font-label-sm text-primary">INSTANT DELIVERY</span>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex gap-unit-lg group">
+<div class="w-32 h-32 rounded-lg overflow-hidden border border-white/10 shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A premium high-tier game account card showing a collection of rare character avatars and a diamond-ranked badge. The visual style is aggressive elegance with deep blue gradients and gold accents, presented in a high-fidelity digital marketplace card layout." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvTz3L4mIqMyRWJRrRPN9XO0g1VplQDHJ7New5J23XD_JDYCvZhN5BaU-z81JTAEZ6vTlWXbJ7aVppxWQxJD336bTwI9ufcDIqI8gHqRmBQH_bfqjdjWAfBAWd8Otj8bmyt4GpAMHtSxiMpWAsYATK7H8Zx72Zt2YzX4tDhPgDhKDtkatccg6oW8FK0KZJCYIsWXE67UPtymcu3W3j-XDTM8GrZ2kA_DV9nVuAlk6fejcQVHg9XEDhXg3sMa6ya0-UuJWNX0LPPFXK"/>
+</div>
+<div class="flex-grow flex flex-col justify-between py-1">
+<div>
+<div class="flex justify-between">
+<h4 class="font-headline-sm text-on-surface">Apex Overlord Account</h4>
+<span class="font-label-md text-secondary font-bold text-lg">$890.00</span>
+</div>
+<p class="font-body-md text-on-surface-variant">Level 500 | 45 Legendary Skins | Season 12 Master</p>
+</div>
+<div class="flex items-center gap-unit-md">
+<button class="text-on-surface-variant hover:text-error transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">delete</span>
+<span class="font-label-sm">REMOVE</span>
+</button>
+<div class="h-4 w-[1px] bg-white/10"></div>
+<span class="font-label-sm text-primary">VERIFIED SELLER</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Payment Methods -->
+<section class="glass-panel p-unit-xl rounded-xl">
+<h2 class="font-headline-md text-on-surface mb-unit-lg flex items-center gap-unit-sm">
+<span class="material-symbols-outlined text-primary">payments</span>
+                    Payment Methods
+                </h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- PIX -->
+<button class="flex flex-col items-center gap-unit-sm p-unit-lg rounded-xl border border-white/10 bg-surface-container-low hover:bg-surface-container-high transition-all neon-border-active">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">qr_code_2</span>
+<span class="font-headline-sm text-on-surface">PIX</span>
+<span class="font-label-sm text-on-surface-variant">Instant Confirmation</span>
+</button>
+<!-- Credit Card -->
+<button class="flex flex-col items-center gap-unit-sm p-unit-lg rounded-xl border border-white/10 bg-surface-container-low hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-4xl">credit_card</span>
+<span class="font-headline-sm text-on-surface">Credit Card</span>
+<span class="font-label-sm text-on-surface-variant">Up to 12x Installments</span>
+</button>
+<!-- Crypto -->
+<button class="flex flex-col items-center gap-unit-sm p-unit-lg rounded-xl border border-white/10 bg-surface-container-low hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-4xl">currency_bitcoin</span>
+<span class="font-headline-sm text-on-surface">Crypto</span>
+<span class="font-label-sm text-on-surface-variant">BTC, ETH, SOL</span>
+</button>
+</div>
+<!-- Payment Form Details (Conditional/Active State) -->
+<div class="mt-unit-xl p-unit-lg bg-surface-container-lowest rounded-lg border border-white/5">
+<div class="flex items-center justify-between mb-unit-md">
+<h4 class="font-label-md text-primary">PIX DETAILS</h4>
+<span class="material-symbols-outlined text-primary">security</span>
+</div>
+<div class="flex flex-col md:flex-row gap-unit-lg items-center">
+<div class="bg-white p-2 rounded-lg shrink-0">
+<img alt="QR Code" class="w-32 h-32" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfsbaOJAwoCPBefdTYEpaASbVdBZpH7xDYPp_NA3E_hen8Ju3IrH9_7e2vu8A2X4czeli_YN2SxALKnmB38b_TWOefv2d1TGr6EfBOYqNPXwxL3zjNyw6Xce73GN8-qBSUqIq40T_0kzLu-HvoRfEDbfP7uelV3gfED4QGVu2VI1GuyepVHY_THyPzj3hhFWqTDmyfYujQNfrcyFE2k7uh7n_mT2CJYdgK0QsHIVggGTP0Uikb8dSeiSGOfqoMhDOY6490pIlNNowP"/>
+</div>
+<div class="flex-grow space-y-unit-sm">
+<p class="font-body-md text-on-surface-variant">Scan the QR code with your banking app or copy the key below to complete the payment instantly.</p>
+<div class="flex gap-2">
+<code class="flex-grow bg-surface p-3 rounded font-label-md text-on-surface border border-white/10 overflow-hidden text-ellipsis">kkmarket_nexus_0x71C7656EC7ab88b098defB751B7401B5f6d8976F</code>
+<button class="bg-primary text-on-primary px-4 py-2 rounded font-label-md font-bold hover:brightness-110 transition-all active:scale-95">COPY</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Order Summary (Fixed-Effect) -->
+<aside class="col-span-12 lg:col-span-4 lg:sticky lg:top-24">
+<div class="glass-panel p-unit-xl rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+<h3 class="font-headline-md text-on-surface mb-unit-lg">Order Summary</h3>
+<div class="space-y-unit-md border-b border-white/10 pb-unit-lg mb-unit-lg">
+<div class="flex justify-between text-body-md">
+<span class="text-on-surface-variant">Subtotal (2 items)</span>
+<span class="text-on-surface font-label-md">$1,039.00</span>
+</div>
+<div class="flex justify-between text-body-md">
+<span class="text-on-surface-variant">Marketplace Fee</span>
+<span class="text-on-surface font-label-md">$12.50</span>
+</div>
+<div class="flex justify-between text-body-md">
+<span class="text-on-surface-variant">Transaction Security</span>
+<span class="text-primary font-label-md">FREE</span>
+</div>
+</div>
+<div class="mb-unit-xl">
+<div class="flex justify-between items-end mb-1">
+<span class="font-headline-sm text-on-surface">Total Amount</span>
+<span class="font-display-md text-secondary tracking-tight">$1,051.50</span>
+</div>
+<p class="font-label-sm text-outline text-right uppercase">Prices include VAT where applicable</p>
+</div>
+<div class="space-y-unit-md">
+<button class="w-full bg-primary text-on-primary py-unit-md rounded-lg font-headline-sm font-bold bloom-primary transition-all active:scale-95 flex items-center justify-center gap-unit-sm">
+                        COMPLETE PURCHASE
+                        <span class="material-symbols-outlined">rocket_launch</span>
+</button>
+<button class="w-full border border-secondary text-secondary py-unit-md rounded-lg font-headline-sm font-bold hover:bg-secondary/10 transition-all flex items-center justify-center gap-unit-sm">
+<span class="material-symbols-outlined">sell</span>
+                        HAVE A COUPON?
+                    </button>
+</div>
+<div class="mt-unit-xl pt-unit-lg border-t border-white/10 flex flex-col gap-unit-sm">
+<div class="flex items-center gap-unit-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span class="font-label-sm">AES-256 SSL Encrypted Connection</span>
+</div>
+<div class="flex items-center gap-unit-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">history</span>
+<span class="font-label-sm">30-Day Resolution Guarantee</span>
+</div>
+</div>
+</div>
+<!-- Promo/Up-sell Card -->
+<div class="mt-gutter glass-panel p-unit-md rounded-xl bg-gradient-to-br from-tertiary/10 to-transparent border-tertiary/20">
+<div class="flex items-center gap-unit-md">
+<div class="text-tertiary">
+<span class="material-symbols-outlined text-3xl">workspace_premium</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-tertiary text-sm">Nexus Prime</h4>
+<p class="font-label-sm text-on-surface-variant">Save $12.50 on this order with Prime trial.</p>
+</div>
+<button class="ml-auto bg-tertiary/20 hover:bg-tertiary/30 text-tertiary px-3 py-1 rounded font-label-sm transition-colors">ADD</button>
+</div>
+</div>
+</aside>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-white/10 w-full py-unit-2xl">
+<div class="grid grid-cols-12 max-w-[1440px] mx-auto px-margin gap-gutter">
+<div class="col-span-12 md:col-span-4 flex flex-col gap-unit-md">
+<span class="font-headline-md text-headline-md text-primary">KKMarket</span>
+<p class="font-body-md text-on-surface-variant">The leading high-fidelity digital marketplace for professional gamers. Secure trading for elite accounts, legendary skins, and rare assets.</p>
+</div>
+<div class="col-span-12 md:col-span-8 flex flex-wrap gap-unit-xl justify-end items-end">
+<div class="flex gap-unit-lg mb-4">
+<a class="font-label-sm text-label-sm text-outline hover:text-secondary transition-opacity" href="#">Sitemap</a>
+<a class="font-label-sm text-label-sm text-outline hover:text-secondary transition-opacity" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-outline hover:text-secondary transition-opacity" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-outline hover:text-secondary transition-opacity" href="#">Security</a>
+<a class="font-label-sm text-label-sm text-outline hover:text-secondary transition-opacity" href="#">Payment Info</a>
+</div>
+<div class="w-full text-right">
+<span class="font-label-sm text-label-sm text-outline">© 2024 KKMarket Cyber-Nexus. All Rights Reserved.</span>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for payment method selection
+        const paymentButtons = document.querySelectorAll('button.flex.flex-col.items-center');
+        paymentButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                paymentButtons.forEach(b => b.classList.remove('neon-border-active'));
+                btn.classList.add('neon-border-active');
+            });
+        });
+    </script>
+</body></html>

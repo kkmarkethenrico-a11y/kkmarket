@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NexusPrime Keys - Seller Profile | NEXUS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #111415;
+            color: #e1e3e4;
+            font-family: 'Inter', sans-serif;
+        }
+        .font-outfit { font-family: 'Outfit', sans-serif; }
+        .glass-card {
+            background: rgba(22, 29, 47, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow-cyan {
+            box-shadow: 0 0 15px rgba(76, 215, 246, 0.2);
+        }
+        .neon-border-amber:hover {
+            border-color: #ee9800;
+            box-shadow: 0 0 10px rgba(238, 152, 0, 0.3);
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#777c90",
+                    "inverse-on-surface": "#2e3132",
+                    "surface-container-lowest": "#0c0f10",
+                    "surface-container-high": "#282a2b",
+                    "error": "#ffb4ab",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#004e5c",
+                    "on-tertiary": "#003640",
+                    "surface-variant": "#323536",
+                    "primary": "#c1c6db",
+                    "on-primary": "#2a3040",
+                    "surface": "#111415",
+                    "secondary-fixed": "#ffddb8",
+                    "on-primary-fixed-variant": "#414658",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "tertiary": "#4cd7f6",
+                    "surface-tint": "#c1c6db",
+                    "outline": "#909097",
+                    "inverse-surface": "#e1e3e4",
+                    "inverse-primary": "#585e70",
+                    "on-secondary-container": "#5b3800",
+                    "on-error": "#690005",
+                    "outline-variant": "#45464c",
+                    "on-surface": "#e1e3e4",
+                    "tertiary-container": "#001419",
+                    "on-background": "#e1e3e4",
+                    "on-primary-fixed": "#151b2b",
+                    "on-secondary-fixed": "#2a1700",
+                    "surface-container-low": "#191c1d",
+                    "on-tertiary-fixed": "#001f26",
+                    "surface-elevated": "#161D2F",
+                    "secondary-container": "#ee9800",
+                    "neon-purple": "#7C3AED",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "on-surface-variant": "#c6c6cd",
+                    "surface-container": "#1d2021",
+                    "surface-bright": "#373a3b",
+                    "primary-fixed": "#dde2f8",
+                    "background": "#111415",
+                    "secondary": "#ffb95f",
+                    "tertiary-fixed": "#acedff",
+                    "tertiary-fixed-dim": "#4cd7f6",
+                    "error-container": "#93000a",
+                    "surface-container-highest": "#323536",
+                    "on-tertiary-container": "#0089a0",
+                    "primary-fixed-dim": "#c1c6db",
+                    "primary-container": "#0b1120",
+                    "glass-border": "rgba(255, 255, 255, 0.1)",
+                    "surface-dim": "#111415",
+                    "on-secondary": "#472a00"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "unit": "8px",
+                    "margin-desktop": "40px",
+                    "container-max": "1280px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Outfit"],
+                    "body-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-xl": ["Outfit"],
+                    "headline-lg": ["Outfit"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 border-b border-glass-border bg-surface/80 backdrop-blur-md">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A futuristic, high-tech profile avatar for a digital marketplace user. The character wears sleek, dark chrome cybernetic headgear with glowing cyan neon accents. The background is a blurred digital data stream in shades of deep navy and electric blue. The lighting is dramatic and cinematic, emphasizing the sophisticated textures of the metal and light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBftk5aNm-Yu8zh2ppi4v6FfvgicES9Fa3GBf9QKAvPJ1ijIn8ZfqBSFKidGA_s16K_jU6HIoVFLtyCWWcFXbL1qniio7GW-M0wewudR-hGmDNFekP2xfOJKb4cXGniVwNkRTQONUTE4HUO4PVDzzu2pfO2Z4gPHjxcAZ8pJ6GC6-sgyvEpsxixDq5SzbscWlTbpEIP-ZCD3vlzCtJWsS0YgbYQyVXydJ33Ol_WBR4Q_SZ8xDeDbKutrMmrKqpupkrJuGnyEK15ECCq"/>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary tracking-tighter">NEXUS</h1>
+</div>
+<button class="text-primary hover:text-secondary transition-colors duration-150 active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<main class="pt-20 px-4 max-w-container-max mx-auto">
+<!-- Hero Section -->
+<section class="mt-4 relative rounded-xl overflow-hidden border border-glass-border glass-card p-6 md:p-10 mb-8">
+<div class="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
+
+</div>
+<div class="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6">
+<div class="relative group">
+<div class="w-24 h-24 md:w-32 md:h-32 rounded-xl overflow-hidden border-2 border-tertiary neon-glow-cyan">
+<img class="w-full h-full object-cover" data-alt="A professional gamer avatar in a high-tech cyberpunk style. The profile features a character with sleek dark hair and glowing teal eyes, wearing a tech-wear jacket with illuminated fiber-optic lines. The background is a dense, high-contrast digital matrix in deep navy and bright cyan, creating a vibe of high-stakes digital mastery and security." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbV5Q-lOV_nKclV8wOsEfNURxTDc41IGQI52KKohEuowflS6nY-Pn0JMUAmCUpAEd6FvizMpYys1_lEm_JRqMXLBpRdycYfH1OqL9LrwpKmLJ5-rs2iAcgY0x9NfH3g_xOnGOZQBqB-MM1O2AF9kF6lc9ls3HIpKDpvpWpfr_Km8Xekoh96fA-6ij0sI1nwBd6MtUNuZcVDogPPc5THlgssM32_JdJCOtrq1qU8xqwBBj774C0IwBtRcUMvM_HYTd1sE3mXKkZNuPI"/>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-background border border-glass-border rounded-full p-1 shadow-lg">
+<span class="material-symbols-outlined text-tertiary text-xl fill" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div class="flex-1 text-center md:text-left">
+<div class="flex flex-col md:flex-row md:items-center gap-2 mb-2">
+<h2 class="font-headline-lg text-headline-lg font-outfit text-on-surface">NexusPrime Keys</h2>
+<span class="inline-flex items-center gap-1 px-3 py-1 bg-tertiary/10 border border-tertiary/30 rounded-full text-tertiary text-label-sm font-label-md uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+                            Verified Seller
+                        </span>
+</div>
+<p class="text-on-surface-variant text-body-md mb-6">Member since Oct 2022 • Level 4 Professional Keyseller</p>
+<!-- Metrics Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<div class="bg-surface-container-low border border-glass-border p-3 rounded-lg flex items-center gap-3">
+<div class="p-2 bg-secondary/10 rounded-md">
+<span class="material-symbols-outlined text-secondary">star</span>
+</div>
+<div>
+<p class="text-on-surface font-bold text-body-lg">4.9 Rating</p>
+<p class="text-on-surface-variant text-label-sm">4,821 reviews</p>
+</div>
+</div>
+<div class="bg-surface-container-low border border-glass-border p-3 rounded-lg flex items-center gap-3">
+<div class="p-2 bg-primary/10 rounded-md">
+<span class="material-symbols-outlined text-primary">shopping_cart</span>
+</div>
+<div>
+<p class="text-on-surface font-bold text-body-lg">12.5k Sales</p>
+<p class="text-on-surface-variant text-label-sm">Lifetime orders</p>
+</div>
+</div>
+<div class="bg-surface-container-low border border-glass-border p-3 rounded-lg flex items-center gap-3">
+<div class="p-2 bg-tertiary/10 rounded-md">
+<span class="material-symbols-outlined text-tertiary">speed</span>
+</div>
+<div>
+<p class="text-on-surface font-bold text-body-lg">15m Response</p>
+<p class="text-on-surface-variant text-label-sm">Average time</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tabs and Search -->
+<div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
+<div class="flex p-1 bg-surface-container rounded-full w-full md:w-auto">
+<button class="px-6 py-2 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md transition-all">Active</button>
+<button class="px-6 py-2 rounded-full text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-all">Sold</button>
+<button class="px-6 py-2 rounded-full text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-all">Reviews</button>
+</div>
+<div class="relative w-full md:w-80">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container border border-glass-border rounded-lg pl-10 pr-4 py-2 text-on-surface placeholder:text-on-surface-variant focus:border-tertiary focus:ring-1 focus:ring-tertiary outline-none transition-all" placeholder="Search this seller's inventory..." type="text"/>
+</div>
+</div>
+<!-- Inventory Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Product Card 1 -->
+<div class="group relative flex flex-col bg-surface-elevated border border-glass-border rounded-xl overflow-hidden glass-card transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+<div class="h-40 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A high-intensity promotional graphic for Grand Theft Auto V: Premium Edition. The image shows a fast chrome sports car racing through Los Santos at night, with neon city lights streaking in the background. The aesthetic is gritty yet luxurious, with deep shadows and high-contrast gold and blue lighting that reflects the game's high-stakes urban environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6J7mOP30hGaoTerfXJxWHVEcaIlTQ1K496xwv2Ipv6hsj4GSEMIT5FkNk8aswExf7BH-UVaeZQgbZLTaNe3-3vhrovPxRYqVtQdyUM3CmeU5YuK74fWXBQz5pNPxAGpBdWt0jXGb-KhWprTiZWJSN91ZierO6fRLz6-ceLPlENt1woXg-6glO_rCoZlx64cFdkVHMNtq_oWH-G-pdS--uuhUwTL_jQWPOo6UpiCm71s5QJ030G-DSpcCU5H83xp_WPj5JyCtPCUXj"/>
+<div class="absolute top-2 right-2 px-2 py-1 bg-surface/90 backdrop-blur-md rounded border border-glass-border">
+<p class="text-label-sm font-label-md text-tertiary">PC</p>
+</div>
+</div>
+<div class="p-4 flex-1 flex flex-col">
+<h3 class="font-outfit text-on-surface font-bold text-body-md mb-1 truncate">Grand Theft Auto V: Premium Edition</h3>
+<p class="text-on-surface-variant text-label-sm mb-4">Rockstar Launcher Global Key</p>
+<div class="mt-auto flex items-center justify-between">
+<div>
+<span class="text-secondary font-bold text-body-lg">$14.50</span>
+<span class="text-on-surface-variant text-label-sm line-through ml-2">$29.99</span>
+</div>
+<button class="bg-secondary text-on-secondary px-4 py-2 rounded font-label-md text-label-md transition-all active:scale-95 hover:brightness-110">Buy Now</button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group relative flex flex-col bg-surface-elevated border border-glass-border rounded-xl overflow-hidden glass-card transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+<div class="h-40 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A futuristic UI display for Valorant Points, featuring the game's signature tactical and radiant aesthetic. The visual shows floating geometric crystals glowing with sharp violet and teal energy. The background is a clean, minimal tech-patterned surface in deep charcoal. The lighting is focused and energetic, suggesting a premium digital currency." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeTIN4PhtOt6X4MCBwDcvsjn0UlhN0quKATWbK65Tg4Skkh8FEglKW7IbO1sVWT9rdjTAYTbVS2_3aFu_Ms00eCh1LTXLodkfu5dImCMZjm9P9wLlHXaKQmSAMphouoguRu9FDWcsPTGJwZW9eZrdzLcFXiYLqrFJ2-7aEzpg8_E-ErYK5MAinXTewXH9FQIxVZL7_3P1RBsswQ9a4Z9tNatxvwXdywKrxGzPQB0kMdhzzE1mk-CDebBMolbIl5x1t9E5eJ0baiaLV"/>
+<div class="absolute top-2 right-2 px-2 py-1 bg-surface/90 backdrop-blur-md rounded border border-glass-border">
+<p class="text-label-sm font-label-md text-tertiary">GLOBAL</p>
+</div>
+</div>
+<div class="p-4 flex-1 flex flex-col">
+<h3 class="font-outfit text-on-surface font-bold text-body-md mb-1 truncate">Valorant: 2050 VP Gift Card</h3>
+<p class="text-on-surface-variant text-label-sm mb-4">Riot Games Direct Redemption</p>
+<div class="mt-auto flex items-center justify-between">
+<div>
+<span class="text-secondary font-bold text-body-lg">$18.25</span>
+</div>
+<button class="bg-secondary text-on-secondary px-4 py-2 rounded font-label-md text-label-md transition-all active:scale-95 hover:brightness-110">Buy Now</button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 (Featured/Glow) -->
+<div class="group relative flex flex-col bg-surface-elevated border-2 border-tertiary rounded-xl overflow-hidden glass-card transition-all duration-300 hover:-translate-y-1 neon-glow-cyan">
+<div class="h-40 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A sleek, modern Steam Gift Card graphic featuring the iconic Steam logo against a background of high-tech geometric patterns and blue atmospheric nebulae. The card glows with an intense cyan outer radiance. The overall mood is digital, clean, and extremely high-end, fitting a premium key-selling platform's top-tier offering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiEZej026lW04w1CofB7WLzQ6PB6S4H9sVvxRrhNcXrYP3Wx6gg3mazK_xgZn39Hp5f4uK3PKTmqjnPmTr6LQVQM0Vw7vmtBw6CCRuplBCfeHHiljJgCOElPyVVAiXui0fmUpJerlEIPriGHnKPaVgHN3zDlbncxPFpDOSYS-JUyEyNuDgd9uUj-elvaqSgCQSCt2BNMgCYcrPpjTkY_Abn2ipwmg3T3Q2WOr-sx2AF9M1shy0XMMpNffxyFVox6XNEzeUuWsC3cRW"/>
+<div class="absolute top-2 left-2 px-2 py-1 bg-tertiary text-on-tertiary rounded text-label-sm font-bold animate-pulse">HOT DEAL</div>
+<div class="absolute top-2 right-2 px-2 py-1 bg-surface/90 backdrop-blur-md rounded border border-glass-border">
+<p class="text-label-sm font-label-md text-tertiary">EU</p>
+</div>
+</div>
+<div class="p-4 flex-1 flex flex-col">
+<h3 class="font-outfit text-on-surface font-bold text-body-md mb-1 truncate">Steam Gift Card $50 USD</h3>
+<p class="text-on-surface-variant text-label-sm mb-4">Instant Digital Delivery</p>
+<div class="mt-auto flex items-center justify-between">
+<div>
+<span class="text-secondary font-bold text-body-lg">$47.90</span>
+</div>
+<button class="bg-secondary text-on-secondary px-4 py-2 rounded font-label-md text-label-md transition-all active:scale-95 hover:brightness-110">Buy Now</button>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group relative flex flex-col bg-surface-elevated border border-glass-border rounded-xl overflow-hidden glass-card transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+<div class="h-40 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A dynamic action shot of Cyberpunk 2077, showing a futuristic motorcycle speeding through the neon-drenched streets of Night City. The color palette is dominated by electric pinks, vibrant oranges, and deep cyan. Rain streaks on the camera lens catch the colorful light, creating a cinematic, high-speed atmospheric effect." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAq8KhJYM1u0dH2XJGbZ1C2NzrruiHiAI1wrXhexpvhZh9bkLy3QISPGmTzEVfetUIcvKXa9-u9bjHUTzmZFl7TEa23dHzbwNAu23DAM1_2A0mgSITExjAtACMayRZ6G3vUkO9TPnr6Yp2tRDE7vrnZD98UenFkPPwZZSekfbX_3xnxawdSlRiJWR0sD67sL5BN-F5mFVbQDrvFVeKqNU-Tt5jDDAOvSAgjy-jtPcMDAGQaZ5YQdsU9LnqJsHqGD3NKQqZMReM3VXf6"/>
+<div class="absolute top-2 right-2 px-2 py-1 bg-surface/90 backdrop-blur-md rounded border border-glass-border">
+<p class="text-label-sm font-label-md text-tertiary">GOG</p>
+</div>
+</div>
+<div class="p-4 flex-1 flex flex-col">
+<h3 class="font-outfit text-on-surface font-bold text-body-md mb-1 truncate">Cyberpunk 2077: Ultimate Edition</h3>
+<p class="text-on-surface-variant text-label-sm mb-4">Includes Phantom Liberty DLC</p>
+<div class="mt-auto flex items-center justify-between">
+<div>
+<span class="text-secondary font-bold text-body-lg">$34.99</span>
+</div>
+<button class="bg-secondary text-on-secondary px-4 py-2 rounded font-label-md text-label-md transition-all active:scale-95 hover:brightness-110">Buy Now</button>
+</div>
+</div>
+</div>
+<!-- More items for the grid effect -->
+<div class="group relative flex flex-col bg-surface-elevated border border-glass-border rounded-xl overflow-hidden glass-card transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+<div class="h-40 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Visual art for Minecraft: Java and Bedrock Edition showing a lush, blocky forest landscape with a setting sun casting long, warm amber shadows. The style is faithful to the game's pixelated charm but enhanced with professional lighting and high-definition particle effects, creating a nostalgic yet modern look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLJD8-lfKyLodn8b7vESBPyN7njVeC6OWufBflXoVuayh6HhMU_aA6Wbdsmr05_ZfpOWQWmb1hurr6hF_rJvKEmXjsxocYZ6WBU3IXoIN6zQ0iKuzrpN3cXdVZSI51RersTPPkqgHGTKCCapw0xOthiD8neTFh2wD0qlmrQETGESn2wAl9CmYmcXsRgiG_CfsfK4QXSaZUC6lNd_FmOW7gzP2I6O-uRhJrHxHMP8BjDJmoQia-HA5CDBkx6tHZhvQ2Zjue7gtmoUo_"/>
+</div>
+<div class="p-4 flex-1 flex flex-col">
+<h3 class="font-outfit text-on-surface font-bold text-body-md mb-1 truncate">Minecraft: Java &amp; Bedrock Edition</h3>
+<p class="text-on-surface-variant text-label-sm mb-4">PC / Mac Microsoft Key</p>
+<div class="mt-auto flex items-center justify-between">
+<div><span class="text-secondary font-bold text-body-lg">$22.00</span></div>
+<button class="bg-secondary text-on-secondary px-4 py-2 rounded font-label-md text-label-md transition-all active:scale-95 hover:brightness-110">Buy Now</button>
+</div>
+</div>
+</div>
+<div class="group relative flex flex-col bg-surface-elevated border border-glass-border rounded-xl overflow-hidden glass-card transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+<div class="h-40 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A majestic, dark fantasy landscape for Elden Ring. The image features the distant, glowing Erdtree towering over a ruined castle in the Lands Between. The lighting is moody and ethereal, with deep golds and dark blues creating a sense of epic mystery and grand adventure. High-detail textures of stone and light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI88Hiia8hxR3ay60TOLavRl2mBvqsemiMFxq0sUdhnqLHTIpK3EGwuf3BVsG4lgIDQYgPRtd7JQmTvJ-0trbb7ek3paX0lCaOHW6qM3yDs2EMOkGJnE4On1Bpu2siJ6fv2tym3MGB3SbkFx1EKIXQwNjUasaHXy9lju2a5ATvQx2NuAfxTy9Is_NztkaC4spBuc3zZFasRs8SfnOXkfvlZKxHG05tkzFFydFxQyi2o_dclicvlowWtGu6iTkqZ3-EmuUyTLKcCQs1"/>
+</div>
+<div class="p-4 flex-1 flex flex-col">
+<h3 class="font-outfit text-on-surface font-bold text-body-md mb-1 truncate">Elden Ring: Shadow of the Erdtree</h3>
+<p class="text-on-surface-variant text-label-sm mb-4">Steam Global Key - Pre-order</p>
+<div class="mt-auto flex items-center justify-between">
+<div><span class="text-secondary font-bold text-body-lg">$38.50</span></div>
+<button class="bg-secondary text-on-secondary px-4 py-2 rounded font-label-md text-label-md transition-all active:scale-95 hover:brightness-110">Buy Now</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Load More -->
+<div class="mt-12 flex justify-center">
+<button class="flex items-center gap-2 px-8 py-3 bg-surface-container border border-glass-border rounded-lg text-on-surface font-label-md hover:bg-surface-bright transition-all">
+<span class="material-symbols-outlined">expand_more</span>
+                Show More Listings
+            </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-surface-container/90 backdrop-blur-xl border-t border-glass-border md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined">search</span>
+<span class="font-label-sm text-label-sm">Search</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-sm text-label-sm">Inventory</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined fill" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for buy buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (this.innerText.includes('Buy')) {
+                    const originalText = this.innerText;
+                    this.innerText = 'Added!';
+                    this.classList.replace('bg-secondary', 'bg-tertiary');
+                    setTimeout(() => {
+                        this.innerText = originalText;
+                        this.classList.replace('bg-tertiary', 'bg-secondary');
+                    }, 2000);
+                }
+            });
+        });
+
+        // Tab switching logic (visual only)
+        document.querySelectorAll('[role="tab"], .flex.p-1.bg-surface-container button').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const parent = this.parentElement;
+                parent.querySelectorAll('button').forEach(btn => {
+                    btn.classList.remove('bg-secondary-container', 'text-on-secondary-container');
+                    btn.classList.add('text-on-surface-variant');
+                });
+                this.classList.add('bg-secondary-container', 'text-on-secondary-container');
+                this.classList.remove('text-on-surface-variant');
+            });
+        });
+    </script>
+</body></html>

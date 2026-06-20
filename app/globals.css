@@ -46,136 +46,129 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-  /* kkmarket gaming tokens */
-  --color-gm-violet: #FF9D00;
-  --color-gm-cyan: #00A2FF;
-  --color-gm-green: #34d399;
-  --color-gm-amber: #FFC000;
-  --color-gm-rose: #fb7185;
 
-  /* Overwrite default violet colors to match the gold white-label branding */
-  --color-violet-50: #fff7ed;
-  --color-violet-100: #ffedd5;
-  --color-violet-200: #fed7aa;
-  --color-violet-300: #fdbb2d;
-  --color-violet-400: #fbbf24;
-  --color-violet-500: #FF9D00;
-  --color-violet-600: #e58d00;
-  --color-violet-700: #b26e00;
-  --color-violet-800: #8c5600;
-  --color-violet-900: #663f00;
-  --color-violet-950: #331f00;
+  /* Cyber-Nexus Marketplace theme colors from Stitch */
+  --color-tertiary-fixed: #e9ddff;
+  --color-on-tertiary-container: #4900ae;
+  --color-error: #ffb4ab;
+  --color-on-secondary-fixed: #261a00;
+  --color-on-tertiary-fixed: #23005c;
+  --color-on-surface: #dde2f8;
+  --color-surface-bright: #33394a;
+  --color-on-primary-fixed: #001f26;
+  --color-surface: #0d1322;
+  --color-tertiary-fixed-dim: #d0bcff;
+  --color-inverse-surface: #dde2f8;
+  --color-on-error: #690005;
+  --color-primary-container: #06b6d4;
+  --color-surface-container-high: #242a3a;
+  --color-primary: #4cd7f6;
+  --color-on-tertiary-fixed-variant: #5516be;
+  --color-on-tertiary: #3c0091;
+  --color-secondary: #ffc640;
+  --color-surface-container-lowest: #080e1d;
+  --color-secondary-fixed: #ffdf9f;
+  --color-surface-tint: #4cd7f6;
+  --color-on-secondary: #402d00;
+  --color-on-surface-variant: #bcc9cd;
+  --color-surface-container-low: #151b2b;
+  --color-error-container: #93000a;
+  --color-surface-variant: #2f3445;
+  --color-on-primary-fixed-variant: #004e5c;
+  --color-primary-fixed: #acedff;
+  --color-on-secondary-container: #5a4100;
+  --color-secondary-container: #e3aa00;
+  --color-tertiary: #d0bcff;
+  --color-background: #0d1322;
+  --color-on-secondary-fixed-variant: #5c4300;
+  --color-inverse-primary: #00687a;
+  --color-surface-container: #191f2f;
+  --color-primary-fixed-dim: #4cd7f6;
+  --color-on-error-container: #ffdad6;
+  --color-inverse-on-surface: #2a3040;
+  --color-on-primary: #003640;
+  --color-surface-dim: #0d1322;
+  --color-outline: #869397;
+  --color-tertiary-container: #b395ff;
+  --color-on-background: #dde2f8;
+  --color-on-primary-container: #00424f;
+  --color-outline-variant: #3d494c;
+  --color-secondary-fixed-dim: #f9bd22;
+  --color-surface-container-highest: #2f3445;
+  
+  /* Additional Stitch variables for text and spacing */
+  --spacing-unit-lg: 24px;
+  --spacing-container-max: 1440px;
+  --spacing-margin: 48px;
+  --spacing-gutter: 24px;
+  --spacing-unit-xl: 32px;
+  --spacing-columns: 12;
+  --spacing-unit-sm: 8px;
+  --spacing-unit-md: 16px;
+  --spacing-unit-xs: 4px;
+  --spacing-unit-2xl: 64px;
 
-  /* Overwrite default purple colors to match the gold white-label branding */
-  --color-purple-50: #fff7ed;
-  --color-purple-100: #ffedd5;
-  --color-purple-200: #fed7aa;
-  --color-purple-300: #fdbb2d;
-  --color-purple-400: #fbbf24;
-  --color-purple-500: #FF9D00;
-  --color-purple-600: #e58d00;
-  --color-purple-700: #b26e00;
-  --color-purple-800: #8c5600;
-  --color-purple-900: #663f00;
-  --color-purple-950: #331f00;
+  --font-body-md: "Outfit", sans-serif;
+  --font-display-lg: "Outfit", sans-serif;
+  --font-display-md: "Outfit", sans-serif;
+  --font-headline-lg: "Outfit", sans-serif;
+  --font-headline-sm: "Outfit", sans-serif;
+  --font-headline-md: "Outfit", sans-serif;
+  --font-label-sm: "JetBrains Mono", monospace;
+  --font-body-lg: "Outfit", sans-serif;
+  --font-label-md: "JetBrains Mono", monospace;
 }
 
-/* ── kkmarket palette raw tokens ──────────────────────────────────────────── */
-:root {
-  /* kkmarket light cyber-luxury theme (default) */
-  --gm-paper:    #f3f6fa;   /* Elegant light ice-blue/slate background */
-  --gm-paper-2:  #ffffff;   /* Pure white cards */
-  --gm-paper-3:  #e2e8f0;   /* Hover / Input background */
-  --gm-ink:      #0b1329;   /* Deep luxury navy primary text (high contrast) */
-  --gm-ink-dim:  #475569;   /* Slate-600 secondary text */
-  --gm-ink-faint:#cbd5e1;   /* Slate-300 borders + faint lines */
-  --gm-violet:   #FF9D00;   /* Gold/yellow accent */
-  --gm-cyan:     #0088FF;   /* Cyber-cyan (slightly darker for light background contrast) */
+:root, .dark {
+  /* Cyber-Nexus Marketplace mapping */
+  --gm-paper:    #0d1322;
+  --gm-paper-2:  #151b2b;
+  --gm-paper-3:  #191f2f;
+  --gm-ink:      #dde2f8;
+  --gm-ink-dim:  #bcc9cd;
+  --gm-ink-faint:#869397;
+  --gm-violet:   #7C3AED;
+  --gm-cyan:     #4cd7f6;
   --gm-green:    #10b981;
-  --gm-amber:    #FFC000;
+  --gm-amber:    #ffc640;
   --gm-rose:     #fb7185;
 
-  /* shadcn variables mapped to premium light cyber-luxury */
-  --background:  #f3f6fa;
-  --foreground:  #0b1329;
-  --card:        #ffffff;
-  --card-foreground: #0b1329;
-  --popover:     #ffffff;
-  --popover-foreground: #0b1329;
-  --primary:     #FF9D00;
-  --primary-foreground: #ffffff;
-  --secondary:   #e2e8f0;
-  --secondary-foreground: #0b1329;
-  --muted:       #e2e8f0;
-  --muted-foreground: #475569;
-  --accent:      #e2e8f0;
-  --accent-foreground: #FF9D00;
-  --destructive: #ef4444;
-  --border:      rgba(0, 136, 255, 0.15); /* Thin cyan neon border tint */
-  --input:       #e2e8f0;
-  --ring:        #0088FF;
-  --chart-1:     #FF9D00;
-  --chart-2:     #0088FF;
+  --background:  #0d1322;
+  --foreground:  #dde2f8;
+  --card:        #151b2b;
+  --card-foreground: #dde2f8;
+  --popover:     #151b2b;
+  --popover-foreground: #dde2f8;
+  --primary:     #ffc640;
+  --primary-foreground: #402d00;
+  --secondary:   #191f2f;
+  --secondary-foreground: #dde2f8;
+  --muted:       #191f2f;
+  --muted-foreground: #bcc9cd;
+  --accent:      #191f2f;
+  --accent-foreground: #ffc640;
+  --destructive: #ffb4ab;
+  --border:      rgba(255, 255, 255, 0.1);
+  --input:       rgba(255, 255, 255, 0.05);
+  --ring:        #06b6d4;
+  --chart-1:     #ffc640;
+  --chart-2:     #4cd7f6;
   --chart-3:     #10b981;
-  --chart-4:     #FFC000;
-  --chart-5:     #ef4444;
-  --radius:      0.75rem;
+  --chart-4:     #d0bcff;
+  --chart-5:     #ffb4ab;
+  --radius:      0.5rem;
 
-  --sidebar:     #ffffff;
-  --sidebar-foreground: #0b1329;
-  --sidebar-primary: #FF9D00;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e2e8f0;
-  --sidebar-accent-foreground: #0b1329;
-  --sidebar-border: rgba(0, 136, 255, 0.1);
-  --sidebar-ring: #0088FF;
-}
-
-.dark {
-  /* Identical to :root to guarantee consistent light cyber-luxury across any theme toggles */
-  --gm-paper:    #f3f6fa;
-  --gm-paper-2:  #ffffff;
-  --gm-paper-3:  #e2e8f0;
-  --gm-ink:      #0b1329;
-  --gm-ink-dim:  #475569;
-  --gm-ink-faint:#cbd5e1;
-  --gm-violet:   #FF9D00;
-  --gm-cyan:     #0088FF;
-  --gm-green:    #10b981;
-  --gm-amber:    #FFC000;
-  --gm-rose:     #fb7185;
-
-  --background:  #f3f6fa;
-  --foreground:  #0b1329;
-  --card:        #ffffff;
-  --card-foreground: #0b1329;
-  --popover:     #ffffff;
-  --popover-foreground: #0b1329;
-  --primary:     #FF9D00;
-  --primary-foreground: #ffffff;
-  --secondary:   #e2e8f0;
-  --secondary-foreground: #0b1329;
-  --muted:       #e2e8f0;
-  --muted-foreground: #475569;
-  --accent:      #e2e8f0;
-  --accent-foreground: #FF9D00;
-  --destructive: #ef4444;
-  --border:      rgba(0, 136, 255, 0.15);
-  --input:       #e2e8f0;
-  --ring:        #0088FF;
-  --chart-1:     #FF9D00;
-  --chart-2:     #0088FF;
-  --chart-3:     #10b981;
-  --chart-4:     #FFC000;
-  --chart-5:     #ef4444;
-  --sidebar:     #ffffff;
-  --sidebar-foreground: #0b1329;
-  --sidebar-primary: #FF9D00;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e2e8f0;
-  --sidebar-accent-foreground: #0b1329;
-  --sidebar-border: rgba(0, 136, 255, 0.1);
-  --sidebar-ring: #0088FF;
+  --sidebar:     #080e1d;
+  --sidebar-foreground: #dde2f8;
+  --sidebar-primary: #ffc640;
+  --sidebar-primary-foreground: #402d00;
+  --sidebar-accent: #151b2b;
+  --sidebar-accent-foreground: #dde2f8;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: #4cd7f6;
+  
+  --primary-glow: rgba(76, 215, 246, 0.5);
+  --secondary-glow: rgba(255, 198, 64, 0.3);
 }
 
 @layer base {
@@ -183,18 +176,50 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-x-hidden;
   }
   html {
     @apply font-sans;
   }
 }
 body, .dark body {
-  background-image:
-    radial-gradient(circle at 1px 1px, rgba(0, 162, 255, 0.05) 1px, transparent 0);
-  background-size: 24px 24px;
-  background-attachment: fixed;
+  background-image: none;
+  background-size: auto;
   background-color: var(--background);
+}
+
+/* ── Stitch custom classes ────────────────────────────────────────── */
+.glass-panel {
+    background: rgba(25, 31, 47, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.neon-border-primary {
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+.neon-text-secondary {
+    text-shadow: 0 0 8px var(--secondary-glow);
+}
+.product-card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(76, 215, 246, 0.2);
+}
+.product-card-hover:hover img {
+    transform: scale(1.05);
+}
+.scanline {
+    width: 100%;
+    height: 100px;
+    z-index: 10;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(76, 215, 246, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
+    opacity: 0.1;
+    position: absolute;
+    bottom: 100%;
+    animation: scanline 8s linear infinite;
+}
+@keyframes scanline {
+    0% { bottom: 100%; }
+    100% { bottom: -100%; }
 }
 
 /* ── Input placeholder brightness ────────────────────────────────────────── */

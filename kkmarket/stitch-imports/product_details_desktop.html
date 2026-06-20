@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KKMarket | Product Details - Cyber-Nexus</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#e9ddff",
+                        "on-tertiary-container": "#4900ae",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed": "#261a00",
+                        "on-tertiary-fixed": "#23005c",
+                        "on-surface": "#dde2f8",
+                        "surface-bright": "#33394a",
+                        "on-primary-fixed": "#001f26",
+                        "surface": "#0d1322",
+                        "tertiary-fixed-dim": "#d0bcff",
+                        "inverse-surface": "#dde2f8",
+                        "on-error": "#690005",
+                        "primary-container": "#06b6d4",
+                        "surface-container-high": "#242a3a",
+                        "primary": "#4cd7f6",
+                        "on-tertiary-fixed-variant": "#5516be",
+                        "on-tertiary": "#3c0091",
+                        "secondary": "#ffc640",
+                        "surface-container-lowest": "#080e1d",
+                        "secondary-fixed": "#ffdf9f",
+                        "surface-tint": "#4cd7f6",
+                        "on-secondary": "#402d00",
+                        "on-surface-variant": "#bcc9cd",
+                        "surface-container-low": "#151b2b",
+                        "error-container": "#93000a",
+                        "surface-variant": "#2f3445",
+                        "on-primary-fixed-variant": "#004e5c",
+                        "primary-fixed": "#acedff",
+                        "on-secondary-container": "#5a4100",
+                        "secondary-container": "#e3aa00",
+                        "tertiary": "#d0bcff",
+                        "background": "#0d1322",
+                        "on-secondary-fixed-variant": "#5c4300",
+                        "inverse-primary": "#00687a",
+                        "surface-container": "#191f2f",
+                        "primary-fixed-dim": "#4cd7f6",
+                        "on-error-container": "#ffdad6",
+                        "inverse-on-surface": "#2a3040",
+                        "on-primary": "#003640",
+                        "surface-dim": "#0d1322",
+                        "outline": "#869397",
+                        "tertiary-container": "#b395ff",
+                        "on-background": "#dde2f8",
+                        "on-primary-container": "#00424f",
+                        "outline-variant": "#3d494c",
+                        "secondary-fixed-dim": "#f9bd22",
+                        "surface-container-highest": "#2f3445"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit-lg": "24px",
+                        "container-max": "1440px",
+                        "margin": "48px",
+                        "gutter": "24px",
+                        "unit-xl": "32px",
+                        "columns": "12",
+                        "unit-sm": "8px",
+                        "unit-md": "16px",
+                        "unit-xs": "4px",
+                        "unit-2xl": "64px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Outfit"],
+                        "display-lg": ["Outfit"],
+                        "display-md": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "headline-sm": ["Outfit"],
+                        "headline-md": ["Outfit"],
+                        "label-sm": ["JetBrains Mono"],
+                        "body-lg": ["Outfit"],
+                        "label-md": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "display-md": ["56px", {"lineHeight": "64px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-lg": ["40px", {"lineHeight": "48px", "fontWeight": "600"}],
+                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(25, 31, 47, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .neon-glow-primary:hover {
+            box-shadow: 0 0 20px rgba(76, 215, 246, 0.3);
+            border-color: rgba(76, 215, 246, 0.5);
+        }
+        .neon-glow-secondary:hover {
+            box-shadow: 0 0 20px rgba(255, 198, 64, 0.2);
+            border-color: rgba(255, 198, 64, 0.4);
+        }
+        body {
+            background-color: #0b1120;
+            color: #dde2f8;
+            overflow-x: hidden;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .zoom-effect {
+            overflow: hidden;
+        }
+        .zoom-effect img {
+            transition: transform 0.5s ease;
+        }
+        .zoom-effect:hover img {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary/30 selection:text-primary">
+<!-- TopNavBar -->
+<header class="sticky top-0 w-full z-50 bg-surface/80 backdrop-blur-xl dark:bg-surface/80 border-b border-white/10 shadow-[0_0_15px_rgba(76,215,246,0.1)]">
+<div class="flex justify-between items-center max-w-[1440px] mx-auto px-margin h-20">
+<div class="flex items-center gap-unit-xl">
+<a class="font-display-md text-display-md font-bold text-primary tracking-tighter" href="#">KKMarket</a>
+<nav class="hidden md:flex gap-unit-lg items-center">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="#">Games</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="#">Accounts</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="#">Skins</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="#">Support</a>
+</nav>
+</div>
+<div class="flex items-center gap-unit-md">
+<div class="hidden lg:flex items-center bg-surface-container-low border border-white/10 rounded-full px-4 py-2 gap-2 focus-within:border-primary transition-all">
+<span class="material-symbols-outlined text-outline">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md text-on-surface placeholder:text-outline w-64" placeholder="Search marketplace..." type="text"/>
+</div>
+<button class="p-2 text-on-surface-variant hover:bg-primary/10 transition-all duration-200 rounded-full active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-primary/10 transition-all duration-200 rounded-full active:scale-95">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-primary/30 active:scale-95 transition-transform cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A futuristic circular avatar profile picture of a tech-savvy user in a neon-lit cyber-environment. The lighting is dominated by cyan and deep blue hues, reflecting a high-performance gaming aesthetic. The character wears sleek, dark chrome-finished armor with glowing circuitry patterns. The overall mood is professional yet aggressive, fitting the Nexus marketplace theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBExwLDB5nBliadWmahbeFEhhIjE-U1UgIuCxa4m3G_MpVOyPWG1pQDoeqNaCPKPbj4ZU6ckFHa7WLECsj1t44EIWv1v0MyPKQiiY9jW10nU_bgP0bqkIglDKnioOcTBS5JpWHIoa73J6_V-GbUbJ1sq4wYPI31xuyr4fhpWOFP6MOna-yBXnIbLwiBEZCqGNTBpSkHmXblFEHdagwPO-qGQaamoKZTozEu0aid0Dw5bA6FG5ZboGshebTpegujlUOtAO_E9sKWQ2tx"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-[1440px] mx-auto px-margin py-unit-2xl">
+<!-- Hero Section -->
+<section class="grid grid-cols-12 gap-gutter mb-unit-2xl">
+<!-- Left: Product Image -->
+<div class="col-span-12 lg:col-span-7">
+<div class="zoom-effect rounded-xl glass-card overflow-hidden h-[640px] relative group border border-white/10">
+<img alt="Premium Account Details" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLsVFJExAdgLYbixqicHB4CKGJkvg89yX-R0GfcI8Uuw9KiX6sWPPNSpPDIfP8pLE_vMhR4kHRHBzyK3TjvddK4vA-f09luy8toyZXlGApgJdO-Be9QruLYw9XpblLGuYBXAQtbt926SYDFZVReSlAPwdvv3ItbtSQWc8USYZXQiLHw_pnRW0TGCbsPaU-_7XI_5yFBTAU2jGJY5pkIfLukXS7gxrrHxrtrPa5dtUgUjAmA4cimDFL9esTG-"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-40"></div>
+<div class="absolute bottom-6 left-6 flex gap-2">
+<span class="bg-primary/20 backdrop-blur-md text-primary px-3 py-1 rounded-full text-label-sm border border-primary/30 uppercase">Instant Delivery</span>
+<span class="bg-secondary/20 backdrop-blur-md text-secondary px-3 py-1 rounded-full text-label-sm border border-secondary/30 uppercase">Verified Account</span>
+</div>
+</div>
+</div>
+<!-- Right: Pricing & CTA Card -->
+<div class="col-span-12 lg:col-span-5 flex flex-col gap-unit-lg">
+<div class="glass-card p-unit-xl rounded-xl border border-white/10 flex flex-col gap-unit-lg">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Shadow-Ops Elite Account [Level 150]</h1>
+<p class="text-on-surface-variant font-body-md">Includes rare seasonal skins, legacy badges, and premium battle-pass unlocks from Season 1-5.</p>
+</div>
+<div class="flex items-baseline gap-unit-md">
+<span class="font-display-md text-display-md text-primary">$149.99</span>
+<span class="text-outline line-through font-label-md">$199.99</span>
+<span class="bg-error/10 text-error px-2 py-0.5 rounded font-label-sm">-25% OFF</span>
+</div>
+<div class="grid grid-cols-2 gap-unit-md">
+<div class="bg-surface-container-low p-unit-md rounded-lg border border-white/5">
+<span class="text-outline text-label-sm block mb-1">Region</span>
+<span class="text-on-surface font-body-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">public</span> Global / NA
+                            </span>
+</div>
+<div class="bg-surface-container-low p-unit-md rounded-lg border border-white/5">
+<span class="text-outline text-label-sm block mb-1">Stock</span>
+<span class="text-on-surface font-body-md flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">inventory_2</span> 1 Unit Left
+                            </span>
+</div>
+</div>
+<div class="flex flex-col gap-unit-sm">
+<button class="w-full bg-primary text-on-primary font-headline-sm py-4 rounded-lg active:scale-[0.98] transition-all hover:bg-primary-container shadow-[0_0_20px_rgba(76,215,246,0.3)]">
+                            Buy Now
+                        </button>
+<button class="w-full border border-secondary text-secondary font-headline-sm py-4 rounded-lg active:scale-[0.98] transition-all hover:bg-secondary/10">
+                            Add to Cart
+                        </button>
+</div>
+<div class="flex items-center justify-center gap-unit-md py-unit-sm border-t border-white/5">
+<div class="flex items-center gap-2 text-outline text-label-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                            Safe &amp; Protected
+                        </div>
+<div class="w-1 h-1 bg-white/10 rounded-full"></div>
+<div class="flex items-center gap-2 text-outline text-label-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                            Auto-Delivery
+                        </div>
+</div>
+</div>
+<!-- Seller Profile Widget -->
+<div class="glass-card p-unit-lg rounded-xl border border-white/10 flex items-center justify-between group cursor-pointer hover:border-primary/50 transition-colors">
+<div class="flex items-center gap-unit-md">
+<div class="w-14 h-14 rounded-lg bg-surface-variant overflow-hidden border border-white/10">
+<img class="w-full h-full object-cover" data-alt="A stylized logo for a premium gaming marketplace seller named NexusPrime Keys. The logo features an abstract hexagonal prism emitting a soft amber glow against a dark matte background. The design is sleek, modern, and exudes professionalism and reliability within a futuristic tech environment. The color scheme focuses on deep charcoals and vibrant neon amber accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzLH5qNEAzwIhw4IL8eKQWBkXNjmNyz9JSPAFdN6GIAeh7dvs2ZxN80dQ0C6-m9vms888_mQLLnB6Q-zTK6Jgg2HYedhErww9Xw4Apw3eE-Q6MEHACQRWwgIbS_8qNwL1FO8yXeKyMbsjO4qpWbZSjU7Bo1x5gDbpO-VY5tfCAE2ds3_Z57KOhWtywyd1cL8w8aBDUeiF0zsSIeFWsCRCVL5Pt7A-iNsY0Wgz_2lVZe6XC-d-gFy975H0f5lev4DA-TS8oKRrXklwt"/>
+</div>
+<div>
+<h4 class="font-headline-sm text-on-surface text-lg">NexusPrime Keys</h4>
+<div class="flex items-center gap-2">
+<div class="flex text-secondary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star_half</span>
+</div>
+<span class="text-outline text-label-sm">4.9 (2.4k sales)</span>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary group-hover:translate-x-1 transition-all">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Product Details Content -->
+<section class="grid grid-cols-12 gap-gutter">
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-unit-2xl">
+<!-- Trust Badges -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-unit-lg">
+<div class="flex items-start gap-unit-md glass-card p-unit-lg rounded-xl border-l-4 border-l-primary">
+<div class="bg-primary/10 p-3 rounded-full">
+<span class="material-symbols-outlined text-primary text-3xl">shield_locked</span>
+</div>
+<div>
+<h5 class="font-headline-sm text-on-surface text-base">Secure Purchase</h5>
+<p class="text-on-surface-variant text-body-md">Funds are held in escrow until you confirm delivery. 100% refund guarantee for failed deliveries.</p>
+</div>
+</div>
+<div class="flex items-start gap-unit-md glass-card p-unit-lg rounded-xl border-l-4 border-l-secondary">
+<div class="bg-secondary/10 p-3 rounded-full">
+<span class="material-symbols-outlined text-secondary text-3xl">support_agent</span>
+</div>
+<div>
+<h5 class="font-headline-sm text-on-surface text-base">24/7 Support</h5>
+<p class="text-on-surface-variant text-body-md">Dedicated Nexus support agents available around the clock to resolve any account disputes.</p>
+</div>
+</div>
+</div>
+<!-- Description -->
+<div class="flex flex-col gap-unit-lg">
+<div class="flex border-b border-white/10 gap-unit-xl">
+<button class="pb-4 text-primary border-b-2 border-primary font-headline-sm text-base">Description</button>
+<button class="pb-4 text-outline hover:text-on-surface transition-colors font-headline-sm text-base">Specifications</button>
+<button class="pb-4 text-outline hover:text-on-surface transition-colors font-headline-sm text-base">Reviews (12)</button>
+</div>
+<div class="prose prose-invert max-w-none">
+<h3 class="text-on-surface font-headline-md mb-4">Detailed Account Overview</h3>
+<p class="text-on-surface-variant mb-6 leading-relaxed">
+                            This high-tier Shadow-Ops account has been meticulously curated for competitive play. It features a complete collection of limited-time event skins and professional-grade performance stats. All credentials (email/password) are fully transferable to the new owner upon purchase.
+                        </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-unit-lg bg-surface-container/30 p-unit-lg rounded-xl border border-white/5">
+<div>
+<h4 class="text-primary font-headline-sm text-sm uppercase tracking-widest mb-4">Key Features</h4>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 text-on-surface">
+<span class="material-symbols-outlined text-primary text-body-md">check_circle</span>
+                                        Level 150 + Elite Prestige
+                                    </li>
+<li class="flex items-center gap-3 text-on-surface">
+<span class="material-symbols-outlined text-primary text-body-md">check_circle</span>
+                                        45 Premium Operator Skins
+                                    </li>
+<li class="flex items-center gap-3 text-on-surface">
+<span class="material-symbols-outlined text-primary text-body-md">check_circle</span>
+                                        Rare "Obsidian Core" Weapon Camo
+                                    </li>
+<li class="flex items-center gap-3 text-on-surface">
+<span class="material-symbols-outlined text-primary text-body-md">check_circle</span>
+                                        5,000 In-game Premium Currency
+                                    </li>
+</ul>
+</div>
+<div class="flex items-center justify-center border-l border-white/5 pl-unit-lg">
+<div class="text-center">
+<div class="text-display-md text-primary font-bold">100%</div>
+<div class="text-outline text-label-sm uppercase tracking-tighter">Safe Transfer Rate</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar / Related Info -->
+<div class="hidden lg:col-span-4 lg:flex flex-col gap-unit-lg">
+<div class="glass-card p-unit-lg rounded-xl border border-white/10">
+<h4 class="font-headline-sm text-on-surface mb-unit-md">Market Insights</h4>
+<div class="space-y-4">
+<div class="flex justify-between items-center text-sm">
+<span class="text-outline">Trending Score</span>
+<span class="text-primary font-label-md">High (+12%)</span>
+</div>
+<div class="h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="bg-primary h-full w-4/5"></div>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-outline">Avg. Delivery Time</span>
+<span class="text-on-surface font-label-md">5 Minutes</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-outline">Buyer Satisfaction</span>
+<span class="text-secondary font-label-md">98.4%</span>
+</div>
+</div>
+</div>
+<div class="relative overflow-hidden rounded-xl h-64 glass-card border border-primary/20 p-unit-lg flex flex-col justify-end">
+
+<div class="relative z-10">
+<h4 class="font-headline-sm text-primary mb-2">Nexus Plus+</h4>
+<p class="text-label-md text-on-surface mb-4">Get 5% cashback on all gaming account purchases with Nexus Plus membership.</p>
+<button class="bg-primary/20 text-primary border border-primary/40 px-4 py-2 rounded font-label-sm uppercase hover:bg-primary/30 transition-colors">Learn More</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest w-full py-unit-2xl border-t border-white/10 mt-unit-2xl">
+<div class="grid grid-cols-12 max-w-[1440px] mx-auto px-margin gap-gutter">
+<div class="col-span-12 md:col-span-4 flex flex-col gap-unit-md">
+<span class="font-headline-md text-headline-md text-primary">KKMarket</span>
+<p class="text-on-surface-variant max-w-xs">The premier destination for secure digital asset trading. Powered by Cyber-Nexus technology.</p>
+</div>
+<div class="col-span-6 md:col-span-2 flex flex-col gap-unit-sm">
+<h5 class="text-on-surface font-headline-sm text-sm uppercase tracking-widest mb-2">Marketplace</h5>
+<a class="text-outline hover:text-secondary font-label-sm transition-opacity" href="#">Games</a>
+<a class="text-outline hover:text-secondary font-label-sm transition-opacity" href="#">Accounts</a>
+<a class="text-outline hover:text-secondary font-label-sm transition-opacity" href="#">Skins</a>
+<a class="text-outline hover:text-secondary font-label-sm transition-opacity" href="#">Currency</a>
+</div>
+<div class="col-span-6 md:col-span-2 flex flex-col gap-unit-sm">
+<h5 class="text-on-surface font-headline-sm text-sm uppercase tracking-widest mb-2">Company</h5>
+<a class="text-outline hover:text-secondary font-label-sm transition-opacity" href="#">Privacy Policy</a>
+<a class="text-outline hover:text-secondary font-label-sm transition-opacity" href="#">Terms of Service</a>
+<a class="text-outline hover:text-secondary font-label-sm transition-opacity" href="#">Security</a>
+<a class="text-outline hover:text-secondary font-label-sm transition-opacity" href="#">Sitemap</a>
+</div>
+<div class="col-span-12 md:col-span-4 flex flex-col items-end gap-unit-md">
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-on-surface">public</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-on-surface">hub</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-on-surface">terminal</span>
+</a>
+</div>
+<p class="text-outline font-label-sm text-right">© 2024 KKMarket Cyber-Nexus. All Rights Reserved.</p>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.style.transform = 'scale(0.95)';
+            });
+            button.addEventListener('mouseup', () => {
+                button.style.transform = 'scale(1)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'scale(1)';
+            });
+        });
+
+        // Sticky header background transition
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('bg-surface/95');
+            } else {
+                header.classList.remove('bg-surface/95');
+            }
+        });
+    </script>
+</body></html>

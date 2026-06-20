@@ -49,9 +49,9 @@ export async function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[var(--gm-ink-faint)]/40 bg-[var(--gm-paper)]/90 backdrop-blur-xl">
-      <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 w-full bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-[0_0_15px_rgba(76,215,246,0.1)]">
+      <div className="max-w-[1440px] mx-auto px-margin">
+        <div className="flex h-20 items-center justify-between gap-4">
 
           {/* Logo */}
           <div className="flex items-center gap-6">

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KKMarket | Cyber-Nexus Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#3d494c",
+                    "on-primary": "#003640",
+                    "on-tertiary-fixed-variant": "#5516be",
+                    "inverse-primary": "#00687a",
+                    "on-secondary": "#402d00",
+                    "tertiary-fixed": "#e9ddff",
+                    "surface-container": "#191f2f",
+                    "secondary-fixed-dim": "#f9bd22",
+                    "on-surface-variant": "#bcc9cd",
+                    "surface-dim": "#0d1322",
+                    "on-secondary-container": "#5a4100",
+                    "tertiary-fixed-dim": "#d0bcff",
+                    "on-background": "#dde2f8",
+                    "secondary-container": "#e3aa00",
+                    "surface-variant": "#2f3445",
+                    "on-primary-fixed-variant": "#004e5c",
+                    "surface-container-low": "#151b2b",
+                    "surface": "#0d1322",
+                    "on-surface": "#dde2f8",
+                    "on-error-container": "#ffdad6",
+                    "secondary-fixed": "#ffdf9f",
+                    "on-secondary-fixed-variant": "#5c4300",
+                    "primary-fixed": "#acedff",
+                    "surface-container-lowest": "#080e1d",
+                    "surface-container-high": "#242a3a",
+                    "on-tertiary-fixed": "#23005c",
+                    "outline": "#869397",
+                    "tertiary-container": "#b395ff",
+                    "on-error": "#690005",
+                    "secondary": "#ffc640",
+                    "on-primary-fixed": "#001f26",
+                    "on-primary-container": "#00424f",
+                    "error-container": "#93000a",
+                    "on-tertiary-container": "#4900ae",
+                    "error": "#ffb4ab",
+                    "background": "#0d1322",
+                    "surface-container-highest": "#2f3445",
+                    "primary-fixed-dim": "#4cd7f6",
+                    "on-tertiary": "#3c0091",
+                    "surface-tint": "#4cd7f6",
+                    "primary": "#4cd7f6",
+                    "surface-bright": "#33394a",
+                    "tertiary": "#d0bcff",
+                    "on-secondary-fixed": "#261a00",
+                    "inverse-on-surface": "#2a3040",
+                    "inverse-surface": "#dde2f8",
+                    "primary-container": "#06b6d4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "columns": "12",
+                    "unit-sm": "8px",
+                    "unit-xs": "4px",
+                    "unit-xl": "32px",
+                    "unit-md": "16px",
+                    "unit-lg": "24px",
+                    "margin": "48px",
+                    "container-max": "1440px",
+                    "unit-2xl": "64px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Outfit"],
+                    "headline-lg": ["Outfit"],
+                    "display-lg": ["Outfit"],
+                    "display-md": ["Outfit"],
+                    "headline-sm": ["Outfit"],
+                    "body-md": ["Outfit"],
+                    "body-lg": ["Outfit"],
+                    "label-sm": ["JetBrains Mono"],
+                    "label-md": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "headline-lg": ["40px", {"lineHeight": "48px", "fontWeight": "600"}],
+                    "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-md": ["56px", {"lineHeight": "64px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0d1322;
+            color: #dde2f8;
+            font-family: 'Outfit', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(25, 31, 47, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(76, 215, 246, 0.15);
+        }
+        .neon-border-primary {
+            border: 1px solid rgba(76, 215, 246, 0.3);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(76, 215, 246, 0.2);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="sticky top-0 w-full z-50 bg-surface/80 backdrop-blur-xl dark:bg-surface/80 border-b border-white/10 shadow-[0_0_15px_rgba(76,215,246,0.1)]">
+<nav class="flex justify-between items-center max-w-[1440px] mx-auto px-margin h-20">
+<div class="flex items-center gap-unit-xl">
+<span class="font-display-md text-display-md font-bold text-primary tracking-tighter">KKMarket</span>
+<div class="hidden md:flex gap-unit-lg ml-unit-xl">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Games</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Accounts</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Skins</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Support</a>
+</div>
+</div>
+<div class="flex items-center gap-unit-md">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="bg-surface-container-low border border-white/10 rounded-xl pl-10 pr-4 py-2 text-body-md focus:border-primary focus:ring-0 w-64 transition-all" placeholder="Search marketplace..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-primary/10 p-2 rounded-lg transition-all active:scale-95">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-primary/10 p-2 rounded-lg transition-all active:scale-95">shopping_cart</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/30 ml-unit-sm">
+<img class="w-full h-full object-cover" data-alt="Close up profile portrait of a futuristic gamer character with glowing cyan cybernetic eye implants and neon accents on their high-tech headset, set against a dark, moody background of a high-tech gaming room illuminated by ultraviolet and deep blue light. The style is hyper-realistic with sharp details and cinematic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAz91ydO5IpAl2nddRt_7SBhpAqjabC80jWzAWrhwGfulEvrAUXZjqYMvrJFuUcIE5_tR9p4HEjJq0MxkwZtQLE9gQQHhf3i2BgrszlLJX8BrSMGm90bYUYu-f93J7lg5QVnTtFPdgywIYoT2bOaBAOiphAsVoEyngW1mE1ePhjKmDYufYGAY1VIefJJ5yvLKeWr5g-jCU56yMLvsNAkz3_lNCxNRNBKk3sWqHgwiapCWXJviRycn_edMas5gsEI77nY79djCyVNxPE"/>
+</div>
+</div>
+</nav>
+</header>
+<main class="max-w-[1440px] mx-auto flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col gap-unit-md p-unit-lg h-full w-64 bg-surface-container-low border-r border-white/5">
+<div class="mb-unit-xl">
+<h3 class="font-headline-sm text-headline-sm text-primary">Marketplace</h3>
+<p class="text-on-surface-variant text-label-md">Browse Categories</p>
+</div>
+<nav class="flex flex-col gap-unit-sm">
+<a class="flex items-center gap-3 px-4 py-3 text-primary bg-primary/10 rounded-lg font-bold transition-all" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-md text-label-md">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant rounded-lg transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="font-label-md text-label-md">My Purchases</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant rounded-lg transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined">sell</span>
+<span class="font-label-md text-label-md">My Sales</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant rounded-lg transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-md text-label-md">Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant rounded-lg transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-unit-xl">
+<button class="w-full bg-secondary text-on-secondary font-bold py-3 rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">tune</span>
+                    Apply Filters
+                </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<div class="flex-1 px-margin py-unit-xl space-y-unit-2xl">
+<!-- Profile Header Section -->
+<section class="grid grid-cols-12 gap-gutter items-center">
+<div class="col-span-12 lg:col-span-8 flex items-center gap-unit-lg">
+<div class="relative">
+<div class="w-24 h-24 rounded-2xl overflow-hidden neon-border-primary">
+<img class="w-full h-full object-cover" data-alt="A detailed high-tech profile avatar of a character named CyberKnight_99, featuring a sleek carbon fiber helmet with a glowing cyan visor. The background is a blurred server room with flickering server lights in deep blue and purple tones. The lighting is cinematic, highlighting the reflective surfaces of the armor in a futuristic cyber-nexus style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAA9OZ-66M3atNv2szoqZMUs4dGFQXsBA4AyInb0kpxfaLy3nprPiTY4-bFJvZM2iD9RCB6CSM-wYH5wJwf9Imhj3FDuyZzmDB5fjHPXaAuQJx3nCLXY_EYy2wlNt4C5-MZodKDjrSCDYU8HPXYiJmKHQY3vrBF0Oyr1WDVOWfpgqcdTJcwUODlXH2y1vAj-RUv43hoTDGvTvKzbYeWcyEEIhzbAspBjhp-LaRhSfJThXo5io37MapjwBjSOK1wfU-4Y-wcCIuQxDoo"/>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-secondary text-on-secondary text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Elite</div>
+</div>
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">CyberKnight_99</h1>
+<div class="flex items-center gap-unit-md mt-1">
+<span class="text-primary font-label-md text-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+                                Elite Member
+                            </span>
+<span class="w-1 h-1 bg-outline rounded-full"></span>
+<span class="text-on-surface-variant font-label-md text-label-md">Member since 2021</span>
+</div>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-4 flex gap-gutter">
+<div class="flex-1 glass-panel rounded-2xl p-unit-md border-l-2 border-primary">
+<p class="text-on-surface-variant text-label-sm uppercase mb-1">Balance</p>
+<p class="text-headline-sm text-headline-sm font-bold text-on-surface">$1,450.00</p>
+<p class="text-primary text-label-md text-label-md mt-1">12,500 Credits</p>
+</div>
+</div>
+</section>
+<!-- Quick Stats Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<div class="glass-panel p-unit-lg rounded-2xl group hover:border-primary/40 transition-all">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">payments</span>
+<span class="text-green-400 text-label-sm font-bold">+12%</span>
+</div>
+<p class="text-on-surface-variant text-label-md mb-1">Total Spent</p>
+<p class="text-headline-sm text-headline-sm font-bold font-label-md">$3,240.50</p>
+</div>
+<div class="glass-panel p-unit-lg rounded-2xl group hover:border-secondary/40 transition-all">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-secondary bg-secondary/10 p-2 rounded-lg">trending_up</span>
+<span class="text-secondary text-label-sm font-bold">+24%</span>
+</div>
+<p class="text-on-surface-variant text-label-md mb-1">Total Earned</p>
+<p class="text-headline-sm text-headline-sm font-bold font-label-md">$1,120.00</p>
+</div>
+<div class="glass-panel p-unit-lg rounded-2xl group hover:border-primary/40 transition-all">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">package_2</span>
+<span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded text-[10px]">3 Active</span>
+</div>
+<p class="text-on-surface-variant text-label-md mb-1">Active Orders</p>
+<p class="text-headline-sm text-headline-sm font-bold font-label-md">08</p>
+</div>
+<div class="glass-panel p-unit-lg rounded-2xl group hover:border-tertiary/40 transition-all">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-tertiary bg-tertiary/10 p-2 rounded-lg">grade</span>
+<span class="text-tertiary text-label-sm font-bold">4.9/5.0</span>
+</div>
+<p class="text-on-surface-variant text-label-md mb-1">Reputation Score</p>
+<p class="text-headline-sm text-headline-sm font-bold font-label-md">998 XP</p>
+</div>
+</section>
+<!-- Main Dashboard Layout (Recent + Recommended) -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Recent Orders Table -->
+<section class="col-span-12 lg:col-span-8 space-y-unit-lg">
+<div class="flex justify-between items-end px-unit-xs">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Recent Activity</h2>
+<button class="text-primary hover:underline font-label-md text-label-md">View Statement</button>
+</div>
+<div class="glass-panel rounded-2xl overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high/50 border-b border-white/5">
+<th class="px-6 py-4 font-label-sm text-label-sm text-outline uppercase tracking-wider">Product</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-outline uppercase tracking-wider">Status</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-outline uppercase tracking-wider text-right">Price</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-outline uppercase tracking-wider text-right">Date</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr class="hover:bg-white/5 transition-colors cursor-pointer group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A small thumbnail image of a legendary CS:GO weapon skin featuring intricate dragon patterns in gold and obsidian. The skin glows slightly with a magical aura against a dark background, embodying the high-end gaming aesthetic of the KKMarket platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKq8gjvY_QK2ZAgM5DeDRbbr0Wh0Z65sAX3IwRaFr60qzuDnlNO3giQnQZfBxC-Lm-mCs8jiktvIyy1ysAxnR3GCVy_w36-dHYaF1P7XIo7DxQ5aScvAuTkJzuZ-KH7bvHR7_lPtEybObkmebjdj_xpZ2luHJGVQfF4ghOec8f7SL1oDclzwYhS5ao7a-yPsbZKIGbGQ-eiV57PbqsQoqJ4scC7AtDZo0wcFyffed3KmFQ-mF4smgNRQj76Rs_vedcZ1u5vnaaUBqT"/>
+</div>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Dragon Lore AWP (Factory New)</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-500/10 text-green-400">Delivered</span>
+</td>
+<td class="px-6 py-5 text-right font-label-md text-label-md text-on-surface">$1,200.00</td>
+<td class="px-6 py-5 text-right font-label-sm text-label-sm text-outline">Oct 24, 2024</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors cursor-pointer group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A small thumbnail image of a premium Valorant account profile icon featuring a radiant rank badge. The design is sleek and modern with neon gradients of blue and purple, fitting the aggressive elegance of the marketplace dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc-b8u02Xm0f8Kv9qGeKJLP-hsNrm5cmyxbaioBwu5A1pATAX7ov8-ROmZgjJep5lsUk2AVhTgfW7efL_OpcwpgjCpT7DwEGvIWQzTl6VjCFAppYGcw6vFA7iQEXG4ZnUr1TmYRrF5NtZPsRkpbAMn5VlxKQWaxWJVVBxDjJGlyfJD8O-0gxBhcyp1taFFT9JVn68kzCoMgsIXkWr8Ye6JFmr4fqnTvKmFMUIxPJPDl5X14Mbv3Ybtl_a85Rb3rOKG6lEejB__-SfC"/>
+</div>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Radiant Rank Valorant Account</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary/10 text-secondary">Pending</span>
+</td>
+<td class="px-6 py-5 text-right font-label-md text-label-md text-on-surface">$450.00</td>
+<td class="px-6 py-5 text-right font-label-sm text-label-sm text-outline">Oct 23, 2024</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors cursor-pointer group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A small thumbnail image of a League of Legends rare skin, specifically a limited edition prestige skin with shimmering crystal textures and golden highlights. The background is a dark void that makes the neon accents pop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZFS9KFnmPhONrKZIBuKoOsQVGvoDggCmE04kvJFRvvqMde-YbOQzgE2XfyMRHZkrB92ve_FMX69SN0QSy44fv1BVoEC0UtRfjZaYRAKhQKrY7hDnft3M4UtVpS2gp8SQObieVN-0fGjRK8ypBjjNkiDepmk0YQJ-f-RTptNhbsv496MH_S_sfQmvdr29AsnTr__FA5vjF_4Zn9FWoceF3wmNyVQzWA8nHP_9kkieAEDGq7T4PjAkA8DHVk1PoVe1vVL7EL6C8vWeP"/>
+</div>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Prestige K/DA Kai'Sa Skin</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">Processing</span>
+</td>
+<td class="px-6 py-5 text-right font-label-md text-label-md text-on-surface">$85.00</td>
+<td class="px-6 py-5 text-right font-label-sm text-label-sm text-outline">Oct 22, 2024</td>
+</tr>
+</tbody>
+</table>
+<div class="p-4 border-t border-white/5 text-center">
+<button class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors">Load More History</button>
+</div>
+</div>
+</section>
+<!-- Recommended Section -->
+<section class="col-span-12 lg:col-span-4 space-y-unit-lg">
+<h2 class="font-headline-sm text-headline-sm text-on-surface px-unit-xs">Recommended</h2>
+<div class="space-y-gutter">
+<!-- Mini Product Card 1 -->
+<div class="glass-panel group rounded-2xl overflow-hidden transition-all hover:scale-[1.02] cursor-pointer">
+<div class="relative h-40 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A cinematic showcase of a high-tier gaming PC account for sale, featuring a visual list of unlocked rare characters and weapons. The style is dark and moody, with high contrast between the neon UI elements and the deep black background. The lighting is focused and dramatic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZDlSizjz3miWYnXfuPf3ERQ7pau0TO3-3XfrGxQYgKRWJAy6FZreCMgYU7Q0epm_q6EdK5cnL9hOB7RhfCcYYo1CF_midpVK32p6xFokIDQ23J_KBZK1h_CVl5C-Qdp7kILNz4LeaZ5RYQjqj3oJCdjcew5VPC-DpP3tXa-00osEDyBPo8xBD4UK3bLupD4t-MjwJ2vGp8UlGalMHOVVbFo_4IsbI0CzzOWxijcY6w5U3TERX2DsvhCiHL_0nHNqsf5CZ6kk3j2N0"/>
+<div class="absolute top-3 right-3 bg-primary text-on-primary text-[10px] font-bold px-2 py-1 rounded">HOT DEAL</div>
+</div>
+<div class="p-unit-md">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Apex Legends Master Acc</h4>
+<span class="material-symbols-outlined text-outline group-hover:text-secondary transition-colors">favorite</span>
+</div>
+<div class="flex items-center justify-between">
+<p class="font-label-md text-label-md text-on-surface font-bold">$120.00</p>
+<span class="text-on-surface-variant text-label-sm">50 Skins</span>
+</div>
+</div>
+</div>
+<!-- Mini Product Card 2 -->
+<div class="glass-panel group rounded-2xl overflow-hidden transition-all hover:scale-[1.02] cursor-pointer">
+<div class="relative h-40 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A stylized digital art representation of a rare purple and cyan glowing knife skin from an FPS game. The blade is reflective and has digital glitch effects along the edges. The environment is a dark futuristic armory with faint blue volumetric lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDa2ZUR76jDqNsFu66FZIYZQrXI_6iSOtKfc7kZO-51oaPFxllMnoi4LVkBr--SQ8nAICmctNuvu9zXZ2swdLNf5sy36zu8JUF_6FntWgz5O77_J2BAA8A4Az-7CmkqGMykdim7ARTkqIfv_KlUo8Ed3Y5y8HaTsmnJcxDpYzLvKCW7zMX40RlOFB1igyxObFToN2sYHu06AYBvphrlNe3fzHcRc3RXXbwlliwgXUERmEkA068012otHpIztLIeCmdn-tmHPclpF9mp"/>
+</div>
+<div class="p-unit-md">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Glitchpop Dagger</h4>
+<span class="material-symbols-outlined text-outline group-hover:text-secondary transition-colors">favorite</span>
+</div>
+<div class="flex items-center justify-between">
+<p class="font-label-md text-label-md text-on-surface font-bold">$34.99</p>
+<span class="text-on-surface-variant text-label-sm">Instant Delivery</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-white/10 mt-unit-2xl">
+<div class="grid grid-cols-12 max-w-[1440px] mx-auto px-margin gap-gutter py-unit-2xl">
+<div class="col-span-12 lg:col-span-4 space-y-unit-md">
+<span class="font-headline-md text-headline-md text-primary">KKMarket</span>
+<p class="text-on-surface-variant font-body-md text-body-md max-w-sm">The nexus of high-performance gaming digital goods. Secure, fast, and optimized for the elite player.</p>
+</div>
+<div class="col-span-12 lg:col-span-8 flex flex-wrap gap-x-unit-2xl gap-y-unit-lg justify-end items-start">
+<div class="space-y-unit-sm">
+<h5 class="text-on-surface font-bold text-label-md">Company</h5>
+<ul class="space-y-unit-xs">
+<li><a class="text-outline hover:text-secondary transition-opacity text-label-sm" href="#">Privacy Policy</a></li>
+<li><a class="text-outline hover:text-secondary transition-opacity text-label-sm" href="#">Terms of Service</a></li>
+<li><a class="text-outline hover:text-secondary transition-opacity text-label-sm" href="#">Sitemap</a></li>
+</ul>
+</div>
+<div class="space-y-unit-sm">
+<h5 class="text-on-surface font-bold text-label-md">Support</h5>
+<ul class="space-y-unit-xs">
+<li><a class="text-outline hover:text-secondary transition-opacity text-label-sm" href="#">Security</a></li>
+<li><a class="text-outline hover:text-secondary transition-opacity text-label-sm" href="#">Payment Info</a></li>
+<li><a class="text-outline hover:text-secondary transition-opacity text-label-sm" href="#">Help Center</a></li>
+</ul>
+</div>
+</div>
+<div class="col-span-12 border-t border-white/5 pt-unit-lg mt-unit-lg flex flex-col md:flex-row justify-between items-center gap-unit-md">
+<p class="text-outline font-label-sm text-label-sm">© 2024 KKMarket Cyber-Nexus. All Rights Reserved.</p>
+<div class="flex gap-unit-md">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">language</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">share</span>
+</div>
+</div>
+</div>
+</footer>
+<!-- Interactive Layer for Hover Effects -->
+<script>
+        document.querySelectorAll('.glass-panel').forEach(panel => {
+            panel.addEventListener('mousemove', (e) => {
+                const rect = panel.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                panel.style.setProperty('--mouse-x', `${x}px`);
+                panel.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

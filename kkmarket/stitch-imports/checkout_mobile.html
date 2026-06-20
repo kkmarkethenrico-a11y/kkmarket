@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEXUS | Secure Checkout</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(22, 29, 47, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-border-glow:focus-within {
+            border-color: #4cd7f6;
+            box-shadow: 0 0 15px rgba(76, 215, 246, 0.2);
+        }
+        .amber-glow {
+            box-shadow: 0 0 20px rgba(238, 152, 0, 0.15);
+        }
+        body {
+            background-color: #111415;
+            color: #e1e3e4;
+            overflow-x: hidden;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#ffddb8",
+                      "secondary-container": "#ee9800",
+                      "primary-fixed-dim": "#c1c6db",
+                      "on-secondary-fixed": "#2a1700",
+                      "surface-container": "#1d2021",
+                      "on-tertiary-container": "#0089a0",
+                      "primary": "#c1c6db",
+                      "on-primary-container": "#777c90",
+                      "on-error-container": "#ffdad6",
+                      "on-background": "#e1e3e4",
+                      "surface-variant": "#323536",
+                      "tertiary-container": "#001419",
+                      "surface-container-lowest": "#0c0f10",
+                      "glass-border": "rgba(255, 255, 255, 0.1)",
+                      "on-surface": "#e1e3e4",
+                      "tertiary-fixed": "#acedff",
+                      "surface-container-low": "#191c1d",
+                      "surface-container-high": "#282a2b",
+                      "inverse-surface": "#e1e3e4",
+                      "surface-bright": "#373a3b",
+                      "surface-tint": "#c1c6db",
+                      "surface-container-highest": "#323536",
+                      "outline-variant": "#45464c",
+                      "on-primary": "#2a3040",
+                      "primary-fixed": "#dde2f8",
+                      "on-secondary": "#472a00",
+                      "inverse-on-surface": "#2e3132",
+                      "on-primary-fixed-variant": "#414658",
+                      "secondary": "#ffb95f",
+                      "on-tertiary": "#003640",
+                      "secondary-fixed-dim": "#ffb95f",
+                      "outline": "#909097",
+                      "on-surface-variant": "#c6c6cd",
+                      "surface-dim": "#111415",
+                      "on-secondary-container": "#5b3800",
+                      "surface": "#111415",
+                      "on-tertiary-fixed": "#001f26",
+                      "error": "#ffb4ab",
+                      "error-container": "#93000a",
+                      "on-primary-fixed": "#151b2b",
+                      "on-error": "#690005",
+                      "background": "#111415",
+                      "neon-purple": "#7C3AED",
+                      "tertiary": "#4cd7f6",
+                      "primary-container": "#0b1120",
+                      "on-secondary-fixed-variant": "#653e00",
+                      "inverse-primary": "#585e70",
+                      "tertiary-fixed-dim": "#4cd7f6",
+                      "on-tertiary-fixed-variant": "#004e5c",
+                      "surface-elevated": "#161D2F"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "margin-desktop": "40px",
+                      "container-max": "1280px",
+                      "unit": "8px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Inter"],
+                      "headline-xl": ["Outfit"],
+                      "body-lg": ["Inter"],
+                      "headline-lg-mobile": ["Outfit"],
+                      "headline-lg": ["Outfit"],
+                      "label-md": ["Inter"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 border-b border-glass-border bg-surface/80 backdrop-blur-md">
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-variant transition-colors" onclick="history.back()">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary tracking-tighter">NEXUS</h1>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-md text-label-md text-on-surface-variant hidden md:block">SECURE TRANSACTION</span>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">lock</span>
+</div>
+</header>
+<main class="pt-24 pb-12 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Cart Items & Payments -->
+<div class="lg:col-span-8 space-y-8">
+<!-- Section Header -->
+<div class="flex items-end justify-between">
+<div>
+<p class="font-label-sm text-label-sm text-tertiary mb-1 uppercase tracking-widest">Review Basket</p>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Checkout Details</h2>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant">3 Items</p>
+</div>
+<!-- Cart Items List -->
+<div class="space-y-4">
+<!-- Item 1 -->
+<div class="glass-card p-4 rounded-xl flex gap-4 items-center">
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden flex-shrink-0 border border-glass-border">
+<img class="w-full h-full object-cover" data-alt="Close-up shot of a glowing futuristic digital sword skin with cyan neon circuits running along the blade. The background is a dark, atmospheric tech lab with soft purple bokeh lights. High-fidelity textures and professional cyberpunk lighting emphasize the premium quality of the digital asset." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrQxeUdSXbpAvDfUJrfEeEsRmhKmBcEStf_OLnTcAjwie9n8O4AdRcnSB_orkyOxJjacuAYsoSgEvcXsgDfVtuplRDdDXHM9bKIsULBmYBSMGHSciCi9xzreFTIKrlJvBO-E7-JmyN92kbFdBt36IIj2dpbLJ5lRuTM2PmWgkd8As43E6PTqtPwr95D5s2b2E4gH3q9M0iJ2OwUQFP2fHO4nsR6uR8CoyptQw8LqFsGEYYOoEtEYM0hAIQ7pR1EP6u_E2fVRG6K8Pk"/>
+</div>
+<div class="flex-grow">
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold">Void-Walker Edge</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Legendary Skin • Instant Delivery</p>
+<div class="mt-2 flex items-center gap-2">
+<span class="bg-tertiary/10 text-tertiary px-2 py-0.5 rounded text-[10px] font-bold border border-tertiary/20 uppercase tracking-tighter">Verified Seller</span>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-secondary">$149.00</p>
+<button class="text-error font-label-sm text-label-sm hover:underline mt-1">Remove</button>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="glass-card p-4 rounded-xl flex gap-4 items-center">
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden flex-shrink-0 border border-glass-border">
+<img class="w-full h-full object-cover" data-alt="A futuristic holographic ID card floating in a dark digital space. The card features intricate golden lattice patterns and amber data streams. Soft warm lighting reflects off the glass-like surface of the digital asset, conveying exclusivity and high-tier status in a clean, professional cyberpunk aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRyOgbg24W7gFU1qyHgeMJdR787fqDjqcpddRWkSLtQC2fkdTF5jvz4rFtxeDFY4bYeUyoDpC0PVjsQrjl35LlFIvleGEouNq3h4_kcfL14fdKf-qgCfv-KYzT3s8ObGIrZgabX_CDieHPEGGDR4qtfg4pHcufl7IZ3lnUQN8LoQzWmxScPm1wBD3juFcgLpYPnGYcgFNjh9hUmcTKaT_HJcnCThIE_6GTvd3VtaRdHwclYdkA7A2yCitRRTBxnVOTeNr3dJ3i4aEl"/>
+</div>
+<div class="flex-grow">
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold">Founders Pass #882</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Unique NFT • Seasonal Access</p>
+</div>
+<div class="text-right">
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-secondary">$320.00</p>
+<button class="text-error font-label-sm text-label-sm hover:underline mt-1">Remove</button>
+</div>
+</div>
+</div>
+<!-- Payment Methods -->
+<div class="space-y-4">
+<h3 class="font-label-md text-label-md text-on-surface uppercase tracking-widest">Select Payment Method</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- PIX -->
+<label class="relative cursor-pointer group">
+<input checked="" class="peer sr-only" name="payment" type="radio"/>
+<div class="glass-card p-4 rounded-xl border-2 border-transparent peer-checked:border-tertiary peer-checked:bg-tertiary/5 group-hover:bg-surface-variant/50 transition-all">
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-3xl text-tertiary">qr_code_2</span>
+<span class="font-label-md text-label-md text-on-surface">PIX</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant text-center leading-tight">Instant Approval</span>
+</div>
+</div>
+</label>
+<!-- Credit Card -->
+<label class="relative cursor-pointer group">
+<input class="peer sr-only" name="payment" type="radio"/>
+<div class="glass-card p-4 rounded-xl border-2 border-transparent peer-checked:border-tertiary peer-checked:bg-tertiary/5 group-hover:bg-surface-variant/50 transition-all">
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-3xl text-on-surface-variant peer-checked:text-tertiary">credit_card</span>
+<span class="font-label-md text-label-md text-on-surface">Credit Card</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant text-center leading-tight">Up to 12x</span>
+</div>
+</div>
+</label>
+<!-- Crypto -->
+<label class="relative cursor-pointer group">
+<input class="peer sr-only" name="payment" type="radio"/>
+<div class="glass-card p-4 rounded-xl border-2 border-transparent peer-checked:border-tertiary peer-checked:bg-tertiary/5 group-hover:bg-surface-variant/50 transition-all">
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-3xl text-on-surface-variant peer-checked:text-tertiary">currency_bitcoin</span>
+<span class="font-label-md text-label-md text-on-surface">Crypto</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant text-center leading-tight">BTC, ETH, SOL</span>
+</div>
+</div>
+</label>
+</div>
+</div>
+<!-- Buyer Protection -->
+<div class="glass-card p-6 rounded-xl border-l-4 border-l-tertiary flex gap-4 items-start">
+<span class="material-symbols-outlined text-tertiary text-3xl" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<div>
+<h4 class="font-body-md text-body-md text-on-surface font-bold">Nexus Buyer Protection</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Your transaction is held in our secure vault until you confirm receipt of the digital assets. Full refund guaranteed if the item is not as described or delivery fails.</p>
+</div>
+</div>
+</div>
+<!-- Right Column: Order Summary -->
+<div class="lg:col-span-4">
+<div class="glass-card p-6 rounded-2xl sticky top-24 amber-glow">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-6">Order Summary</h3>
+<div class="space-y-4 border-b border-glass-border pb-6">
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Subtotal</span>
+<span class="font-body-md text-body-md text-on-surface">$469.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Service Fee (2.5%)</span>
+<span class="font-body-md text-body-md text-on-surface">$11.73</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Network Gas Fee</span>
+<span class="font-body-md text-body-md text-tertiary">Free</span>
+</div>
+</div>
+<div class="pt-6 space-y-6">
+<div class="flex justify-between items-end">
+<span class="font-label-md text-label-md text-on-surface uppercase tracking-widest">Total Amount</span>
+<span class="font-headline-lg text-headline-lg text-secondary">$480.73</span>
+</div>
+<div class="space-y-3">
+<button class="w-full bg-secondary-container text-on-secondary-fixed font-headline-lg-mobile text-headline-lg-mobile py-4 rounded-xl font-extrabold hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                                Place Order
+                                <span class="material-symbols-outlined">bolt</span>
+</button>
+<p class="text-center font-label-sm text-label-sm text-on-surface-variant">
+                                By clicking 'Place Order', you agree to our <a class="text-tertiary hover:underline" href="#">Terms of Service</a>.
+                            </p>
+</div>
+</div>
+<!-- Discount / Promo Code -->
+<div class="mt-8 pt-8 border-t border-glass-border">
+<label class="font-label-md text-label-md text-on-surface-variant mb-2 block uppercase">Promo Code</label>
+<div class="flex gap-2">
+<input class="bg-surface/50 border border-glass-border rounded-lg px-4 py-2 flex-grow focus:outline-none focus:border-tertiary transition-colors text-on-surface" placeholder="Enter code" type="text"/>
+<button class="px-4 py-2 border border-tertiary text-tertiary rounded-lg font-label-md text-label-md hover:bg-tertiary/10 transition-colors">Apply</button>
+</div>
+</div>
+</div>
+<!-- Extra trust indicators -->
+<div class="mt-6 grid grid-cols-2 gap-4">
+<div class="glass-card p-3 rounded-lg flex items-center gap-2 opacity-60">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">shield_locked</span>
+<span class="font-label-sm text-label-sm">SSL Encrypted</span>
+</div>
+<div class="glass-card p-3 rounded-lg flex items-center gap-2 opacity-60">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">support_agent</span>
+<span class="font-label-sm text-label-sm">24/7 Support</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Micro-interaction overlay for successful action (Hidden by default) -->
+<div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/90 backdrop-blur-xl pointer-events-none opacity-0 transition-opacity duration-300" id="success-overlay">
+<div class="text-center">
+<div class="w-20 h-20 bg-tertiary/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-tertiary animate-bounce">
+<span class="material-symbols-outlined text-tertiary text-5xl">check_circle</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Order Processing...</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Connecting to secure gateway</p>
+</div>
+</div>
+<script>
+        // Simple micro-interaction for the Place Order button
+        const orderBtn = document.querySelector('button.bg-secondary-container');
+        const successOverlay = document.getElementById('success-overlay');
+
+        orderBtn.addEventListener('click', () => {
+            successOverlay.classList.remove('opacity-0');
+            successOverlay.classList.add('opacity-100');
+            
+            setTimeout(() => {
+                // In a real app, this would redirect
+                successOverlay.querySelector('h2').innerText = "Redirecting to Payment...";
+            }, 1500);
+        });
+
+        // Toggle focus styles for inputs
+        const inputs = document.querySelectorAll('input[type="text"]');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('neon-border-glow');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.classList.remove('neon-border-glow');
+            });
+        });
+    </script>
+</body></html>

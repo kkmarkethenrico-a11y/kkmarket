@@ -3,7 +3,6 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { AnnouncementCard } from '@/components/marketplace/AnnouncementCard'
 import type { AnnouncementWithRelations, Category } from '@/types'
-import { Gamepad2, Share2, Bot, Code, Box, Flame, Crosshair, Sparkles, Pickaxe, Blocks, Sword, Target, Trophy, Star, ShieldCheck, HeadphonesIcon, Gift, ThumbsUp, BookOpen, Newspaper } from 'lucide-react'
 
 const PLAN_ORDER: Record<string, number> = { diamond: 3, gold: 2, silver: 1 }
 function planWeight(p: string) { return PLAN_ORDER[p] ?? 0 }
@@ -43,14 +42,14 @@ async function getData() {
   const [featuredRes, popularRes, newestRes, reviewsRes, postsRes, catsRes, sellersRes] = await Promise.all([
     supabase.from('announcements').select(announcementSelect)
       .eq('status', 'active').eq('plan', 'diamond')
-      .order('sale_count', { ascending: false }).limit(6),
+      .order('sale_count', { ascending: false }).limit(4),
     supabase.from('announcements').select(announcementSelect)
       .eq('status', 'active')
       .order('plan', { ascending: false })
-      .order('sale_count', { ascending: false }).limit(12),
+      .order('sale_count', { ascending: false }).limit(8),
     supabase.from('announcements').select(announcementSelect)
-      .eq('status', 'active').order('created_at', { ascending: false }).limit(12),
-    supabase.from('order_reviews').select('id, type, message, created_at, profiles!reviewer_id(username)')
+      .eq('status', 'active').order('created_at', { ascending: false }).limit(8),
+    supabase.from('order_reviews').select('id, type, message, created_at, profiles!reviewer_id(username, avatar_url)')
       .eq('type', 'positive').order('created_at', { ascending: false }).limit(6),
     supabase.from('blog_posts').select('id, title, slug, cover_url, created_at')
       .eq('is_published', true).order('created_at', { ascending: false }).limit(4),
@@ -90,22 +89,6 @@ async function getData() {
   }
 }
 
-// ── Section heading component ──────────────────────────────────────────────
-function SectionHead({ title, href, hrefLabel = 'ver mais →' }: { title: React.ReactNode; href?: string; hrefLabel?: string }) {
-  return (
-    <div className="mb-6 flex items-center justify-between">
-      <h2 className="text-lg font-black tracking-tight text-[var(--gm-ink)] uppercase">
-        {title}
-      </h2>
-      {href && (
-        <Link href={href} className="text-xs font-semibold text-[var(--gm-violet)] hover:text-[var(--gm-cyan)] transition-colors uppercase tracking-wide">
-          {hrefLabel}
-        </Link>
-      )}
-    </div>
-  )
-}
-
 export default async function HomePage() {
   const { featured, popular, newest, reviews, posts, categories, sellers } = await getData()
 
@@ -114,301 +97,170 @@ export default async function HomePage() {
     : GAME_COVERS.map((g) => ({ name: g.name, slug: g.slug, img: g.img, href: `/categoria/jogos/${g.slug}` }))
 
   return (
-    <div className="min-h-screen text-[var(--gm-ink)] relative overflow-hidden">
-
-      {/* ── Background Glowing Orbs (Cyber Luxury) ─────────────────────────── */}
-      <div className="pointer-events-none fixed inset-0 z-[-1] overflow-hidden opacity-60">
-        <div className="absolute top-[-10%] left-[-10%] h-[500px] w-[500px] rounded-full bg-[var(--gm-cyan)]/20 blur-[120px] will-change-transform" />
-        <div className="absolute top-[20%] right-[-10%] h-[600px] w-[600px] rounded-full bg-[var(--gm-violet)]/20 blur-[140px] will-change-transform" />
-        <div className="absolute bottom-[-10%] left-[20%] h-[500px] w-[500px] rounded-full bg-[var(--gm-green)]/15 blur-[120px] will-change-transform" />
-      </div>
-
-      {/* ── Stories row ───────────────────────────────────────────────────── */}
-      {sellers.length > 0 && (
-        <section className="border-b border-[var(--gm-ink-faint)]/20 py-4">
-          <div className="container mx-auto px-4">
-            <div className="flex gap-4 overflow-x-auto pb-1 scrollbar-hide">
-              {/* "seu drop" placeholder */}
-              <Link href="/meus-anuncios/novo" className="flex flex-col items-center gap-1.5 shrink-0">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-[var(--gm-violet)]/50 bg-[var(--gm-violet)]/5 text-xl text-[var(--gm-violet)] hover:border-[var(--gm-violet)] transition-colors">
-                  +
-                </div>
-                <span className="text-[9px] font-bold text-[var(--gm-violet)] uppercase tracking-wide">seu drop</span>
+    <div className="min-h-screen font-body-md text-on-surface bg-background">
+      <main className="max-w-[1440px] mx-auto px-margin md:px-margin px-4">
+        
+        {/* Cyber-Nexus Hero Section */}
+        <section className="relative mt-8 rounded-xl overflow-hidden min-h-[500px] flex items-center border border-white/5 bg-surface-container-lowest">
+          <div className="scanline"></div>
+          {/* Background Elements */}
+          <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-transparent z-10"></div>
+            <div className="w-full h-full bg-cover bg-center opacity-40" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuA3c8skU9aYIn74YQc4q8Dds0-sDXJ-fUCcfQOzD1rRmLiKmfswSo51GD8qTQV7smjcHRUx8iHPu50UstJlEvU6l2i_CDwYEkkbB_0hnqH5UWioLLYmbrSPbn7AB6yBmderOeZbrmX-fUCI-ihqezZLmwqhc8ij2F8WVDDXV-Qew3ffn58qpG3hMUdYjcA4ufyiuHW3Q0SyNfF8NUwOSYJ7-YBIkQt-4XF7erpOSCR1y4_mYORa-DvbK9n1Rldx0UPsfwvla5uQOOmi')" }}></div>
+          </div>
+          {/* Hero Content */}
+          <div className="relative z-20 w-full md:w-1/2 p-6 md:p-12 space-y-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary font-label-md text-label-md tracking-wider">
+              <span className="material-symbols-outlined text-[16px]">terminal</span>
+              SYSTEMS ONLINE
+            </div>
+            <h1 className="font-display-lg text-4xl md:text-display-lg text-white leading-tight">THE NEXT GEN <span className="text-primary">MARKETPLACE</span></h1>
+            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-lg">Experience the most secure high-speed trading hub for gamers. Instant deliveries, encrypted transactions, and verified elite accounts.</p>
+            <div className="flex flex-wrap gap-4 pt-4">
+              <Link href="/buscar" className="px-8 py-4 bg-primary text-on-primary font-bold rounded-lg hover:shadow-[0_0_20px_rgba(76,215,246,0.6)] transition-all active:scale-95 flex items-center gap-2">
+                START TRADING <span className="material-symbols-outlined">trending_flat</span>
               </Link>
-              {sellers.map((s) => {
-                const name = s.display_name ?? s.username
-                const initials = name.slice(0, 2).toUpperCase()
-                return (
-                  <Link key={s.id} href={`/perfil/${s.username}`} className="flex flex-col items-center gap-1.5 shrink-0 group">
-                    <div className="relative">
-                      {s.avatar_url ? (
-                        <Image
-                          src={s.avatar_url}
-                          alt={name}
-                          width={56}
-                          height={56}
-                          className="h-14 w-14 rounded-full object-cover ring-2 ring-[var(--gm-violet)]/40 group-hover:ring-[var(--gm-violet)] transition-all"
-                        />
-                      ) : (
-                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--gm-violet)]/15 text-sm font-black text-[var(--gm-violet)] ring-2 ring-[var(--gm-violet)]/40 group-hover:ring-[var(--gm-violet)] transition-all uppercase">
-                          {initials}
-                        </div>
-                      )}
-                    </div>
-                    <span className="text-[9px] font-bold text-[var(--gm-ink-dim)] max-w-[56px] truncate text-center group-hover:text-[var(--gm-ink)] transition-colors">
-                      {s.username}
-                    </span>
-                  </Link>
-                )
-              })}
+              <Link href="/como-funciona" className="px-8 py-4 bg-transparent border border-secondary text-secondary font-bold rounded-lg hover:bg-secondary/10 transition-all active:scale-95">
+                VIEW MISSIONS
+              </Link>
             </div>
           </div>
         </section>
-      )}
 
-      {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden border-b border-[var(--gm-ink-faint)]/30 py-20">
-        {/* Background glow */}
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-40 left-1/2 h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-[var(--gm-violet)]/8 blur-3xl" />
-          <div className="absolute top-10 right-1/4 h-64 w-64 rounded-full bg-[var(--gm-cyan)]/5 blur-3xl" />
-        </div>
-
-        <div className="container mx-auto px-4 text-center relative">
-          <div className="inline-flex items-center gap-2 rank-chip mb-6">
-            ◆ O MARKETPLACE DE JOGOS DIGITAIS
-          </div>
-          <h1 className="mb-4 text-5xl font-black leading-tight tracking-tight md:text-6xl text-[var(--gm-ink)]">
-            comprar e{' '}
-            <span className="text-[var(--gm-violet)]" style={{ textShadow: '0 0 30px rgba(255, 157, 0, 0.4)' }}>
-              vender
-            </span>
-          </h1>
-          <p className="mb-8 text-base text-[var(--gm-ink-dim)] max-w-md mx-auto">
-            contas · jogos · gift cards · gold · itens digitais e mais
-          </p>
-          <div className="flex items-center justify-center gap-3 flex-wrap">
-            <Link
-              href="/como-funciona"
-              className="inline-flex items-center gap-2 rounded-lg bg-[var(--gm-violet)] px-7 py-3 text-sm font-bold text-[#1a1126] transition-all hover:opacity-90 active:scale-95 gm-glow"
-            >
-              COMO FUNCIONA?
-            </Link>
-            <Link
-              href="/buscar"
-              className="inline-flex items-center gap-2 rounded-lg border border-[var(--gm-ink-faint)]/60 px-7 py-3 text-sm font-bold text-[var(--gm-ink-dim)] hover:border-[var(--gm-violet)]/50 hover:text-[var(--gm-ink)] transition-all"
-            >
-              explorar →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Quests / Missões HUD ──────────────────────────────────────────── */}
-      <section className="border-b border-[var(--gm-ink-faint)]/30 py-8">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            {/* Missão diária */}
-            <div className="rounded-xl border border-[var(--gm-violet)]/30 bg-[var(--gm-violet)]/5 p-4 flex flex-col gap-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wide text-[var(--gm-violet)] flex items-center justify-center gap-1"><Target className="h-4 w-4" /> Missão Diária</span>
-                <span className="rank-chip text-[9px]">+25 pts</span>
+        {/* Missions & Rewards Banner */}
+        <section className="mt-8">
+          <div className="bg-secondary-container text-on-secondary-container p-6 rounded-xl flex flex-col md:flex-row md:items-center justify-between shadow-lg gap-4">
+            <div className="flex items-center gap-4">
+              <div className="bg-on-secondary-container text-secondary p-3 rounded-lg">
+                <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>military_tech</span>
               </div>
-              <p className="text-sm font-semibold text-[var(--gm-ink)]">Explore o marketplace hoje</p>
-              <div className="xp-bar">
-                <div className="xp-bar-fill" style={{ width: '0%' }} />
+              <div>
+                <h3 className="font-headline-sm text-headline-sm leading-tight">Missions & Rewards</h3>
+                <p className="font-label-md text-label-md opacity-80">Complete daily tasks to unlock exclusive Cyber-Nexus skins and currency.</p>
               </div>
             </div>
-
-            {/* Desafio */}
-            <div className="rounded-xl border border-[var(--gm-amber)]/30 bg-[var(--gm-amber)]/5 p-4 flex flex-col gap-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wide text-[var(--gm-amber)]">⚔ Desafio Semanal</span>
-                <span className="rank-chip gold text-[9px]">+100 pts</span>
+            <div className="flex items-center gap-6">
+              <div className="text-right hidden sm:block">
+                <div className="font-label-sm text-label-sm uppercase tracking-widest opacity-60">NEXT REWARD AT</div>
+                <div className="font-label-md text-label-md font-bold">1,500 KK-COINS</div>
               </div>
-              <p className="text-sm font-semibold text-[var(--gm-ink)]">Faça sua primeira compra</p>
-              <div className="xp-bar">
-                <div className="xp-bar-fill" style={{ width: '0%', background: 'var(--gm-amber)' }} />
+              <div className="hidden sm:block w-32 h-2 bg-on-secondary-container/20 rounded-full overflow-hidden">
+                <div className="w-3/4 h-full bg-on-secondary-container"></div>
               </div>
+              <button className="bg-on-secondary-container text-secondary-container px-6 py-2 rounded-lg font-bold hover:opacity-90 transition-opacity">CLAIM</button>
             </div>
-
-            {/* Ranking */}
-            <Link
-              href="/ranking"
-              className="rounded-xl border border-[var(--gm-ink-faint)]/40 bg-[var(--gm-paper-3)] p-4 flex flex-col items-center justify-center gap-2 hover:border-[var(--gm-violet)]/50 transition-colors"
-            >
-              <Trophy className="h-10 w-10 text-[var(--gm-violet)]" strokeWidth={1.5} />
-              <span className="text-xs font-bold uppercase tracking-wide text-[var(--gm-ink-dim)]">Ver Ranking</span>
-            </Link>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── Categorias ────────────────────────────────────────────────────── */}
-      <section className="border-b border-[var(--gm-ink-faint)]/30 py-10">
-        <div className="container mx-auto px-4">
-          <SectionHead title="Categorias Populares" href="/categorias" hrefLabel="ver todas →" />
-          <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-            {categoryItems.map((item) => {
-              // Select appropriate icon
-              let Icon = Gamepad2
-              if (item.slug === 'redes-sociais') Icon = Share2
-              else if (item.slug === 'bots') Icon = Bot
-              else if (item.slug === 'scripts') Icon = Code
-              else if (item.slug === 'outros-digitais') Icon = Box
-              else if (item.slug === 'free-fire') Icon = Flame
-              else if (item.slug === 'valorant' || item.slug === 'cs2') Icon = Crosshair
-              else if (item.slug === 'fortnite' || item.slug === 'genshin-impact') Icon = Sparkles
-              else if (item.slug === 'minecraft') Icon = Pickaxe
-              else if (item.slug === 'roblox') Icon = Blocks
-              else if (item.slug === 'league-of-legends') Icon = Sword
-
-              return (
-                <Link
-                  key={item.slug}
-                  href={item.href}
-                  className="group relative flex h-28 w-24 shrink-0 flex-col items-center justify-center gap-3 overflow-hidden rounded-xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper-3)] hover:border-[var(--gm-violet)]/50 hover:bg-[var(--gm-violet)]/5 transition-all shadow-sm"
-                >
-                  <div className="text-[var(--gm-ink-dim)] group-hover:text-[var(--gm-violet)] transition-colors duration-300 transform group-hover:scale-110">
-                    <Icon className="h-8 w-8" strokeWidth={1.5} />
-                  </div>
-                  <p className="text-center text-[10px] font-bold leading-tight text-[var(--gm-ink)] px-2">{item.name}</p>
+        {/* Main Marketplace Body */}
+        <div className="mt-16 flex flex-col lg:flex-row gap-8">
+          
+          {/* Sidebar Navigation */}
+          <aside className="hidden lg:flex flex-col gap-6 p-8 h-full w-64 rounded-xl bg-surface-container border-r border-white/5 shrink-0">
+            <div className="mb-4">
+              <h2 className="font-headline-sm text-headline-sm text-primary">Marketplace</h2>
+              <p className="font-label-md text-label-md text-on-surface-variant">Browse Categories</p>
+            </div>
+            <div className="flex flex-col gap-2">
+              <Link href="/buscar" className="flex items-center gap-3 p-3 text-primary bg-primary/10 rounded-lg font-bold cursor-pointer">
+                <span className="material-symbols-outlined">grid_view</span>
+                <span className="font-label-md text-label-md">All Products</span>
+              </Link>
+              {categoryItems.map(item => (
+                <Link key={item.slug} href={item.href} className="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-colors cursor-pointer">
+                  <span className="material-symbols-outlined">sports_esports</span>
+                  <span className="font-label-md text-label-md">{item.name}</span>
                 </Link>
-              )
-            })}
-
-            <Link
-              href="/categorias"
-              className="flex h-32 w-24 shrink-0 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-[var(--gm-ink-faint)]/40 text-[var(--gm-ink-faint)] hover:border-[var(--gm-violet)]/50 hover:text-[var(--gm-violet)] transition-colors"
-            >
-              <span className="text-xl">＋</span>
-              <span className="text-[10px] font-bold">Ver todas</span>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Em destaque ───────────────────────────────────────────────────── */}
-      {featured.length > 0 && (
-        <section className="border-b border-[var(--gm-ink-faint)]/30 py-12">
-          <div className="container mx-auto px-4">
-            <SectionHead title="◆ Em Destaque" href="/buscar?order=best_sellers" />
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-              {featured.map((ann) => (
-                <AnnouncementCard key={ann.id} ann={ann} />
               ))}
             </div>
-          </div>
-        </section>
-      )}
+            <Link href="/buscar" className="mt-8 text-center bg-primary text-on-primary font-bold py-3 rounded-lg hover:opacity-90 transition-opacity">Apply Filters</Link>
+          </aside>
 
-      {/* ── Mais populares ────────────────────────────────────────────────── */}
-      {popular.length > 0 && (
-        <section className="border-b border-[var(--gm-ink-faint)]/30 py-12">
-          <div className="container mx-auto px-4">
-            <SectionHead title={<span className="flex items-center gap-2"><Flame className="h-5 w-5 text-[var(--gm-amber)]" /> Mais Populares</span>} href="/buscar?order=best_sellers" />
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-              {popular.map((ann) => (
-                <AnnouncementCard key={ann.id} ann={ann} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+          {/* Main Content Area */}
+          <div className="flex-1 space-y-16">
+            
+            {/* Featured Section */}
+            {featured.length > 0 && (
+              <section>
+                <div className="flex justify-between items-end mb-6">
+                  <div>
+                    <h2 className="font-headline-md text-headline-md text-white">Em Destaque</h2>
+                    <p className="text-on-surface-variant font-body-md text-body-md">Premium and top-rated selections.</p>
+                  </div>
+                  <Link className="text-primary hover:underline font-label-md text-label-md" href="/buscar?order=best_sellers">View All</Link>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {featured.map(ann => (
+                    <AnnouncementCard key={ann.id} ann={ann} />
+                  ))}
+                </div>
+              </section>
+            )}
 
-      {/* ── Avaliações recentes ────────────────────────────────────────────── */}
-      {reviews.length > 0 && (
-        <section className="border-b border-[var(--gm-ink-faint)]/30 py-12">
-          <div className="container mx-auto px-4">
-            <SectionHead title={<span className="flex items-center gap-2"><Star className="h-5 w-5 text-[var(--gm-amber)]" /> Avaliações Recentes</span>} />
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {reviews.map((r: any) => (
-                <div key={r.id} className="rounded-xl border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-2)] p-4 flex flex-col gap-2 hover:border-[var(--gm-green)]/40 transition-colors">
-                  <div className="flex items-center gap-2 text-xs font-bold text-[var(--gm-green)] uppercase tracking-wide">
-                    <ThumbsUp className="h-4 w-4" />
-                    <span className="truncate">
-                      {r.comment} — <strong className="text-[var(--gm-ink)]">{r.profiles?.username}</strong>
-                    </span>
+            {/* Most Popular Section */}
+            {popular.length > 0 && (
+              <section>
+                <div className="flex justify-between items-end mb-6">
+                  <div>
+                    <h2 className="font-headline-md text-headline-md text-white">Most Popular Items</h2>
+                    <p className="text-on-surface-variant font-body-md text-body-md">The most traded assets in the nexus right now.</p>
+                  </div>
+                  <Link className="text-primary hover:underline font-label-md text-label-md" href="/buscar?order=best_sellers">View All</Link>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {popular.map(ann => (
+                    <AnnouncementCard key={ann.id} ann={ann} />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Recent Ratings Section */}
+            {reviews.length > 0 && (
+              <section>
+                <div className="flex justify-between items-end mb-6">
+                  <div>
+                    <h2 className="font-headline-md text-headline-md text-white">Recent Ratings</h2>
+                    <p className="text-on-surface-variant font-body-md text-body-md">Verified community feedback from recent trades.</p>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ── Blog posts ──────────────────────────────────────────────────────── */}
-      {posts.length > 0 && (
-        <section className="border-b border-[var(--gm-ink-faint)]/30 py-12">
-          <div className="container mx-auto px-4">
-            <SectionHead title={<span className="flex items-center gap-2"><BookOpen className="h-5 w-5 text-[var(--gm-violet)]" /> Blog</span>} href="/blog" hrefLabel="ver artigos →" />
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {posts.map((p: any) => (
-                <Link
-                  key={p.id}
-                  href={`/blog/${p.slug}`}
-                  className="group overflow-hidden rounded-xl border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-2)] hover:border-[var(--gm-violet)]/50 transition-colors"
-                >
-                  <div className="relative aspect-video overflow-hidden bg-[var(--gm-paper-3)]">
-                    {p.cover_url ? (
-                      <Image
-                        src={p.cover_url}
-                        alt={p.title}
-                        fill
-                        sizes="(max-width: 640px) 100vw, 25vw"
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center text-[var(--gm-ink-faint)]">
-                        <Newspaper className="h-10 w-10 opacity-50" />
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {reviews.map((r: any) => {
+                    const initials = (r.profiles?.username || 'U').charAt(0).toUpperCase()
+                    return (
+                      <div key={r.id} className="bg-surface-container-low p-6 rounded-xl border border-white/5 space-y-3">
+                        <div className="flex justify-between items-start">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center font-bold text-primary">
+                              {r.profiles?.avatar_url ? (
+                                <Image src={r.profiles.avatar_url} alt="Avatar" width={40} height={40} className="rounded-full object-cover" />
+                              ) : initials}
+                            </div>
+                            <div>
+                              <div className="font-label-md text-label-md text-white">{r.profiles?.username}</div>
+                              <div className="font-label-sm text-label-sm text-on-surface-variant">Recentemente</div>
+                            </div>
+                          </div>
+                          <div className="flex text-secondary">
+                            {[...Array(5)].map((_, i) => (
+                              <span key={i} className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                            ))}
+                          </div>
+                        </div>
+                        <p className="font-body-md text-on-surface-variant leading-relaxed italic">"{r.message}"</p>
+                        <div className="pt-2 border-t border-white/5 flex items-center gap-2 text-label-sm text-outline">
+                          <span className="material-symbols-outlined text-[14px]">verified</span>
+                          Verified Purchase
+                        </div>
                       </div>
-                    )}
-                  </div>
-                  <div className="p-3">
-                    <p className="line-clamp-2 text-sm font-semibold text-[var(--gm-ink)] group-hover:text-white transition-colors">{p.title}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ── Outros anúncios (newest) ─────────────────────────────────────────── */}
-      {newest.length > 0 && (
-        <section className="border-b border-[var(--gm-ink-faint)]/30 py-12">
-          <div className="container mx-auto px-4">
-            <SectionHead title={<span className="flex items-center gap-2"><Sparkles className="h-5 w-5 text-[var(--gm-cyan)]" /> Recém Chegados</span>} href="/buscar?order=newest" />
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-              {newest.map((ann) => (
-                <AnnouncementCard key={ann.id} ann={ann} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ── Trust badges ─────────────────────────────────────────────────────── */}
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            {[
-              { icon: <ShieldCheck className="h-8 w-8" />, title: 'Compra segura',         desc: 'Entrega garantida ou o seu dinheiro de volta.',      color: 'var(--gm-green)' },
-              { icon: <HeadphonesIcon className="h-8 w-8" />, title: 'Suporte 24 horas',       desc: 'Equipe pronta para te atender sempre que precisar.', color: 'var(--gm-cyan)'  },
-              { icon: <Gift className="h-8 w-8" />, title: 'Programa de recompensa', desc: 'Seja recompensado pelas suas compras e vendas.',      color: 'var(--gm-violet)'},
-            ].map((b) => (
-              <div
-                key={b.title}
-                className="rounded-xl border border-[var(--gm-ink-faint)]/30 bg-[var(--gm-paper-2)] p-6 text-center hover:border-[var(--gm-violet)]/40 transition-colors"
-              >
-                <div className="mb-3 flex justify-center text-[var(--gm-ink)]">{b.icon}</div>
-                <h3 className="mb-1 text-sm font-bold" style={{ color: b.color }}>{b.title}</h3>
-                <p className="text-xs text-[var(--gm-ink-dim)]">{b.desc}</p>
-              </div>
-            ))}
+                    )
+                  })}
+                </div>
+              </section>
+            )}
           </div>
         </div>
-      </section>
+      </main>
     </div>
   )
 }
