@@ -19,7 +19,7 @@ function reviewScore(p: number, n: number, ng: number): { pct: number; total: nu
   return { pct: Math.round((p / total) * 100), total }
 }
 
-export function AnnouncementCard({ ann }: { ann: AnnouncementWithRelations }) {
+export function AnnouncementCard({ ann, dict }: { ann: AnnouncementWithRelations, dict?: any }) {
   const seller = ann.profiles
   const stats  = ann.user_stats
   const images = ann.announcement_images ?? []

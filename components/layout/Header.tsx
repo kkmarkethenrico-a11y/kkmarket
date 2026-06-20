@@ -8,10 +8,14 @@ import { CategoryMegaMenu } from '@/components/layout/CategoryMegaMenu'
 import { MobileNav } from '@/components/layout/MobileNav'
 import { UserNav } from '@/components/auth/UserNav'
 import { CartButton } from '@/components/layout/CartButton'
+import { LanguageSelector } from '@/components/layout/LanguageSelector'
+import { getLanguage, getDictionary } from '@/lib/i18n'
 
 export async function Header() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  const lang = await getLanguage()
+  const dict = await getDictionary()
 
   let profile: { username: string; display_name?: string; avatar_url?: string; role?: string; seller_status?: string } | null = null
   let pointsBalance = 0
@@ -73,7 +77,7 @@ export async function Header() {
                 href="/blog"
                 className="text-sm font-medium text-[var(--gm-ink-dim)] hover:text-[var(--gm-ink)] transition-colors"
               >
-                Blog
+                {dict.header.blog}
               </Link>
             </nav>
           </div>
@@ -110,7 +114,7 @@ export async function Header() {
                 href="/admin"
                 className="hidden lg:flex items-center gap-1.5 rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-1.5 text-sm font-bold text-red-500 transition-all hover:bg-red-500/20 active:scale-95"
               >
-                Admin
+                {dict.header.admin}
               </Link>
             )}
 
@@ -119,7 +123,7 @@ export async function Header() {
                 href="/painel"
                 className="hidden lg:flex items-center gap-1.5 rounded-lg border border-[var(--gm-ink-faint)]/60 px-3 py-1.5 text-sm font-semibold text-[var(--gm-ink-dim)] transition-all hover:border-[var(--gm-violet)]/60 hover:text-[var(--gm-ink)] active:scale-95"
               >
-                Painel
+                {dict.header.panel}
               </Link>
             )}
 
@@ -129,9 +133,14 @@ export async function Header() {
                 className="hidden lg:flex items-center gap-1.5 rounded-lg bg-[var(--gm-violet)] px-4 py-1.5 text-sm font-bold text-[#1a1126] transition-all hover:opacity-90 active:scale-95 gm-glow"
               >
                 <Plus className="h-4 w-4" />
-                {profile?.seller_status === 'approved' ? 'Anunciar' : 'Vender'}
+                {profile?.seller_status === 'approved' ? dict.header.announce : dict.header.sell}
               </Link>
             )}
+
+            {/* Language Selector */}
+            <div className="hidden lg:block ml-1">
+              <LanguageSelector currentLang={lang} />
+            </div>
 
             {/* Cart */}
             <CartButton />

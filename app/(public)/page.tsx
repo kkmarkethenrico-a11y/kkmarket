@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { AnnouncementCard } from '@/components/marketplace/AnnouncementCard'
 import type { AnnouncementWithRelations, Category } from '@/types'
+import { getDictionary } from '@/lib/i18n'
 
 const PLAN_ORDER: Record<string, number> = { diamond: 3, gold: 2, silver: 1 }
 function planWeight(p: string) { return PLAN_ORDER[p] ?? 0 }
@@ -91,6 +92,7 @@ async function getData() {
 
 export default async function HomePage() {
   const { featured, popular, newest, reviews, posts, categories, sellers } = await getData()
+  const dict = await getDictionary()
 
   const categoryItems = categories.length > 0
     ? categories.map((cat) => ({ name: cat.name, slug: cat.slug, img: cat.image_url ?? CATEGORY_COVERS[cat.slug] ?? null, href: `/categoria/${cat.slug}` }))
@@ -112,16 +114,16 @@ export default async function HomePage() {
           <div className="relative z-20 w-full md:w-1/2 p-6 md:p-12 space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary font-label-md text-label-md tracking-wider">
               <span className="material-symbols-outlined text-[16px]">terminal</span>
-              SYSTEMS ONLINE
+              {dict.hero.systemsOnline}
             </div>
-            <h1 className="font-display-lg text-4xl md:text-display-lg text-white leading-tight">THE NEXT GEN <span className="text-primary">MARKETPLACE</span></h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-lg">Experience the most secure high-speed trading hub for gamers. Instant deliveries, encrypted transactions, and verified elite accounts.</p>
+            <h1 className="font-display-lg text-4xl md:text-display-lg text-white leading-tight">{dict.hero.title1} <span className="text-primary">{dict.hero.title2}</span></h1>
+            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-lg">{dict.hero.subtitle}</p>
             <div className="flex flex-wrap gap-4 pt-4">
               <Link href="/buscar" className="px-8 py-4 bg-primary text-on-primary font-bold rounded-lg hover:shadow-[0_0_20px_rgba(76,215,246,0.6)] transition-all active:scale-95 flex items-center gap-2">
-                START TRADING <span className="material-symbols-outlined">trending_flat</span>
+                {dict.hero.startTrading} <span className="material-symbols-outlined">trending_flat</span>
               </Link>
               <Link href="/como-funciona" className="px-8 py-4 bg-transparent border border-secondary text-secondary font-bold rounded-lg hover:bg-secondary/10 transition-all active:scale-95">
-                VIEW MISSIONS
+                {dict.hero.viewMissions}
               </Link>
             </div>
           </div>
@@ -135,19 +137,19 @@ export default async function HomePage() {
                 <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>military_tech</span>
               </div>
               <div>
-                <h3 className="font-headline-sm text-headline-sm leading-tight">Missions & Rewards</h3>
-                <p className="font-label-md text-label-md opacity-80">Complete daily tasks to unlock exclusive Cyber-Nexus skins and currency.</p>
+                <h3 className="font-headline-sm text-headline-sm leading-tight">{dict.missions.title}</h3>
+                <p className="font-label-md text-label-md opacity-80">{dict.missions.desc}</p>
               </div>
             </div>
             <div className="flex items-center gap-6">
               <div className="text-right hidden sm:block">
-                <div className="font-label-sm text-label-sm uppercase tracking-widest opacity-60">NEXT REWARD AT</div>
+                <div className="font-label-sm text-label-sm uppercase tracking-widest opacity-60">{dict.missions.nextReward}</div>
                 <div className="font-label-md text-label-md font-bold">1,500 KK-COINS</div>
               </div>
               <div className="hidden sm:block w-32 h-2 bg-on-secondary-container/20 rounded-full overflow-hidden">
                 <div className="w-3/4 h-full bg-on-secondary-container"></div>
               </div>
-              <button className="bg-on-secondary-container text-secondary-container px-6 py-2 rounded-lg font-bold hover:opacity-90 transition-opacity">CLAIM</button>
+              <button className="bg-on-secondary-container text-secondary-container px-6 py-2 rounded-lg font-bold hover:opacity-90 transition-opacity">{dict.missions.claim}</button>
             </div>
           </div>
         </section>
@@ -158,13 +160,13 @@ export default async function HomePage() {
           {/* Sidebar Navigation */}
           <aside className="hidden lg:flex flex-col gap-6 p-8 h-full w-64 rounded-xl bg-surface-container border-r border-white/5 shrink-0">
             <div className="mb-4">
-              <h2 className="font-headline-sm text-headline-sm text-primary">Marketplace</h2>
-              <p className="font-label-md text-label-md text-on-surface-variant">Browse Categories</p>
+              <h2 className="font-headline-sm text-headline-sm text-primary">{dict.sidebar.title}</h2>
+              <p className="font-label-md text-label-md text-on-surface-variant">{dict.sidebar.subtitle}</p>
             </div>
             <div className="flex flex-col gap-2">
               <Link href="/buscar" className="flex items-center gap-3 p-3 text-primary bg-primary/10 rounded-lg font-bold cursor-pointer">
                 <span className="material-symbols-outlined">grid_view</span>
-                <span className="font-label-md text-label-md">All Products</span>
+                <span className="font-label-md text-label-md">{dict.sidebar.allProducts}</span>
               </Link>
               {categoryItems.map(item => (
                 <Link key={item.slug} href={item.href} className="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-colors cursor-pointer">
@@ -173,7 +175,7 @@ export default async function HomePage() {
                 </Link>
               ))}
             </div>
-            <Link href="/buscar" className="mt-8 text-center bg-primary text-on-primary font-bold py-3 rounded-lg hover:opacity-90 transition-opacity">Apply Filters</Link>
+            <Link href="/buscar" className="mt-8 text-center bg-primary text-on-primary font-bold py-3 rounded-lg hover:opacity-90 transition-opacity">{dict.sidebar.applyFilters}</Link>
           </aside>
 
           {/* Main Content Area */}
@@ -184,14 +186,14 @@ export default async function HomePage() {
               <section>
                 <div className="flex justify-between items-end mb-6">
                   <div>
-                    <h2 className="font-headline-md text-headline-md text-white">Em Destaque</h2>
-                    <p className="text-on-surface-variant font-body-md text-body-md">Premium and top-rated selections.</p>
+                    <h2 className="font-headline-md text-headline-md text-white">{dict.sections.featured}</h2>
+                    <p className="text-on-surface-variant font-body-md text-body-md">{dict.sections.featuredDesc}</p>
                   </div>
-                  <Link className="text-primary hover:underline font-label-md text-label-md" href="/buscar?order=best_sellers">View All</Link>
+                  <Link className="text-primary hover:underline font-label-md text-label-md" href="/buscar?order=best_sellers">{dict.sections.viewAll}</Link>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
                   {featured.map(ann => (
-                    <AnnouncementCard key={ann.id} ann={ann} />
+                    <AnnouncementCard key={ann.id} ann={ann} dict={dict} />
                   ))}
                 </div>
               </section>
@@ -202,14 +204,14 @@ export default async function HomePage() {
               <section>
                 <div className="flex justify-between items-end mb-6">
                   <div>
-                    <h2 className="font-headline-md text-headline-md text-white">Most Popular Items</h2>
-                    <p className="text-on-surface-variant font-body-md text-body-md">The most traded assets in the nexus right now.</p>
+                    <h2 className="font-headline-md text-headline-md text-white">{dict.sections.popular}</h2>
+                    <p className="text-on-surface-variant font-body-md text-body-md">{dict.sections.popularDesc}</p>
                   </div>
-                  <Link className="text-primary hover:underline font-label-md text-label-md" href="/buscar?order=best_sellers">View All</Link>
+                  <Link className="text-primary hover:underline font-label-md text-label-md" href="/buscar?order=best_sellers">{dict.sections.viewAll}</Link>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
                   {popular.map(ann => (
-                    <AnnouncementCard key={ann.id} ann={ann} />
+                    <AnnouncementCard key={ann.id} ann={ann} dict={dict} />
                   ))}
                 </div>
               </section>
@@ -220,8 +222,8 @@ export default async function HomePage() {
               <section>
                 <div className="flex justify-between items-end mb-6">
                   <div>
-                    <h2 className="font-headline-md text-headline-md text-white">Recent Ratings</h2>
-                    <p className="text-on-surface-variant font-body-md text-body-md">Verified community feedback from recent trades.</p>
+                    <h2 className="font-headline-md text-headline-md text-white">{dict.sections.recentRatings}</h2>
+                    <p className="text-on-surface-variant font-body-md text-body-md">{dict.sections.ratingsDesc}</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -238,7 +240,7 @@ export default async function HomePage() {
                             </div>
                             <div>
                               <div className="font-label-md text-label-md text-white">{r.profiles?.username}</div>
-                              <div className="font-label-sm text-label-sm text-on-surface-variant">Recentemente</div>
+                              <div className="font-label-sm text-label-sm text-on-surface-variant">{dict.sections.recent}</div>
                             </div>
                           </div>
                           <div className="flex text-secondary">
@@ -250,7 +252,7 @@ export default async function HomePage() {
                         <p className="font-body-md text-on-surface-variant leading-relaxed italic">"{r.message}"</p>
                         <div className="pt-2 border-t border-white/5 flex items-center gap-2 text-label-sm text-outline">
                           <span className="material-symbols-outlined text-[14px]">verified</span>
-                          Verified Purchase
+                          {dict.sections.verifiedPurchase}
                         </div>
                       </div>
                     )
