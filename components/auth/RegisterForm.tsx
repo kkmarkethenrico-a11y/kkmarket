@@ -332,8 +332,8 @@ export function RegisterForm() {
             <div className="rounded-xl border border-[var(--gm-amber)]/30 bg-[var(--gm-amber)]/5 p-3 flex items-center gap-3">
               <span className="text-2xl">🎁</span>
               <div>
-                <p className="text-xs font-bold text-[var(--gm-amber)] uppercase tracking-wide">Welcome Bonus</p>
-                <p className="text-sm text-[var(--gm-ink)]">+50 pts ao confirmar o e-mail</p>
+                <p className="text-xs font-bold text-[var(--gm-amber)] uppercase tracking-wide">Bônus de Login Diário</p>
+                <p className="text-sm text-[var(--gm-ink)]">+10 pts ao confirmar o e-mail e logar</p>
               </div>
             </div>
 

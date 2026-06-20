@@ -57,8 +57,8 @@ export default async function LoginPage() {
               🎁 PRÓXIMA RECOMPENSA
             </p>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-bold text-[var(--gm-ink)]">Welcome Bonus</span>
-              <span className="text-sm font-black text-[var(--gm-amber)]">+50 pts</span>
+              <span className="text-sm font-bold text-[var(--gm-ink)]">Bônus de Login Diário</span>
+              <span className="text-sm font-black text-[var(--gm-amber)]">+10 pts</span>
             </div>
             <div className="xp-bar">
               <div className="xp-bar-fill" style={{ width: '0%' }} />
