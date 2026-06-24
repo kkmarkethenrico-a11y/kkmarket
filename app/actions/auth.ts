@@ -131,10 +131,15 @@ export async function signOutAction() {
 
 export async function signInWithOAuthAction(provider: 'google' | 'discord') {
   const supabase = await createClient()
+  const headersList = await import('next/headers').then(m => m.headers())
+  const host = headersList.get('host') || process.env.NEXT_PUBLIC_APP_URL?.replace('https://', '').replace('http://', '') || 'kkmarket.vercel.app'
+  const protocol = headersList.get('x-forwarded-proto') || (host.includes('localhost') ? 'http' : 'https')
+  const baseUrl = `${protocol}://${host}`
+
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/callback`,
+      redirectTo: `${baseUrl}/callback`,
       // Solicita escopo de e-mail e perfil ao Google
       scopes: provider === 'google' ? 'openid email profile' : undefined,
     },
