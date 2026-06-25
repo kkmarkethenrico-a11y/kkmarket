@@ -64,9 +64,24 @@ export function RegisterForm({ dict }: { dict: any }) {
   const successText = state?.message?.replace('success:', '')
 
   async function handleOAuth(provider: 'google' | 'discord') {
-    setOauthLoading(provider)
-    await signInWithOAuthAction(provider)
-    setOauthLoading(null)
+    try {
+      setOauthLoading(provider)
+      const supabase = createClient()
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+          scopes: provider === 'google' ? 'openid email profile' : undefined,
+        },
+      })
+      if (error) {
+        console.error('OAuth error:', error)
+        setOauthLoading(null)
+      }
+    } catch (err) {
+      console.error(err)
+      setOauthLoading(null)
+    }
   }
 
   function canAdvanceStep0() {

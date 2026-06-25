@@ -20,6 +20,8 @@ function GoogleIcon() {
   )
 }
 
+import { createClient } from '@/lib/supabase/client'
+
 export function LoginForm({ dict }: { dict: any }) {
   const t = dict.auth.login
   const [state, action, pending] = useActionState<LoginFormState, FormData>(loginAction, null)
@@ -35,9 +37,24 @@ export function LoginForm({ dict }: { dict: any }) {
   const forgotText = forgotMsg?.replace(/^(success:|error:)/, '')
 
   async function handleOAuth(provider: 'google' | 'discord') {
-    setOauthLoading(provider)
-    await signInWithOAuthAction(provider)
-    setOauthLoading(null)
+    try {
+      setOauthLoading(provider)
+      const supabase = createClient()
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+          scopes: provider === 'google' ? 'openid email profile' : undefined,
+        },
+      })
+      if (error) {
+        console.error('OAuth error:', error)
+        setOauthLoading(null)
+      }
+    } catch (err) {
+      console.error(err)
+      setOauthLoading(null)
+    }
   }
 
   const inputCls = "w-full rounded-lg border border-[var(--gm-ink-faint)]/50 bg-[var(--gm-paper-3)] px-4 py-3 text-sm text-[var(--gm-ink)] placeholder-[var(--gm-ink-faint)] outline-none transition-all focus:border-[var(--gm-violet)] focus:ring-2 focus:ring-[var(--gm-violet)]/20 aria-[invalid]:border-[var(--gm-rose)]"

@@ -1,6 +1,7 @@
 'use server'
 
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { loginSchema, registerSchema } from '@/lib/validations/auth'
@@ -46,7 +47,7 @@ export async function loginAction(
     return { message: 'E-mail ou senha incorretos.' }
   }
 
-  redirect('/painel')
+  redirect('/')
 }
 
 export async function registerAction(
@@ -77,12 +78,13 @@ export async function registerAction(
     return { errors: { username: ['Este username já está em uso.'] } }
   }
 
+  const origin = (await headers()).get('origin') || process.env.NEXT_PUBLIC_APP_URL || ''
   const { error } = await supabase.auth.signUp({
     email: parsed.data.email,
     password: parsed.data.password,
     options: {
       data: { username: parsed.data.username.toLowerCase() },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/callback`,
+      emailRedirectTo: `${origin}/auth/callback`,
     },
   })
 
@@ -115,8 +117,9 @@ export async function forgotPasswordAction(
   }
 
   const supabase = await createClient()
+  const origin = (await headers()).get('origin') || process.env.NEXT_PUBLIC_APP_URL || ''
   await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/callback?next=/nova-senha`,
+    redirectTo: `${origin}/auth/callback?next=/nova-senha`,
   })
 
   // Sempre retorna sucesso para não revelar se o e-mail existe
@@ -131,10 +134,11 @@ export async function signOutAction() {
 
 export async function signInWithOAuthAction(provider: 'google' | 'discord') {
   const supabase = await createClient()
+  const origin = (await headers()).get('origin') || process.env.NEXT_PUBLIC_APP_URL || ''
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/callback`,
+      redirectTo: `${origin}/auth/callback`,
       // Solicita escopo de e-mail e perfil ao Google
       scopes: provider === 'google' ? 'openid email profile' : undefined,
     },
@@ -184,5 +188,5 @@ export async function completeProfileAction(
     }).catch((err) => console.error('[completeProfileAction] welcome email failed:', err))
   }
 
-  redirect('/painel')
+  redirect('/')
 }
