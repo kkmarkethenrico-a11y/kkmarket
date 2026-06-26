@@ -135,11 +135,11 @@ export async function signOutAction() {
 export async function signInWithOAuthAction(provider: 'google' | 'discord') {
   const supabase = await createClient()
   const origin = (await headers()).get('origin') || process.env.NEXT_PUBLIC_APP_URL || ''
+
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
       redirectTo: `${origin}/auth/callback`,
-      // Solicita escopo de e-mail e perfil ao Google
       scopes: provider === 'google' ? 'openid email profile' : undefined,
     },
   })
