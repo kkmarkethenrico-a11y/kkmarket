@@ -23,7 +23,7 @@ export default async function CompleteProfilePage() {
     .single()
 
   // Já completou o onboarding → não deveria estar aqui
-  if (!profile || profile.onboarding_complete) redirect('/painel')
+  if (!profile || profile.onboarding_complete) redirect('/')
 
   return (
     <CompleteProfileForm

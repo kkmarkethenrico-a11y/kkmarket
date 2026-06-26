@@ -19,7 +19,7 @@ const BENEFIT_COLORS = ['var(--gm-amber)', 'var(--gm-cyan)', 'var(--gm-violet)',
 export default async function CadastroPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (user) redirect('/painel')
+  if (user) redirect('/')
 
   const [dict, lang] = await Promise.all([getDictionary(), getLanguage()])
   const t = dict.auth.register

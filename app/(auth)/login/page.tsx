@@ -16,7 +16,7 @@ export async function generateMetadata() {
 export default async function LoginPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (user) redirect('/painel')
+  if (user) redirect('/')
 
   const [dict, lang] = await Promise.all([getDictionary(), getLanguage()])
   const t = dict.auth.login
