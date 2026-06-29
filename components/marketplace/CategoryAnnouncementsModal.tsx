@@ -83,7 +83,7 @@ export function CategoryAnnouncementsModal() {
           // Intercept category page navigation to display as a modal
           const parts = href.split('?')[0].split('/').filter(Boolean)
           // parts = ['categoria', 'slug'] or ['categoria', 'parent-slug', 'sub-slug']
-          if (parts.length >= 2) {
+          if (parts.length >= 3) {
             e.preventDefault()
             const slug = parts[parts.length - 1]
             window.dispatchEvent(new CustomEvent('open-category-modal', { detail: { slug } }))
