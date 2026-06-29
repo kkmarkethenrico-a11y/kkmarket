@@ -1,6 +1,7 @@
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { PlatformTourHost } from '@/components/onboarding/PlatformTourHost'
+import { CategoryAnnouncementsModal } from '@/components/marketplace/CategoryAnnouncementsModal'
 import { getDictionary } from '@/lib/i18n'
 import { createClient } from '@/lib/supabase/server'
 
@@ -28,6 +29,7 @@ export default async function PublicLayout({
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
+      <CategoryAnnouncementsModal />
       <PlatformTourHost
         dict={dict}
         serverShowTour={serverShowTour}

@@ -22,7 +22,7 @@ function reviewScore(p: number, n: number, ng: number): { pct: number; total: nu
 
 export function AnnouncementCard({ ann, dict }: { ann: AnnouncementWithRelations, dict?: any }) {
   const seller = ann.profiles
-  const stats  = ann.user_stats
+  const stats = ann.user_stats
   const images = ann.announcement_images ?? []
   const imgSrc = coverUrl(images)
   const online = seller ? isOnline(seller.last_seen_at) : false
@@ -55,18 +55,18 @@ export function AnnouncementCard({ ann, dict }: { ann: AnnouncementWithRelations
         )}
 
         {ann.has_auto_delivery && (
-           <div className="absolute top-2 left-2 px-2 py-1 bg-primary/20 text-primary border border-primary/30 backdrop-blur-md rounded text-label-sm font-bold">AUTO</div>
+          <div className="absolute top-2 left-2 px-2 py-1 bg-primary/20 text-primary border border-primary/30 backdrop-blur-md rounded text-label-sm font-bold">AUTO</div>
         )}
 
         <div className="absolute bottom-2 right-2">
-           <PlanBadge plan={ann.plan} />
+          <PlanBadge plan={ann.plan} />
         </div>
       </div>
 
       <div className="p-4 flex flex-col flex-1">
         <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-tighter flex items-center gap-2">
-           <span className="truncate">{sellerName}</span>
-           {total > 0 && <span className="text-primary text-[10px]">{pct}%</span>}
+          <span className="truncate">{sellerName}</span>
+          {total > 0 && <span className="text-primary text-[10px]">{pct}%</span>}
         </span>
         <h3 className="font-headline-sm text-[18px] text-white mt-1 line-clamp-2">
           {ann.title}
