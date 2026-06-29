@@ -55,9 +55,9 @@ const nextConfig: NextConfig = {
             value: [
               "default-src 'self'",
               "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://sdk.mercadopago.com",
-              "style-src 'self' 'unsafe-inline' https://sdk.mercadopago.com",
+              "style-src 'self' 'unsafe-inline' https://sdk.mercadopago.com https://fonts.googleapis.com",
               "img-src 'self' data: https:",
-              "font-src 'self' data:",
+              "font-src 'self' data: https://fonts.gstatic.com",
               "connect-src 'self' https: wss:",
               "frame-src https://*.mercadopago.com https://*.mercadopago.com.br",
               // MP SDK v2 cria web workers via blob: URLs para tokenização de cartão
