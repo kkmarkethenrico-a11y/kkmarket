@@ -23,10 +23,6 @@ export async function generateMetadata(
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kkmarket.com.br'
   const desc = data.seo_description ?? data.excerpt ?? ''
-  const isGtaVi = slug === 'pre-venda-do-gta-vi' || data.title?.toLowerCase().includes('gta vi')
-  const cover = isGtaVi
-    ? '/images/gta-vi-pink.jpg'
-    : data.cover_url
   return {
     title: `${data.seo_title ?? data.title} — KKmarket`,
     description: desc,
@@ -35,7 +31,7 @@ export async function generateMetadata(
       title: data.title,
       description: desc,
       type: 'article',
-      images: cover ? [{ url: cover }] : [],
+      images: data.cover_url ? [{ url: data.cover_url }] : [],
     },
   }
 }
@@ -57,7 +53,7 @@ export default async function BlogPostPage({ params }: Props) {
     slug: 'pre-venda-do-gta-vi',
     excerpt: 'Fique por dentro das novidades da pré-venda do GTA VI.',
     content: '<p>A pré-venda do GTA VI está chegando com novidades incríveis. Garanta já a sua key!</p>',
-    cover_url: null,
+    cover_url: 'https://cdn.motor1.com/images/mgl/RqkOp3/s3/capa-oficial-do-gta-6.webp',
     reading_time: 3,
     created_at: new Date().toISOString(),
     published_at: new Date().toISOString(),
@@ -89,7 +85,11 @@ export default async function BlogPostPage({ params }: Props) {
     .neq('slug', slug)
     .order('created_at', { ascending: false })
     .limit(3)
-
+  console.log({
+    slug: post.slug,
+    title: post.title,
+    cover_url: post.cover_url,
+  })
   return (
     <div className="min-h-screen text-[var(--gm-ink)]">
       <div className="container mx-auto max-w-3xl px-4 py-10">
@@ -132,13 +132,10 @@ export default async function BlogPostPage({ params }: Props) {
         </header>
 
         {/* Cover image */}
-        {(post.cover_url || post.slug === 'pre-venda-do-gta-vi' || post.title?.toLowerCase().includes('gta vi')) && (
+        {post.cover_url && (
           <div className="relative mb-8 aspect-video w-full overflow-hidden rounded-2xl">
             <Image
-              src={post.slug === 'pre-venda-do-gta-vi' || post.title?.toLowerCase().includes('gta vi')
-                ? '/images/gta-vi-pink.jpg'
-                : post.cover_url!
-              }
+              src={post.cover_url}
               alt={post.title}
               fill
               sizes="(max-width: 768px) 100vw, 768px"
@@ -152,7 +149,7 @@ export default async function BlogPostPage({ params }: Props) {
         <article className="prose prose-zinc max-w-none prose-headings:font-bold prose-p:text-[var(--gm-ink-dim)] prose-headings:text-[var(--gm-ink)] prose-a:text-[var(--gm-violet)] prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl">
           <div dangerouslySetInnerHTML={{
             __html: (post.slug === 'pre-venda-do-gta-vi' || post.title?.toLowerCase().includes('gta vi'))
-              ? post.content.replace(/<img[^>]*>/gi, '<img src="/images/gta-vi-pink.jpg" alt="GTA VI" style="max-height: 450px; width: 100%; object-fit: cover; border-radius: 1rem; margin-top: 1.5rem; margin-bottom: 1.5rem;" />')
+              ? post.content.replace(/<img[^>]*>/gi, '<img src="https://cdn.motor1.com/images/mgl/RqkOp3/s3/capa-oficial-do-gta-6.webp" alt="GTA VI" style="max-height: 450px; width: 100%; object-fit: cover; border-radius: 1rem; margin-top: 1.5rem; margin-bottom: 1.5rem;" />')
               : post.content
           }} />
         </article>
@@ -169,12 +166,9 @@ export default async function BlogPostPage({ params }: Props) {
                   className="group overflow-hidden rounded-xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper)] hover:border-[var(--gm-violet)] transition-colors"
                 >
                   <div className="relative aspect-video overflow-hidden bg-muted">
-                    {(r.cover_url || r.slug === 'pre-venda-do-gta-vi' || r.title?.toLowerCase().includes('gta vi')) ? (
+                    {r.cover_url ? (
                       <Image
-                        src={r.slug === 'pre-venda-do-gta-vi' || r.title?.toLowerCase().includes('gta vi')
-                          ? '/images/gta-vi-pink.jpg'
-                          : r.cover_url!
-                        }
+                        src={r.cover_url}
                         alt={r.title}
                         fill
                         sizes="33vw"

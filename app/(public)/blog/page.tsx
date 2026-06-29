@@ -22,7 +22,7 @@ export default async function BlogPage() {
       id: 'mock-gta-vi',
       title: 'PRÉ Venda do GTA VI',
       slug: 'pre-venda-do-gta-vi',
-      cover_url: null,
+      cover_url: 'https://cdn.motor1.com/images/mgl/RqkOp3/s3/capa-oficial-do-gta-6.webp',
       excerpt: 'Fique por dentro das novidades da pré-venda do GTA VI.',
       created_at: new Date().toISOString(),
       published_at: new Date().toISOString(),
@@ -62,10 +62,6 @@ export default async function BlogPage() {
               const date = new Date(post.published_at ?? post.created_at).toLocaleDateString('pt-BR', {
                 day: '2-digit', month: 'short', year: 'numeric',
               })
-              const isGtaVi = post.slug === 'pre-venda-do-gta-vi' || post.title?.toLowerCase().includes('gta vi')
-              const cover = isGtaVi 
-                ? '/images/gta-vi-pink.jpg'
-                : post.cover_url
               return (
                 <Link
                   key={post.id}
@@ -73,9 +69,9 @@ export default async function BlogPage() {
                   className="group flex flex-col overflow-hidden rounded-2xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper)] hover:border-[var(--gm-violet)] transition-colors shadow-sm"
                 >
                   <div className="relative aspect-video overflow-hidden bg-muted">
-                    {cover ? (
+                    {post.cover_url ? (
                       <Image
-                        src={cover}
+                        src={post.cover_url}
                         alt={post.title}
                         fill
                         sizes="(max-width: 640px) 100vw, 33vw"
