@@ -23,6 +23,10 @@ export async function generateMetadata(
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kkmarket.com.br'
   const desc = data.seo_description ?? data.excerpt ?? ''
+  const isGtaVi = slug === 'pre-venda-do-gta-vi' || data.title?.toLowerCase().includes('gta vi')
+  const cover = isGtaVi
+    ? '/images/gta-vi-pink.jpg'
+    : data.cover_url
   return {
     title: `${data.seo_title ?? data.title} — KKmarket`,
     description: desc,
@@ -31,7 +35,7 @@ export async function generateMetadata(
       title: data.title,
       description: desc,
       type: 'article',
-      images: data.cover_url ? [{ url: data.cover_url }] : [],
+      images: cover ? [{ url: cover }] : [],
     },
   }
 }
@@ -40,12 +44,29 @@ export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
   const supabase = await createClient()
 
-  const { data: post } = await supabase
+  const { data: postData } = await supabase
     .from('blog_posts')
     .select('id, title, slug, excerpt, content, cover_url, reading_time, published_at, created_at, profiles!author_id(username, display_name, avatar_url)')
     .eq('slug', slug)
     .eq('is_published', true)
     .single()
+
+  const post = postData || (slug === 'pre-venda-do-gta-vi' ? {
+    id: 'mock-gta-vi',
+    title: 'PRÉ Venda do GTA VI',
+    slug: 'pre-venda-do-gta-vi',
+    excerpt: 'Fique por dentro das novidades da pré-venda do GTA VI.',
+    content: '<p>A pré-venda do GTA VI está chegando com novidades incríveis. Garanta já a sua key!</p>',
+    cover_url: null,
+    reading_time: 3,
+    created_at: new Date().toISOString(),
+    published_at: new Date().toISOString(),
+    profiles: {
+      username: 'admin',
+      display_name: 'KKmarket',
+      avatar_url: null
+    }
+  } as any : null)
 
   if (!post) notFound()
 
@@ -111,10 +132,13 @@ export default async function BlogPostPage({ params }: Props) {
         </header>
 
         {/* Cover image */}
-        {post.cover_url && (
+        {(post.cover_url || post.slug === 'pre-venda-do-gta-vi' || post.title?.toLowerCase().includes('gta vi')) && (
           <div className="relative mb-8 aspect-video w-full overflow-hidden rounded-2xl">
             <Image
-              src={post.cover_url}
+              src={post.slug === 'pre-venda-do-gta-vi' || post.title?.toLowerCase().includes('gta vi')
+                ? '/images/gta-vi-pink.jpg'
+                : post.cover_url!
+              }
               alt={post.title}
               fill
               sizes="(max-width: 768px) 100vw, 768px"
@@ -126,7 +150,11 @@ export default async function BlogPostPage({ params }: Props) {
 
         {/* Content */}
         <article className="prose prose-zinc max-w-none prose-headings:font-bold prose-p:text-[var(--gm-ink-dim)] prose-headings:text-[var(--gm-ink)] prose-a:text-[var(--gm-violet)] prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl">
-          <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          <div dangerouslySetInnerHTML={{
+            __html: (post.slug === 'pre-venda-do-gta-vi' || post.title?.toLowerCase().includes('gta vi'))
+              ? post.content.replace(/<img[^>]*>/gi, '<img src="/images/gta-vi-pink.jpg" alt="GTA VI" style="max-height: 450px; width: 100%; object-fit: cover; border-radius: 1rem; margin-top: 1.5rem; margin-bottom: 1.5rem;" />')
+              : post.content
+          }} />
         </article>
 
         {/* Related posts */}
@@ -141,8 +169,17 @@ export default async function BlogPostPage({ params }: Props) {
                   className="group overflow-hidden rounded-xl border border-[var(--gm-ink-faint)]/20 bg-[var(--gm-paper)] hover:border-[var(--gm-violet)] transition-colors"
                 >
                   <div className="relative aspect-video overflow-hidden bg-muted">
-                    {r.cover_url ? (
-                      <Image src={r.cover_url} alt={r.title} fill sizes="33vw" className="object-cover transition-transform duration-300 group-hover:scale-105" />
+                    {(r.cover_url || r.slug === 'pre-venda-do-gta-vi' || r.title?.toLowerCase().includes('gta vi')) ? (
+                      <Image
+                        src={r.slug === 'pre-venda-do-gta-vi' || r.title?.toLowerCase().includes('gta vi')
+                          ? '/images/gta-vi-pink.jpg'
+                          : r.cover_url!
+                        }
+                        alt={r.title}
+                        fill
+                        sizes="33vw"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
                     ) : (
                       <div className="flex h-full items-center justify-center text-3xl text-muted-foreground">📝</div>
                     )}

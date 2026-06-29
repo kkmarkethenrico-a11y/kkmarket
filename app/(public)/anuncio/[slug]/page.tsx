@@ -268,7 +268,7 @@ export default async function AnnouncioPage({ params }: Props) {
               </div>
 
               {/* Painel de compra */}
-              <div className="rounded-xl border border-[var(--gm-violet)]/20 bg-[var(--gm-paper-2)] p-4">
+              <div id="purchase-panel-container" className="rounded-xl border border-[var(--gm-violet)]/20 bg-[var(--gm-paper-2)] p-4">
                 <PurchasePanel
                   announcementId={ann.id}
                   announcementSlug={ann.slug}

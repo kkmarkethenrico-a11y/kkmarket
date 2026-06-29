@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ShoppingCart, Check } from 'lucide-react'
 import { VariationSelector, PriceDisplay } from './VariationSelector'
 import { BuyButton } from './BuyButton'
@@ -35,6 +35,17 @@ export function PurchasePanel({
   const [selectedItem, setSelectedItem] = useState<AnnouncementItem | null>(null)
   const [added, setAdded] = useState(false)
   const addItem = useCartStore((s) => s.addItem)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const element = document.getElementById('purchase-panel-container')
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }, 200)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   const isDynamic = model === 'dynamic'
   const outOfStock = isDynamic

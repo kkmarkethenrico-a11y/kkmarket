@@ -116,7 +116,16 @@ async function getData() {
 }
 
 export default async function HomePage() {
-  const { user, userPoints, featured, popular, newest, reviews, posts, categories, sellers } = await getData()
+  const { user, userPoints, featured, popular, newest, reviews, posts: rawPosts, categories, sellers } = await getData()
+  const posts = rawPosts.length > 0 ? rawPosts : [
+    {
+      id: 'mock-gta-vi',
+      title: 'PRÉ Venda do GTA VI',
+      slug: 'pre-venda-do-gta-vi',
+      cover_url: null,
+      created_at: new Date().toISOString()
+    }
+  ]
   const dict = await getDictionary()
 
   const categoryItems = categories.length > 0
@@ -317,27 +326,33 @@ export default async function HomePage() {
                   <Link className="text-primary hover:underline font-label-md text-label-md" href="/blog">{dict.sections.viewAll}</Link>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                  {posts.map((post: any) => (
-                    <Link key={post.id} href={`/blog/${post.slug}`} className="group bg-surface-container-low rounded-xl border border-white/5 overflow-hidden hover:border-primary/30 transition-colors">
-                      <div className="aspect-[16/9] w-full relative overflow-hidden bg-surface-variant">
-                        {post.cover_url ? (
-                          <Image src={post.cover_url} alt={post.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-on-surface-variant">
-                            <Terminal className="w-8 h-8 opacity-20" />
-                          </div>
-                        )}
-                      </div>
-                      <div className="p-5">
-                        <div className="text-xs text-primary font-bold mb-2 uppercase tracking-wider">
-                          {new Date(post.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
+                  {posts.map((post: any) => {
+                    const isGtaVi = post.slug === 'pre-venda-do-gta-vi' || post.title?.toLowerCase().includes('gta vi')
+                    const cover = isGtaVi 
+                      ? '/images/gta-vi-pink.jpg'
+                      : post.cover_url
+                    return (
+                      <Link key={post.id} href={`/blog/${post.slug}`} className="group bg-surface-container-low rounded-xl border border-white/5 overflow-hidden hover:border-primary/30 transition-colors">
+                        <div className="aspect-[16/9] w-full relative overflow-hidden bg-surface-variant">
+                          {cover ? (
+                            <Image src={cover} alt={post.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-on-surface-variant">
+                              <Terminal className="w-8 h-8 opacity-20" />
+                            </div>
+                          )}
                         </div>
-                        <h3 className="font-headline-sm text-headline-sm text-white line-clamp-2 group-hover:text-primary transition-colors">
-                          {post.title}
-                        </h3>
-                      </div>
-                    </Link>
-                  ))}
+                        <div className="p-5">
+                          <div className="text-xs text-primary font-bold mb-2 uppercase tracking-wider">
+                            {new Date(post.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
+                          </div>
+                          <h3 className="font-headline-sm text-headline-sm text-white line-clamp-2 group-hover:text-primary transition-colors">
+                            {post.title}
+                          </h3>
+                        </div>
+                      </Link>
+                    )
+                  })}
                 </div>
               </section>
             )}

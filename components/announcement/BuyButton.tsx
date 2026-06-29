@@ -70,11 +70,10 @@ export function BuyButton({
           type="button"
           onClick={handleClick}
           disabled={disabled}
-          className={`flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-4 text-base font-bold transition-all active:scale-[0.98] ${
-            disabled
+          className={`flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-4 text-base font-bold transition-all active:scale-[0.98] ${disabled
               ? 'cursor-not-allowed bg-[var(--gm-paper-3)] text-[var(--gm-ink-faint)]'
               : 'bg-[var(--gm-green)] text-[#0d1a12] shadow-lg shadow-[var(--gm-green)]/20 hover:opacity-90'
-          }`}
+            }`}
         >
           {outOfStock ? (
             'Esgotado'
@@ -124,9 +123,9 @@ function CheckoutModal({
   price: number
   onClose: () => void
 }) {
-  const [orderId, setOrderId]           = useState<string | null>(null)
-  const [paymentData, setPaymentData]   = useState<PaymentData | null>(null)
-  const [errorMsg, setErrorMsg]         = useState<string | null>(null)
+  const [orderId, setOrderId] = useState<string | null>(null)
+  const [paymentData, setPaymentData] = useState<PaymentData | null>(null)
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   function handleSuccess(id: string, pd: PaymentData) {
     setOrderId(id)
@@ -136,7 +135,7 @@ function CheckoutModal({
   // Polling automático para confirmar PIX/Boleto pago
   useEffect(() => {
     if (!orderId || paymentData?.method === 'credit_card') return
-    
+
     const interval = setInterval(async () => {
       try {
         const res = await fetch(`/api/orders/${orderId}/status`)
