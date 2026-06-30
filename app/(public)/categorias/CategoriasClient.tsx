@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { FolderOpen, Gamepad2, Share2, Bot, Code, Box, ChevronRight, ArrowRight } from 'lucide-react'
 import type { Category } from '@/types'
@@ -8,6 +8,23 @@ import type { Category } from '@/types'
 interface CategoriasClientProps {
   rootCategories: Category[]
   gamesSubcategories: Category[]
+}
+
+function GameIcon({ slug, name, className = "h-4 w-4" }: { slug: string; name: string; className?: string }) {
+  const [error, setError] = useState(false)
+
+  if (error) {
+    return <Gamepad2 className={className} />
+  }
+
+  return (
+    <img
+      src={`/images/games/${slug}.svg`}
+      alt={name}
+      className={`${className} shrink-0 object-contain`}
+      onError={() => setError(true)}
+    />
+  )
 }
 
 function getCategoryIcon(slug: string) {
@@ -28,7 +45,7 @@ export function CategoriasClient({ rootCategories, gamesSubcategories }: Categor
       name: sub.name,
       slug: sub.slug,
       href: `/categoria/jogos/${sub.slug}`,
-      icon: <Gamepad2 className="h-4 w-4 text-[var(--gm-violet)]" />,
+      icon: <GameIcon slug={sub.slug} name={sub.name} className="h-4 w-4 text-[var(--gm-violet)]" />,
       parentSlug: 'jogos'
     })),
     ...rootCategories.filter(cat => cat.slug !== 'jogos').map(cat => ({
