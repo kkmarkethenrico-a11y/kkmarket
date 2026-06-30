@@ -102,7 +102,7 @@ export async function registerAction(
 
   return {
     message:
-      'success:Conta criada! Verifique seu e-mail para ativar sua conta.',
+      'success:Conta criada! Verifique seu e-mail para ativar sua conta (seus 50 pontos de boas-vindas já foram creditados).',
   }
 }
 
