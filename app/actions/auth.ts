@@ -79,7 +79,7 @@ export async function registerAction(
   }
 
   const origin = (await headers()).get('origin') || process.env.NEXT_PUBLIC_APP_URL || ''
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email: parsed.data.email,
     password: parsed.data.password,
     options: {
@@ -93,6 +93,22 @@ export async function registerAction(
       return { errors: { email: ['Este e-mail já está cadastrado.'] } }
     }
     return { message: 'Erro ao criar conta. Tente novamente.' }
+  }
+
+  // Credit 50 welcome points atomically to the new user stats and transaction logs.
+  if (data?.user) {
+    const { error: pointsError } = await supabase.rpc('credit_points', {
+      p_user_id: data.user.id,
+      p_amount: 50,
+      p_type: 'event',
+      p_expires_at: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toISOString(), // 180 days expiration
+      p_description: 'Bônus de boas-vindas'
+    })
+    if (pointsError) {
+      console.error('[registerAction] Failed to credit 50 welcome points:', pointsError)
+    } else {
+      console.log('[registerAction] 50 welcome points successfully credited to:', data.user.id)
+    }
   }
 
   void sendWelcomeEmail({
