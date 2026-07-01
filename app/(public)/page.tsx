@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { AnnouncementCard } from '@/components/marketplace/AnnouncementCard'
+import { MissionsBanner } from '@/components/marketplace/MissionsBanner'
 import type { AnnouncementWithRelations, Category } from '@/types'
 import { getDictionary } from '@/lib/i18n'
 import { LayoutGrid, Gamepad2, Bot, Code, MonitorPlay, Users, Terminal, ArrowRight, Medal, Star, BadgeCheck } from 'lucide-react'
@@ -164,36 +165,11 @@ export default async function HomePage() {
         </section>
 
         {/* Missions & Rewards Banner */}
-        <section className="mt-8" data-tour="missions">
-          <div className="bg-secondary-container text-on-secondary-container p-6 rounded-xl flex flex-col md:flex-row md:items-center justify-between shadow-lg gap-4">
-            <div className="flex items-center gap-4">
-              <div className="bg-on-secondary-container text-secondary p-3 rounded-lg">
-                <Medal className="w-6 h-6 fill-current" />
-              </div>
-              <div>
-                <h3 className="font-headline-sm text-headline-sm leading-tight">{dict.missions.title}</h3>
-                <p className="font-label-md text-label-md opacity-80">{dict.missions.desc}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-6">
-              <div className="text-right hidden sm:block">
-                <div className="font-label-sm text-label-sm uppercase tracking-widest opacity-60">{dict.missions.nextReward}</div>
-                <div className="font-label-md text-label-md font-bold">
-                  {user ? `${userPoints.toLocaleString('pt-BR')} / ${Math.max(1500, Math.ceil((userPoints + 1) / 1500) * 1500).toLocaleString('pt-BR')} KK-COINS` : '1.500 KK-COINS'}
-                </div>
-              </div>
-              <div className="hidden sm:block w-32 h-2 bg-on-secondary-container/20 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-on-secondary-container transition-all duration-500" 
-                  style={{ width: user ? `${(userPoints % 1500) / 1500 * 100}%` : '75%' }} 
-                />
-              </div>
-              <button className="bg-on-secondary-container text-secondary-container px-6 py-2 rounded-lg font-bold hover:opacity-90 transition-opacity">
-                {dict.missions.claim}
-              </button>
-            </div>
-          </div>
-        </section>
+        <MissionsBanner
+          userPoints={userPoints}
+          userId={user ? user.id : null}
+          dict={dict}
+        />
 
         {/* Main Marketplace Body */}
         <div className="mt-16 flex flex-col lg:flex-row gap-8">
